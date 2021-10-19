@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ <app-menu></app-menu>
+
+ <form [formGroup]="formularioRegistro" (submit)="registrarAsistenciaPersonal()" >
+
+    <div>
+        <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+      </div>
+    
+    <div class="container" id="contenedorRegistro">
+        <legend> Formulario Asistencia Personal</legend>
+        <div class="form-group row">
+            <label for="personal" class="col-sm-2 col-form-label">Personal</label>
+            <div class="col-sm-6">
+                <select class="form-control" formControlName="personal" required>
+                    <option value="">Seleccione un Personal
+                    </option>
+                    <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+                        {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+    <hr>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Hora Ingreso</label>
+        <div class="col-sm-4">
+            <input type="time"
+            class="form-control"
+            id="horaIngresoPersonal"
+            formControlName="hora_ingreso"
+            required
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Hora Salida</label>
+        <div class="col-sm-4">
+            <input type="time"
+            class="form-control"
+            id="horaSalidaPersonal"
+            formControlName="hora_salida"
+            required
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+
+        <label class="col-sm-2 col-form-label"> Asistencia</label>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="asistenciaPersonalRadio" value="Presente"
+            formControlName="estado" required
+            >
+            <label class="form-check-label" for="asistenciaPersonalRadio"> Presente </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="asistenciaPersonalRadio2" value="Ausente"
+            formControlName="estado" required
+            >
+            <label class="form-check-label" for="asistenciaPersonalRadio2"> Ausente </label>
+        </div>
+
+    </div >
+</div>
+
+<hr>
+
+<div class="container" id="contenedorBotones">
+    <div class="form-group">
+      <button
+        class="btn btn-primary"
+        [disabled]="btnRegistrar"
+      >
+        Registrar
+      </button>
+      <button
+        class="btn btn-warning"
+        (click)="editarAsistenciaPersonalId()"
+        type="button"
+        [disabled]="btnEditar"
+      >
+        Editar
+      </button>
+      <button
+        class="btn btn-danger"
+        [disabled]="btnCancelar"
+        type="reset"
+        
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+
+</form>
+
+<div class="container-fluid" id="contenedorTabla">
+    <legend>Listado de Asistencia del Personal</legend>
+    <table class="table table-bordered table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Personal</th>
+                <th scope="col">Hora Ingreso</th>
+                <th scope="col">Hora Salida</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let asistenciapersonal of listadoAsistenciaPersonal">
+                <th scope="row">{{ asistenciapersonal.id }}</th>
+                <td scope="row">{{ asistenciapersonal.personal.nombre_personal }} {{ asistenciapersonal.personal.apellido_personal}} </td>
+                <td scope="row">{{ asistenciapersonal.hora_ingreso }}</td>
+                <td scope="row">{{ asistenciapersonal.hora_salida}}</td>
+                <td scope="row">{{ asistenciapersonal.estado }}</td>
+                <!-- Falta colocar las funciones de los botones al haer (click) -->
+                <td scope="row">
+                    <button class="btn btn-warning" (click)='AsistenciaPersonalId(asistenciapersonal)' >
+                      Editar
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      (click)="eliminarAsistenciaPersonal(asistenciapersonal)"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

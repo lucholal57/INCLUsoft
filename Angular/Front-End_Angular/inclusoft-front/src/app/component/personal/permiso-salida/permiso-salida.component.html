@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <app-menu></app-menu>
+
+    <form [formGroup]="formularioRegistro" (submit)="registrarPermisoSalida()">
+      <div>
+        <img
+          src="../../../../assets/img/caad.jpg"
+          align="left"
+          alt=""
+          alt=""
+          width="10%"
+        />
+      </div>
+
+      <div class="container" id="contenedorRegistro">
+        <legend>Formulario Permisos de Salida</legend>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="personal">Personal</label>
+          <div class="col-sm-6">
+            <select class="form-control" formControlName="personal" required>
+              <option value="">Seleccione un Personal</option>
+              <option
+                *ngFor="let personal of listadoPersonal"
+                [ngValue]="personal.id" >
+                {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+              </option>
+            </select>
+          </div>
+        </div>
+      
+
+      <hr />
+
+      <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Fecha</label>
+          <div class="col-sm-4">
+              <input type="date"
+              class="form-control" 
+              formControlName="fecha_permiso"
+              id="fechaPermisoSalida"
+              required
+              >
+          </div>
+      </div>
+      
+
+     <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Horario Salida</label>
+          <div class="col-sm-4">
+              <input type="time"
+              class="form-control" 
+              formControlName="horario_salida"
+              id="horariosalidaPermisoSalida"
+              required
+              >
+          </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Horario Regreso</label>
+        <div class="col-sm-4">
+            <input type="time"
+            class="form-control" 
+            formControlName="horario_regreso"
+            id="horarioregresoPermisoSalida"
+            required
+            >
+        </div>
+    </div>
+
+     <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Motivo</label>
+        <div class="col-sm-6">
+            <input type="text"
+            class="form-control" 
+            formControlName="motivo"
+            id="motivoPermisoSalida"
+            required
+            >
+        </div>
+    </div>
+
+    </div>
+    
+    <hr>
+
+    <div class="container" id="contenedorbotones">
+        <div class="form-group">
+            <button
+            class="btn btn-primary"
+            [disabled]="btnRegistrar"
+            >
+            Registrar
+            </button>
+            <button
+            class="btn btn-warning"
+            type="button"
+            [disabled]="btnEditar"
+            (click)="editarPermisoSalidaId()"
+            >
+            Editar
+            </button>
+            <button
+            class="btn btn-danger"
+            type="reset"
+            [disabled]="btnCancelar"
+            >
+            Cancelar
+            </button>
+        </div>
+    </div>
+
+    </form>
+
+    <div class="container-fluid" id="contenedorTabla">
+        <legend>Listado Permisos Salidas</legend>
+        <table class="table table-bordered table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Personal</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora Salida</th>
+                    <th scope="col">Hora Regreso</th>
+                    <th scope="col">Motivo</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let permisospersonal of listadoPermisoSalida">
+                    <th scope="row">{{ permisospersonal.id }}</th>
+                    <td scope="row">
+                       {{ permisospersonal.personal.nombre_personal}}
+                       {{ permisospersonal.personal.apellido_personal}}
+                    </td>
+                    <td scope="row">{{ permisospersonal.fecha_permiso }}</td>
+                    <td scope="row"> {{ permisospersonal.horario_salida }}</td>
+                    <td scope="row">{{ permisospersonal.horario_regreso }}</td>
+                    <td scope="row">{{ permisospersonal.motivo }}</td>
+                    <td scope="row">
+                        <button class="btn btn-warning"
+                        (click)="PermisoSalidaId(permisospersonal)"
+                        >
+                        Editar
+                        </button>
+                        <button class="btn btn-danger"
+                        (click)="eliminarPermisoSalida(permisospersonal)"
+                        >
+                        Elminar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </body>
+</html>

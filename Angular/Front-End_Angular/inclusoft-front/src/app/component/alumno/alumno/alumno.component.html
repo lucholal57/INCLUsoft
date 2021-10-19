@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <app-menu></app-menu>
+<form [formGroup]="formularioRegistro" (submit)="registrarAlumno()">
+  
+  <div>
+    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+  </div>
+<div class="container" id="contenedorRegistro">
+  <legend>Formulario de registro Alumno</legend>
+  
+  <hr />
+  <div class="form-row" >
+    <div class="form-group col-md-4">
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        name="nombre"
+        id="nombre"
+        class="form-control"
+        placeholder="Ingrese el nombre"
+        formControlName="nombre_alumno"
+        required
+      />
+    </div>
+  
+    <div class="form-group col-md-4">
+      <label for="apellido">Apellido</label>
+      <input
+        type="text"
+        name="apellido   "
+        id="appelido"
+        class="form-control"
+        placeholder="Ingrese el apellido"
+        formControlName="apellido_alumno"
+        required
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="nomber">DNI</label>
+      <input
+        type="number"
+        name="dni"
+        id="dni"
+        class="form-control"
+        placeholder="Ingrese el DNI"
+        formControlName="dni_alumno"
+        required
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="telefono">Telefono</label>
+      <input
+        type="number"
+        name="telefono"
+        id="telefono"
+        class="form-control"
+        placeholder="Ingrese el telefono"
+        formControlName="telefono_alumno"
+        required
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="nomber">F. Nacimiento</label>
+      <input
+        type="date"
+        name="nacimiento"
+        id="nacimiento"
+        class="form-control"
+        formControlName="fecha_nacimiento_alumno"
+        required
+      />
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="nomber">Lugar Nacimiento</label>
+      <input
+        type="text"
+        name="lugarn"
+        id="lugarn"
+        class="form-control"
+        placeholder="Ingrese el lugar de nacimiento"
+        formControlName="lugar_nacimiento_alumno"
+        required
+      />
+    </div>
+
+    <div class="form-group col-md-12">
+      <label for="nomber">Direccion</label>
+      <input
+        type="text"
+        name="direccion"
+        id="direccion"
+        class="form-control"
+        placeholder="Ingrese la direccion"
+        formControlName="direccion_alumno"
+        required
+      />
+    </div>
+  </div>
+<hr>
+</div>
+
+  <div class="container" id="contenedorBotones" >
+    <div class="form-group">
+      <button  class="btn btn-primary" [disabled]="btnRegistrar">Registrar</button>
+      <button type="button" class="btn btn-warning" [disabled]= "btnEditar" (click)='editarAlumnoId()'>Editar</button>
+    <button type="reset" class="btn btn-danger" [disabled]= "btnCancelar" (click)='cancelar()'>Cancelar</button>
+  </div>
+</div>
+
+</form>
+
+<div class="container-fluid" id="contenedorTabla">
+<legend>Listado de Alumnos</legend>
+  <table class="table table-bordered table-hover table-dark">
+      <thead>
+          <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">DNI</th>
+              <th scope="col">Telefono</th>
+              <th scope="col">F. Nacimiento</th>
+              <th scope="col">Lugar Nacimiento</th>
+              <th scope="col">Direccion</th>
+              <th scope="col">Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let alumno of listadoAlumnos" >
+              <th scope="row">{{alumno.id}}</th>
+              <td scope="row">{{alumno.nombre_alumno}}</td>
+              <td scope="row">{{alumno.apellido_alumno}}</td>
+              <td scope="row">{{alumno.dni_alumno}}</td>
+              <td scope="row">{{alumno.telefono_alumno}}</td>
+              <td scope="row">{{alumno.fecha_nacimiento_alumno}}</td>
+              <td scope="row">{{alumno.lugar_nacimiento_alumno}}</td>
+              <td scope="row">{{alumno.direccion_alumno}}</td>
+              <td>  
+                  <button class="btn btn-warning" (click)="AlumnoId(alumno)">Editar</button>
+                  <button class="btn btn-danger" (click)="eliminarAlumno(alumno)">Eliminar</button>
+            </td>
+          </tr>
+      </tbody>
+  </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>

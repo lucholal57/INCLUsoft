@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <app-menu></app-menu>
+<form [formGroup]="formularioRegistro" (submit)="registrarPatologia()">
+
+  <div>
+    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+  </div>
+
+  <div class="container" id="contenedorRegistro">
+    <legend>Formulario Patologias</legend>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
+      <div class="col-sm-6">
+        <select class="form-control" formControlName="alumno" required>
+          <option value="">Seleccione un Alumno</option>
+          <option *ngFor="let alumno of listadoAlumnos" [ngValue]="alumno.id">
+            {{ alumno.nombre_alumno }} {{ alumno.apellido_alumno }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Nombre Patologia</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="nombre_patologia" formControlName="nombre_patologia"
+          placeholder="Ingrese Patologia" required>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Medicacion</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="medicacion" formControlName="medicacion"
+          placeholder="Ingrese Medicacion" required>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Observaciones</label>
+      <div class="col-sm-10">
+        <textarea name="" id="" cols="65" rows="5" formControlName="observacion"></textarea>
+      </div>
+    </div>
+
+    <hr>
+</div>
+    <div class="container" id="contenedoresBotones">
+        <div class="form-group">
+      <button class="btn btn-primary" [disabled]="btnRegistrar">Registrar</button>
+      <button class="btn btn-warning" type="button" [disabled]="btnEditar" (click)="editarPatologiaId()">Editar</button>
+      <button class="btn btn-danger" type="reset" [disabled]="btnCancelar" (click)="cancelar()">Cancelar</button>
+    </div>
+    </div>
+  
+</form>
+
+
+<div class="container-fluid" id="contenedorTabla">
+    <legend>Listado de Patologias</legend>
+  <table class="table table-bordered table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Alumno</th>
+        <th scope="col">Patologia</th>
+        <th scope="col">Medicacion</th>
+        <th scope="col">Observaciones</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let patologia of listadoPatologias">
+        <th scope="row"> {{ patologia.id }}</th>
+        <td scope="row">{{ patologia.alumno.nombre_alumno }} {{ patologia.alumno.apellido_alumno}} </td>
+        <td scope="row">{{ patologia.nombre_patologia}}</td>
+        <td scope="row"> {{ patologia.medicacion}}</td>
+        <td scope="row"> {{ patologia.observacion}}</td>
+        <td scope="row">
+          <button class="btn btn-warning" (click)="PatologiaId(patologia)">Editar</button>
+          <button class="btn btn-danger" (click)="eliminarPatologia(patologia)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <app-menu></app-menu>
+
+    <form [formGroup]="formularioRegistro" (submit)="registrarEvaluacionLaboral()">
+      <div>
+        <img
+          src="../../../../assets/img/caad.jpg"
+          align="left"
+          alt=""
+          alt=""
+          width="10%"
+        />
+      </div>
+
+      <div class="container" id="contenedorRegistro">
+        <legend>Formulario Evaluacion Laboral</legend>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="personal">Personal</label>
+          <div class="col-sm-6">
+            <select class="form-control" formControlName="personal" required>
+              <option value="">Seleccione un Personal</option>
+              <option
+                *ngFor="let personal of listadoPersonal"
+                [ngValue]="personal.id"
+              >
+                {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Observaciones</label>
+          <div class="col-sm-4">
+            <textarea
+              name="observaciones_laboral"
+              id="observaciones_laboral"
+              cols="65"
+              rows="5"
+              formControlName="observaciones_laboral"
+              required
+            >
+            </textarea>
+          </div>
+        </div>
+
+      </div>
+      
+      <hr>
+
+      <div class="container" id="contenedorBotones">
+        <div class="form-group">
+          <button
+            class="btn btn-primary"
+            [disabled]="btnRegistrar"
+          >
+            Registrar
+          </button>
+          <button
+            class="btn btn-warning"
+            (click)="editarEvaluacionLaboralId()"
+            type="button"
+            [disabled]="btnEditar"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger"
+            [disabled]="btnCancelar"
+            type="reset"
+            (click)="cancelar()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="container-fluid" id="contenedorTabla">
+        <legend> Listado de Evaluaciones Laborales</legend>
+        <table class="table table-bordered table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Personal</th>
+                    <th scope="col">Observaciones</th> 
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let evaluacionlaboral of listadoEvaluacionLaboral">
+                    <th scope="row">{{ evaluacionlaboral.id }}</th>
+                    <td scope="row">{{ evaluacionlaboral.personal.nombre_personal }} {{ evaluacionlaboral.personal.apellido_personal }}</td>
+                    <td scope="row">{{ evaluacionlaboral.observaciones_laboral }}</td>
+                    <td scope="row">
+                        <button class="btn btn-warning" (click)="EvaluacionLaboralId(evaluacionlaboral)">
+                          Editar
+                        </button>
+                        <button
+                          class="btn btn-danger"
+                          (click)="eliminarEvaluacionLaboral(evaluacionlaboral)"
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </body>
+</html>

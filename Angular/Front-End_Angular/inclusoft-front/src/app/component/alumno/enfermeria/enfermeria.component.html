@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <app-menu></app-menu>
+
+<form [formGroup]="formularioRegistro" (submit)="registrarEnfermeria()">
+
+    <div>
+        <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+      </div>
+
+
+<div class="container" id="contenedorRegistro">
+    <legend>Formulario Enfermeria</legend>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
+        <div class="col-sm-6">
+        <select class="form-control" formControlName="alumno" required>
+            <option value="">Seleccione un Alumno</option>
+            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+                {{ alumnos.nombre_alumno}} {{ alumnos.apellido_alumno}}
+            </option>
+        </select>
+     </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Fecha</label>
+        <div class="col-sm-4">
+            <input
+             type="date" 
+             class="form-control" 
+             id="fechaEnfermeria" 
+             formControlName="fecha_observacion"
+             required >
+        </div>
+    </div>
+
+    <hr>
+    
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Observaciones</label>
+        <div class="col-sm-4">
+            <textarea
+             name="observacionEnfermeria"
+              id="observacionEnfermeria" 
+              cols="65" 
+              rows="5"
+              formControlName="observaciones"
+              required >
+            </textarea>
+        </div>
+    </div>
+
+    <hr>
+</div>
+
+    <div class="container" id="contenedoresBotones">
+        <div class="form-group">
+        <button class="btn btn-primary" [disabled]="btnRegistrar">Registrar</button>
+        <button class="btn btn-warning" type="button" [disabled]="btnEditar"(click)="editarEnfermeriaId()">Editar</button>
+        <button class="btn btn-danger" type="reset" [disabled]="btnCancelar" (click)="cancelar()">Cancelar</button>
+    </div>   
+</div>
+    
+</form>
+    
+    <div class="container-fluid" id="contenedorTabla">
+        <legend>Listado de Enfermeria</legend>
+        <table class="table table-bordered table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Alumno</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let enfermeria of listadoEnfermeria">
+                    <th scope="row">{{ enfermeria.id}}</th>
+                    <th scope="row">{{ enfermeria.alumno.nombre_alumno}} {{ enfermeria.alumno.apellido_alumno}}
+                    </th>
+                    <th scope="row">{{ enfermeria.fecha_observacion}}</th>
+                    <th scope="row">{{ enfermeria.observaciones}}</th>
+                    <th scope="row"> <button class="btn btn-warning" (click)="EnfermeriaId(enfermeria)">Editar</button> <button class="btn btn-danger" (click)="eliminarEnfermeria(enfermeria)">Eliminar</button></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <app-menu></app-menu>
+
+<form [formGroup]="formularioRegistro" (submit)="registrarAsistencia()">
+
+    
+  <div>
+    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+  </div>
+
+  <div class="container" id="contenedorRegistro">
+    <legend>Formulario Asistencias</legend>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
+      <div class="col-sm-6">
+        <select class="form-control" formControlName="alumno" required>
+          <option value="">Seleccione un Alumno</option>
+          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Fecha</label>
+      <div class="col-sm-4">
+        <input
+          type="date"
+          class="form-control"
+          id="fechaAsistencia"
+          formControlName="fecha_asistencia"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+
+    <label class="col-sm-2 col-form-label">Asistencia</label>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="estado_asistencia" id="asistenciaRadio" value="Presente" formControlName="estado_asistencia" required>
+      <label class="form-check-label" for="asistenciaRadio">Presente</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="estado_asistencia" id="asistenciaRadio2" value="Ausente" formControlName="estado_asistencia" required>
+      <label class="form-check-label" for="asistenciaRadio2">Ausente</label>
+    </div>
+
+  </div>
+
+  </div>
+
+  <hr />
+
+  <div class="container" id="contenedorBotones">
+    <div class="form-group">
+      <button
+        class="btn btn-primary"
+        [disabled]="btnRegistrar"
+      >
+        Registrar
+      </button>
+      <button
+        class="btn btn-warning"
+        (click)="editarAsistenciaId()"
+        type="button"
+        [disabled]="btnEditar"
+      >
+        Editar
+      </button>
+      <button
+        class="btn btn-danger"
+        [disabled]="btnCancelar"
+        type="reset"
+        (click)="cancelar()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+  
+</form>
+
+<div class="container-fluid" id="contenedorTabla">
+  <legend>Listado de Asistencias</legend>
+  <table class="table table-bordered table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Alumno</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let asistencia of listadoAsistencias">
+        <th scope="row">{{ asistencia.id }}</th>
+        <td scope="row">
+          {{ asistencia.alumno.nombre_alumno }}
+          {{ asistencia.alumno.apellido_alumno }}
+        </td>
+        <td scope="row">{{ asistencia.fecha_asistencia }}</td>
+        <td scope="row">{{ asistencia.estado_asistencia }}</td>
+        <td scope="row">
+          <button class="btn btn-warning" (click)="AsistenciaId(asistencia)">
+            Editar
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="eliminarAsistencia(asistencia)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

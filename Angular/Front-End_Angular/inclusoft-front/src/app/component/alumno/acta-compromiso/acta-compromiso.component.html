@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <app-menu></app-menu>
+<form [formGroup]="formularioRegistro" (submit)="registrarActaCompromiso()">
+
+  <div>
+    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+  </div>
+
+
+  <div class="container" id="contenedorRegistro">
+    <legend>Formulario Acta Compromiso</legend>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
+      <div class="col-sm-6">
+        <select class="form-control" formControlName="alumno" required>
+          <option value="">Seleccione un Alumno</option>
+          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">DIAS</label>
+      <div class="col-sm-4">
+        <input
+          type="text"
+          class="form-control"
+          id="dias"
+          placeholder="SEPARAR POR COMA"
+          formControlName="dias"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Ingreso</label>
+      <div class="col-sm-4">
+        <input
+          type="time"
+          class="form-control"
+          id="horaIngreso"
+          formControlName="ingreso"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Salida</label>
+      <div class="col-sm-4">
+        <input
+          type="time"
+          class="form-control"
+          id="horaSalida"
+          formControlName="salida"
+          required
+        />
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Traslado</label>
+      <div class="col-sm-4">
+        <input
+          type="text"
+          class="form-control"
+          id="traslado"
+          placeholder="Ingrese como se traslada el alumno"
+          formControlName="traslado"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Persona Autorizada</label>
+      <div class="col-sm-4">
+        <input
+          type="text"
+          class="form-control"
+          id="persona_autorizada"
+          placeholder="Ingrese persona autorizada al retiro"
+          formControlName="personas_autorizadas_retiro"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">DNI</label>
+      <div class="col-sm-4">
+        <input
+          type="number"
+          class="form-control"
+          id="dni"
+          placeholder="Ingrese el DNI de la persona autorizada"
+          formControlName="dni_persona_autorizada"
+          required
+        />
+      </div>
+    </div>
+  </div>
+  <hr />
+
+  <div class="container" id="contenedorBotones">
+  <div class="form-group" >
+    <button
+      class="btn btn-primary"
+      [disabled]="btnRegistrar"
+    >
+      Registrar
+    </button>
+    <button
+      class="btn btn-warning"
+      [disabled]="btnEditar"
+      type="button"
+      (click)="editarActaCompromisoId()"
+    >
+      Editar
+    </button>
+    <button
+      class="btn btn-danger"
+      [disabled]="btnCancelar"
+      type="reset"
+      (click)="cancelar()"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>
+</form>
+
+<div class="container-fluid" id="contenedorTabla">
+  <legend>Listado Actas Compromiso</legend>
+  <table class="table table-bordered table-dark table-responsive-lg">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Alumno</th>
+        <th scope="col">Dias</th>
+        <th scope="col">Ingreso</th>
+        <th scope="col">Salida</th>
+        <th scope="col">Traslado</th>
+        <th scope="col">Autorizados</th>
+        <th scope="col">DNI</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let actas of listadoActaCompromiso">
+        <th scope="row">{{ actas.id }}</th>
+        <td scope="row">
+          {{ actas.alumno.nombre_alumno }} {{ actas.alumno.apellido_alumno }}
+        </td>
+        <td scope="row">{{ actas.dias }}</td>
+        <td scope="row">{{ actas.ingreso }}</td>
+        <td scope="row">{{ actas.salida }}</td>
+        <td scope="row">{{ actas.traslado }}</td>
+        <td scope="row">{{ actas.personas_autorizadas_retiro }}</td>
+        <td scope="row">{{ actas.dni_persona_autorizada }}</td>
+        <td colspan="2">
+          <button class="btn btn-warning" (click)="ActaCompromisoId(actas)"> Editar </button>
+          <button class="btn btn-danger" (click)="eliminarActaCompromiso(actas)"> Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

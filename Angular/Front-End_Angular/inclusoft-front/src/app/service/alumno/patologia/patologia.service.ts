@@ -1,0 +1,43 @@
+import { Injectable } from '@angular/core';
+// Importamos libreriras
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Patologia } from '../../../entidades/alumno/patologia/patologia';
+
+// Constante de los headers para los encabezados
+const httpOption = {
+  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
+};
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PatologiaService {
+// VAriable para la url
+private url = 'http://127.0.0.1:8000/alumno/patologia/';
+
+// Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
+  constructor(private http: HttpClient) { }
+
+// Obtener Patologias
+getPatologias(): Observable<Patologia[]> {
+  return this.http.get<Patologia[]> (this.url + 'listados');
+}
+// Registrar patologias
+registrarPatologia(patologia: Patologia): Observable<Patologia[]> {
+  return this.http.post<Patologia[]> (
+    this.url + 'registrar', patologia, httpOption);
+}
+// Obtener patologias pasando el ID
+getPatologiasId(patologia: Patologia): Observable<Patologia[]>{
+  return this.http.get<Patologia[]> (this.url + patologia.id);
+}
+// Editar patologias pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
+editarPtologiasId(patologia: Patologia, id: number): Observable<Patologia[]>{
+  return this.http.put<Patologia[]>(this.url + 'editar/' + id, patologia, httpOption);
+}
+// Eliminar Patologia pasando el ID
+eliminarPatologia(patologia: Patologia): Observable<Patologia[]>{
+  return this.http.delete<Patologia[]>(this.url + 'eliminar/' + patologia.id);
+}
+}

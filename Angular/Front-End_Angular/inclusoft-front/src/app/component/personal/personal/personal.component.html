@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <app-menu></app-menu>
+  <form [formGroup]="formularioRegistro" (submit)="registrarPersonal()">
+    <div>
+      <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    </div>
+    <div class="container" id="contenedorRegistro">
+      <legend>Formulario de registro Personal</legend>
+      <hr />
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="nombre">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            id="nombre"
+            class="form-control"
+            placeholder="Ingrese Nombre"
+            formControlName="nombre_personal"
+            required
+          />
+        </div>
+  
+        <div class="form-group col-md-4">
+          <label for="apellido">Apellido</label>
+          <input
+            type="text"
+            name="apellido"
+            id="apelido"
+            class="form-control"
+            placeholder="Ingrese Apellido"
+            formControlName="apellido_personal"
+          />
+        </div>
+  
+        <div class="form-group col-md-4">
+          <label for="dni">DNI</label>
+          <input
+            type="number"
+            name="dni"
+            id="dni"
+            class="form-control"
+            placeholder="Ingrese el DNI"
+            formControlName="dni_personal"
+          />
+        </div>
+  
+        <div class="form-group col-md-4">
+          <label for="telefono">Telefono</label>
+          <input
+            type="number"
+            name="telefono"
+            id="telefono"
+            class="form-control"
+            placeholder="Ingrese el telefono"
+            formControlName="telefono_personal"
+          />
+        </div>
+  
+        <div class="form-group col-md-4">
+          <label for="fecha">F.Nacimiento</label>
+          <input
+            type="date"
+            name="fecha"
+            id="fecha"
+            class="form-control"
+            formControlName="fecha_nacimiento_personal"
+          />
+        </div>
+  
+        <div class="form-group col-md-4">
+          <label for="lugar">Lugar Nacimiento</label>
+          <input
+            type="text"
+            name="lugar_nacimiento"
+            id="lugar_nacimiento"
+            class="form-control"
+            placeholder="Ingrese lugar nacimiento"
+            formControlName="lugar_nacimiento_personal"
+          />
+        </div>
+  
+        <div class="form-group col-md-12">
+          <label for="profesion">Profesion</label>
+          <input
+            type="text"
+            name="profesion"
+            id="profesion"
+            class="form-control"
+            placeholder="Ingrese Profesion"
+            formControlName="profesion"
+          />
+        </div>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="container" id="contenedorBotones">
+      <div class="form-group">
+        <button class="btn btn-primary" [disabled]="btnRegistrar">
+          Registrar
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          (click)="editarPersonalId()"
+          [disabled]="btnEditar"
+        >
+          Editar
+        </button>
+        <button type="reset" class="btn btn-danger" (click)="cancelar()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </form>
+  
+  <div class="container-fluid" id="contenedorTabla">
+    <legend>Listado de Personal</legend>
+    <table class="table table-bordered table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">DNI</th>
+          <th scope="col">Telefono</th>
+          <th scope="col">F. Nacimiento</th>
+          <th scope="col">Lugar Nacimiento</th>
+          <th scope="col">Profesion</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let personal of listadoPersonal">
+          <th scope="row">{{ personal.id }}</th>
+          <td scope="row">{{ personal.nombre_personal }}</td>
+          <td scope="row">{{ personal.apellido_personal }}</td>
+          <td socpe="row">{{ personal.dni_personal }}</td>
+          <td scope="row">{{ personal.telefono_personal }}</td>
+          <td scope="row">{{ personal.fecha_nacimiento_personal }}</td>
+          <td scope="row">{{ personal.lugar_nacimiento_personal }}</td>
+          <td scope="row">{{ personal.profesion }}</td>
+          <td>
+            <button class="btn btn-warning" (click)="PersonalId(personal)">
+              Editar
+            </button>
+            <button class="btn btn-danger" (click)="eliminarPersonal(personal)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</body>
+</html>
+
+

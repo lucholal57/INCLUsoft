@@ -1,0 +1,13 @@
+body {
+    background-image: url(../../../assets/img/new-fondo1lateral.jpg);
+    height: 100vh;
+}
+legend{
+    color:aliceblue
+}
+label{
+    color:aliceblue
+}
+.carousel-inner{
+margin: auto;
+}
