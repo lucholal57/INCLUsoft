@@ -61,3 +61,59 @@ class Ventas_TallerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ventas_Taller
         fields = '__all__'
+        
+class Produccion_TallerTallererSerializer(serializers.ModelSerializer):
+    """
+        Serializador de producccion taller con taller
+    """
+    taller = TallerSerializer(read_only=True)
+    class Meta:
+        model = Produccion_Taller
+        fields = '__all__'
+        depth = 2
+        
+class Produccion_TallerSerializer(serializers.ModelSerializer):
+    """
+        Serializador produccion taller
+    """
+    class Meta:
+        model = Produccion_Taller
+        fields = '__all__'
+        
+class Compras_TallerTallerSerializer(serializers.ModelSerializer):
+    """
+        Serializador de compras taller con taller
+    """
+    taller = TallerSerializer(read_only=True)
+    class Meta:
+        model = Compras_Taller
+        fields = '__all__'
+        depth = 2
+        
+class Compras_TallerTallerSerializer(serializers.ModelSerializer):
+    """
+        Serializador de compras taller
+    """
+    class Meta:
+        model = Compras_Taller
+        fields = '__all__'
+        
+class Inventario_TallerTallerSerializer(serializers.ModelSerializer):
+    """
+        Serializador de inventario taller con taller
+    """
+    taller = TallerSerializer(read_only=True)
+    class Meta:
+        model = Inventario_Taller
+        fields = '__all__'
+        depth = 2
+        
+class Inventario_TallerSerializer(serializers.ModelSerializer):
+    """
+        Serilizador de inventario taller
+    """
+    class Meta:
+        model = Inventario_Taller
+        fields = '__all__'
+        
+    
