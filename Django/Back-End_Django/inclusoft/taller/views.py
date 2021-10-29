@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller, Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
-from .serializers import (Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Materiales_TallerSerializer, Materiales_TallerTallerSerializer, Produccion_TallerTallererSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer )
+from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Materiales_TallerSerializer, Materiales_TallerTallerSerializer, Produccion_TallerSerializer, Produccion_TallerTallererSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer )
 
 
 # Create your views here.
@@ -195,4 +195,54 @@ class ProduccionTallerListado(APIView):
         produccion_taller =Produccion_Taller.objects.all().order_by('id')
         serializer = Produccion_TallerTallererSerializer(produccion_taller, many = True)
         return Response(serializer.data)
+    
+class ProduccionTallerBuscarPorId(APIView):
+    """ view para buscar produccion por taller"""
+    def get(self,pk):
+        produccion_taller = Produccion_Taller.objects.filter(id=pk)
+        serializer = Produccion_TallerSerializer(produccion_taller, many = True)
+        return Response(serializer.data)
+    
+class ProduccionTallerRegistrar(APIView):
+    """ view de registro para produccion de talleres"""
+    def post(self,request):
+        serializer = Produccion_TallerSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
         
+class ProduccionTallerEditar(APIView):
+    """ view para editar produccion de taller"""
+    def put(self,request,pk):
+        produccion_taller = Produccion_Taller.objects.get(id=pk)
+        serializer = Produccion_TallerSerializer(produccion_taller, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+class ProduccionTallerELiminar(APIView):
+    """ view para eliminar produccion de taller"""
+            
+def delete(self,pk):
+    produccion_taller = Produccion_Taller.objects.get(id=pk)
+    produccion_taller.delete()
+    return Response(status = status.HTTP_204_NO_CONTENT)
+
+#VIEW DE COMPRAS TALLER
+
+class ComprasTallerListado(APIView):
+    """ View de listado de compras por taller"""
+    def get(self):
+        compras_taller = Compras_Taller.objects.all().order_by('id')
+        serializer = Compras_TallerTallerSerializer(compras_taller, many = True)
+        return Response(serializer.data)
+    
+class ComprasTallerBuscarPorId(APIView):
+    """ view para buscar compras por taller por ID """
+    def get(self,pk):
+        compras_taller = Compras_Taller.objects.filter(id=pk)
+        serializer = Compras_TallerSerializer  

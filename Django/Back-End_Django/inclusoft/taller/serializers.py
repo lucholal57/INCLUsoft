@@ -90,7 +90,7 @@ class Compras_TallerTallerSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2
         
-class Compras_TallerTallerSerializer(serializers.ModelSerializer):
+class Compras_TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de compras taller
     """
