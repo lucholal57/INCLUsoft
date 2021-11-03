@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller, Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
-from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Materiales_TallerSerializer, Materiales_TallerTallerSerializer, Produccion_TallerSerializer, Produccion_TallerTallererSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer )
+from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Inventario_TallerSerializer, Inventario_TallerTallerSerializer, Materiales_TallerSerializer, Materiales_TallerTallerSerializer, Produccion_TallerSerializer, Produccion_TallerTallererSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer )
 
 
 # Create your views here.
@@ -246,3 +246,76 @@ class ComprasTallerBuscarPorId(APIView):
     def get(self,pk):
         compras_taller = Compras_Taller.objects.filter(id=pk)
         serializer = Compras_TallerSerializer  
+        
+class ComprasTallerRegistrar(APIView):
+    """ view para registrar compras por taller"""
+    def post (self,request):
+        serializer = Compras_TallerSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+class ComprasTallerEditar(APIView):
+    """ View de edicion de compras por taller"""
+    def put(self,request,pk):
+        compras_taller = Compras_Taller.objects.get(id=pk)
+        serializer = Compras_TallerSerializer(compras_taller, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+class ComprasTallerEliminar(APIView):
+    """ view para eliminar compras de talleres"""
+    def delete(self,pk):
+        compras_taller = Compras_Taller.objects.get(id=pk)
+        compras_taller.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
+    
+    #VIEW DE INVENTARIO TALLER
+    
+class InventarioTallerListado(APIView):
+    """ view de listado de los inventarios por taller"""
+    def get(self):
+        inventario_taller = Inventario_Taller.objects.all().order_by('id')
+        serializer = Inventario_TallerTallerSerializer(inventario_taller, many = True)
+        return Response(serializer.data)
+    
+class InventarioTallerBuscarPorId(APIView):
+    """ view de busqueda de inventarios de taller por ID"""
+    def get(self,pk):
+        inventario_taller = Inventario_Taller.objects.filter(id=pk)
+        serializer = Inventario_TallerSerializer(inventario_taller, many = True)
+        return Response(serializer.data)
+    
+class InventarioTallerRegistrar(APIView):
+    """View para registrar inventarios por taller"""
+    def post(self,request):
+        serializer = Inventario_TallerSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+class InventarioTallerEditar(APIView):
+    """ view para editar inventarios de taller"""
+    def put(self,request,pk):
+        inventario_taller = Inventario_Taller.objects.get(id=pk)
+        serializer = Inventario_TallerSerializer(inventario_taller,data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+class InventarioTallerEliminar(APIView):
+    """  view para eliminar inventarios de taller"""
+    def delete(self,pk):
+        inventario_taller = Inventario_Taller.objects.get(id=pk)
+        inventario_taller.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
+    
