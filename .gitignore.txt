@@ -1,3 +1,5 @@
 env/
 env/pyvenv.cfg
-.angular
+INCLUsoft\Angular\Front-End_Angular\inclusoft-front\.angular\cache\angular-webpack\59dcb49e4330edbe0d49e28a7cba8ef7b3da23c7\*.pack
+INCLUsoft\Angular\Front-End_Angular\inclusoft-front\.angular\cache\babel-webpack\*.json
+
