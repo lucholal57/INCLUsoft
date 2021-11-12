@@ -20,6 +20,7 @@ import { EvaluacionLabolarComponent } from './component/personal/evaluacion-labo
 import { AsistenciaPersonalComponent } from './component/personal/asistencia-personal/asistencia-personal.component';
 import { EntregaProyectoComponent } from './component/personal/entrega-proyecto/entrega-proyecto.component';
 import { LoginComponent } from './component/login/login.component';
+import { TallerComponent } from './component/taller/taller/taller.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { LoginComponent } from './component/login/login.component';
     AsistenciaPersonalComponent,
     EntregaProyectoComponent,
     LoginComponent,
+    TallerComponent,
     
   ],
   imports: [

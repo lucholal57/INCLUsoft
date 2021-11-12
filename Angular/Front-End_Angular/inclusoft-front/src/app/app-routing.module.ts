@@ -16,6 +16,7 @@ import { AsistenciaPersonalComponent } from './component/personal/asistencia-per
 import { PermisoSalidaComponent} from './component/personal/permiso-salida/permiso-salida.component'
 import { EvaluacionLabolarComponent } from './component/personal/evaluacion-labolar/evaluacion-labolar.component';
 import { EntregaProyectoComponent } from './component/personal/entrega-proyecto/entrega-proyecto.component';
+import { TallerComponent} from './component/taller/taller/taller.component'
 
 
 const routes: Routes = [
@@ -35,6 +36,8 @@ const routes: Routes = [
   {path: 'personal/permiso_salida', component: PermisoSalidaComponent},
   {path:'personal/evaluacion_laboral', component: EvaluacionLabolarComponent},
   {path:'personal/entrega_proyecto', component: EntregaProyectoComponent},
+  //Rutas Talleres
+  {path:'taller', component: TallerComponent},
 ];
 
 @NgModule({
