@@ -1,3 +1,11 @@
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/angular-webpack/59dcb49e4330edbe0d49e28a7cba8ef7b3da23c7/3.pack
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/angular-webpack/59dcb49e4330edbe0d49e28a7cba8ef7b3da23c7/index.pack
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/angular-webpack/59dcb49e4330edbe0d49e28a7cba8ef7b3da23c7/index.pack.old
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/babel-webpack/189bb9355f119611f57e82f5451f5087.json
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/babel-webpack/594ec7c94a5864f4406077988f48fb8d.json
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/babel-webpack/886014d8f19abf9fd2e3d45d8444b363.json
+Angular/Front-End_Angular/inclusoft-front/.angular/cache/babel-webpack/ddf2c1b05c9ba703edffb442c0de9fd4.json
+
 env/
 env/pyvenv.cfg
 # Created by https://www.toptal.com/developers/gitignore/api/angular,python,django
@@ -247,3 +255,4 @@ cython_debug/
 # Cython debug symbols
 
 # End of https://www.toptal.com/developers/gitignore/api/angular,python,django
+
