@@ -369,5 +369,7 @@ upgrade-phonecat-3-final/rollup-config.js
 !deprecation-guide/angular.package.json
 
 INCLUsoft/Angular/Front-End_Angular/inclusoft-front/.angular/cache/
+*.pack
+*.pack.old
 
 
