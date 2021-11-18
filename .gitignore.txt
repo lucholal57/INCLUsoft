@@ -6,7 +6,7 @@ env/pyvenv.cfg
 ### Angular ###
 ## Angular ##
 # compiled output
-.Angular
+.angular
 dist/
 tmp/
 app/**/*.js
