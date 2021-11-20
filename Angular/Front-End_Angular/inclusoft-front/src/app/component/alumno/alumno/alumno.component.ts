@@ -117,7 +117,7 @@ export class AlumnoComponent implements OnInit {
   }
   // Eliminar alumno enviado por id
   eliminarAlumno(alumno: Alumno): void {
-  
+
       Swal.fire({
         title: 'Esta seguro de eliminar??',
         text: 'No podra revertir el cambio!',
@@ -134,8 +134,8 @@ export class AlumnoComponent implements OnInit {
       });
           Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
         }
-        
-      });    
+
+      });
   }
 
   // Limpiar los campos
