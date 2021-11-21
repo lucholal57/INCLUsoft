@@ -11,14 +11,14 @@ from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializ
 
 class TallerListado(APIView):
     """ Listado Taller """
-    def get(self):
+    def get(self, request):
         taller = Taller.objects.all().order_by('id')
         serializer = TallerSerializer(taller, many=True)
         return Response(serializer.data)
     
 class TallerBuscarPorId(APIView):
     """ view de busqueda de taller por ID"""
-    def get(self,pk):
+    def get(self,request,pk):
         taller = Taller.objects.filter(id=pk)
         serializer = TallerSerializer(taller, many=True)
         return Response(serializer.data)
@@ -46,7 +46,7 @@ class TallerEditar(APIView):
         
 class TallerEliminar(APIView):
     """ view para eliminar taller """
-    def delete(self,pk):
+    def delete(self,request,pk):
         taller = Taller.objects.get(id=pk)
         taller.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)    
@@ -55,14 +55,14 @@ class TallerEliminar(APIView):
 
 class InformeCuatrimestralListado(APIView):
     """ view para listar informes cuatrimetrales"""
-    def get(self):
+    def get(self,request):
         informe_cuatrimestral = Informe_Cuatrimestral.objects.all().order_by('id')
         serializer = Informe_CuatrimestralTallerSerializer(informe_cuatrimestral, many = True)
         return Response(serializer.data)
     
 class InformeCuatrimestralBuscarPorId(APIView):
     """ view para buscar informes cuatrimestrales por id"""
-    def get(self,pk):
+    def get(self,request,pk):
         informe_cuatrimestral = Informe_Cuatrimestral.objects.filter(id=pk)
         serializer = Informe_CuatrimestralSerializer(informe_cuatrimestral, many = True)
         return Response(serializer.data)
@@ -92,7 +92,7 @@ class InformeCuatrimestralEditar(APIView):
     
 class InformeCuatrimestralEliminar(APIView):
     """ view para eliminar informes cuatrimestrales"""
-    def delete(self,pk):
+    def delete(self,request,pk):
         informe_cuatrimestral = Informe_Cuatrimestral.objects.get(id=pk)
         informe_cuatrimestral.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
@@ -102,14 +102,14 @@ class InformeCuatrimestralEliminar(APIView):
 
 class MaterialesTallerListado(APIView):
     """ view para listar materiales de talller """
-    def get(self):
+    def get(self,request):
         materiales_taller = Materiales_Taller.objects.all().order_by('id')
         serializer = Materiales_TallerTallerSerializer(materiales_taller, many=True)
         return Response(serializer.data)
     
 class MaterialesTallerBuscarPorId(APIView):
     """ view para buscar materiales de taller por id"""
-    def get(self,pk):
+    def get(self,request,pk):
         materiales_taller = Materiales_Taller.objects.filter(id=pk)
         serializer = Materiales_TallerSerializer(materiales_taller, many = True)
         return Response(serializer.data)
@@ -138,7 +138,7 @@ class MaterialesTallerEditar(APIView):
         
 class MaterialesTallerEliminar(APIView):
     """ view para eliminar materiales de taller"""
-    def delete(self,pk):
+    def delete(self,request,pk):
         materiales_taller = Materiales_Taller.objects.get(id=pk)
         materiales_taller.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
@@ -147,14 +147,14 @@ class MaterialesTallerEliminar(APIView):
 
 class VentasTallerListado(APIView):
     """ view para el listado de ventas del taller"""
-    def get(self):
+    def get(self,request):
         ventas_taller = Ventas_Taller.objects.all.order_by('id')
         serializer = Ventas_TallerTallerSerializer   (ventas_taller , many = True)
         return Response(serializer.data)
     
 class VentasTallerBuscarPorId(APIView):
     """ view para buscar por id ventas de talleres"""
-    def get(self,pk):
+    def get(self,request,pk):
         ventas_taller = Ventas_Taller.objects.filter(id=pk)
         serializer = Ventas_TallerSerializer (ventas_taller , many = True)  
         return Response(serializer.data)
@@ -182,7 +182,7 @@ class VentasTallerEditar(APIView):
         
 class VentasTallerEliminar(APIView):
     """ view para eliminar ventas de taller"""
-    def delete(self,pk):
+    def delete(self,request,pk):
         ventas_taller = Ventas_Taller.objects.get(id=pk)
         ventas_taller.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
@@ -191,14 +191,14 @@ class VentasTallerEliminar(APIView):
     
 class ProduccionTallerListado(APIView):
     """ view de listado de produccion por taller"""
-    def get(self):
+    def get(self,request):
         produccion_taller =Produccion_Taller.objects.all().order_by('id')
         serializer = Produccion_TallerTallererSerializer(produccion_taller, many = True)
         return Response(serializer.data)
     
 class ProduccionTallerBuscarPorId(APIView):
     """ view para buscar produccion por taller"""
-    def get(self,pk):
+    def get(self,request,pk):
         produccion_taller = Produccion_Taller.objects.filter(id=pk)
         serializer = Produccion_TallerSerializer(produccion_taller, many = True)
         return Response(serializer.data)
@@ -227,23 +227,23 @@ class ProduccionTallerEditar(APIView):
 class ProduccionTallerELiminar(APIView):
     """ view para eliminar produccion de taller"""
             
-def delete(self,pk):
-    produccion_taller = Produccion_Taller.objects.get(id=pk)
-    produccion_taller.delete()
-    return Response(status = status.HTTP_204_NO_CONTENT)
+    def delete(self,request,pk):
+        produccion_taller = Produccion_Taller.objects.get(id=pk)
+        produccion_taller.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
 
 #VIEW DE COMPRAS TALLER
 
 class ComprasTallerListado(APIView):
     """ View de listado de compras por taller"""
-    def get(self):
+    def get(self,request):
         compras_taller = Compras_Taller.objects.all().order_by('id')
         serializer = Compras_TallerTallerSerializer(compras_taller, many = True)
         return Response(serializer.data)
     
 class ComprasTallerBuscarPorId(APIView):
     """ view para buscar compras por taller por ID """
-    def get(self,pk):
+    def get(self,request,pk):
         compras_taller = Compras_Taller.objects.filter(id=pk)
         serializer = Compras_TallerSerializer  
         
@@ -270,7 +270,7 @@ class ComprasTallerEditar(APIView):
         
 class ComprasTallerEliminar(APIView):
     """ view para eliminar compras de talleres"""
-    def delete(self,pk):
+    def delete(self,request,pk):
         compras_taller = Compras_Taller.objects.get(id=pk)
         compras_taller.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
@@ -279,14 +279,14 @@ class ComprasTallerEliminar(APIView):
     
 class InventarioTallerListado(APIView):
     """ view de listado de los inventarios por taller"""
-    def get(self):
+    def get(self,request):
         inventario_taller = Inventario_Taller.objects.all().order_by('id')
         serializer = Inventario_TallerTallerSerializer(inventario_taller, many = True)
         return Response(serializer.data)
     
 class InventarioTallerBuscarPorId(APIView):
     """ view de busqueda de inventarios de taller por ID"""
-    def get(self,pk):
+    def get(self,request,pk):
         inventario_taller = Inventario_Taller.objects.filter(id=pk)
         serializer = Inventario_TallerSerializer(inventario_taller, many = True)
         return Response(serializer.data)
@@ -314,7 +314,7 @@ class InventarioTallerEditar(APIView):
         
 class InventarioTallerEliminar(APIView):
     """  view para eliminar inventarios de taller"""
-    def delete(self,pk):
+    def delete(self,request,pk):
         inventario_taller = Inventario_Taller.objects.get(id=pk)
         inventario_taller.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)

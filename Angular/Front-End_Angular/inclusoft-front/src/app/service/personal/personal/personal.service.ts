@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Personal } from '../../../entidades/personal/personal/personal';
-import { FormBuilder } from '@angular/forms';
 
 // Constante de cabecera HttpHeaders
 const httpOption = {headers: new HttpHeaders ({'content-type' : 'application/json'})};

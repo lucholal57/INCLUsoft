@@ -8,8 +8,8 @@ class Taller(models.Model):
     horarios = models.TimeField()
     
 # METODO STR PARA MOSTRAR LOS STRING EN DJANGO ADMIN
-def __str__(self):
-    return f'Taller : {self.nombre_taller} : {self.observaciones} : {self.dias} : {self.horarios} '
+    def __str__(self):
+        return f'Taller : {self.nombre_taller} : {self.observaciones} : {self.dias} : {self.horarios} '
 
 class Informe_Cuatrimestral(models.Model):
     observaciones_cuatrimestrales = models.CharField(max_length=100);

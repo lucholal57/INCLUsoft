@@ -20,7 +20,10 @@ import { EvaluacionLabolarComponent } from './component/personal/evaluacion-labo
 import { AsistenciaPersonalComponent } from './component/personal/asistencia-personal/asistencia-personal.component';
 import { EntregaProyectoComponent } from './component/personal/entrega-proyecto/entrega-proyecto.component';
 import { LoginComponent } from './component/login/login.component';
+
+import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales/informes-cuatrimestrales.component';
 import { TallerComponent } from './component/taller/taller/taller.component';
+
 
 
 @NgModule({
@@ -42,7 +45,8 @@ import { TallerComponent } from './component/taller/taller/taller.component';
     EntregaProyectoComponent,
     LoginComponent,
     TallerComponent,
-    
+    InformesCuatrimestralesComponent,
+
   ],
   imports: [
     BrowserModule,

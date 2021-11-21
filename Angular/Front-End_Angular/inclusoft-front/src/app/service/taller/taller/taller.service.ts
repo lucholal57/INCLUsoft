@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // Importamos librerias
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Taller } from 'src/app/entidades/taller/taller';
+import { Taller } from 'src/app/entidades/taller/taller/taller';
 
 // Constante de los headers para los encabezados
 const httpOption = {
@@ -20,7 +20,7 @@ export class TallerService {
   constructor(private http: HttpClient) {}
 
   // Obtenemos los talleres
-  getTaller(): Observable<Taller[]> {
+  getTalleres(): Observable<Taller[]> {
     return this.http.get<Taller[]>(this.url + 'listados');
   }
   // Registrar Taller
@@ -36,7 +36,7 @@ export class TallerService {
     return this.http.put<Taller[]>(this.url + 'editar/' + id, formularioRegistro, httpOption);
   }
   // Eliminar Taller pasando el ID
-  eliminarTaller(taller: Taller): Observable<Taller[]>{
-    return this.http.delete<Taller[]>(this.url + 'eliminar/' + taller.id);
+  eliminarTaller(id: number): Observable<Taller[]>{
+    return this.http.delete<Taller[]>(this.url + 'eliminar/' + id);
   }
 }

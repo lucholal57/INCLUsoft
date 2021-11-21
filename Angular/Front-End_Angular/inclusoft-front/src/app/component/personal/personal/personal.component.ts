@@ -14,7 +14,7 @@ import { AlertService } from '../../../service/alert/alert.service';
 })
 export class PersonalComponent implements OnInit {
   // Array del tipo Persona para guardar y mostrar en la tabla
-  listadoPersonal: Personal[];
+  listadoPersonal: Personal[] = [];
 
   // Variable Botones
   public btnRegistrar = false;
@@ -49,7 +49,7 @@ export class PersonalComponent implements OnInit {
   getPersonal(): void {
     this.servicioPersonal.getPersonal().subscribe(
       (res) => {
-        console.log("result" + res);
+        console.log(res);
         this.listadoPersonal = res;
       },
       (error) => {
@@ -138,9 +138,9 @@ export class PersonalComponent implements OnInit {
         );
         Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
       }
-      
+
     });
-    
+
   }
   // Limpiar los campos
   cancelar(): void {

@@ -143,7 +143,7 @@ eliminarActaCompromiso(acta_compromiso: ActaCompromiso ): void{
     confirmButtonText: 'Si, Eliminar!',
   }).then((result) => {
     if (result.isConfirmed) {
-      
+
     this.servicioActaCompromiso.eliminarActaCompromiso(acta_compromiso).subscribe(
       (res) => {
         console.log(res);
@@ -156,7 +156,7 @@ eliminarActaCompromiso(acta_compromiso: ActaCompromiso ): void{
     );
       Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
     }
-    
+
   });
 }
 
@@ -166,7 +166,4 @@ cancelar(): void{
   this.btnRegistrar = false;
   this.btnEditar = true;
 }
-
-
-
 }

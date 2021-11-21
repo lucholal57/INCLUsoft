@@ -22,7 +22,7 @@ export class AlumnoService {
     return this.http.post<Alumno[]>(this.url + 'registrar' , formularioregistro);
   }
 
-  // tslint:disable-next-line: variable-name
+  
   getAlumnoId(busqueda_alumno: Alumno): Observable<Alumno[]>{
     return this.http.get<Alumno[]>(this.url + busqueda_alumno.id);
   }

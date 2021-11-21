@@ -16,7 +16,11 @@ import { AsistenciaPersonalComponent } from './component/personal/asistencia-per
 import { PermisoSalidaComponent} from './component/personal/permiso-salida/permiso-salida.component'
 import { EvaluacionLabolarComponent } from './component/personal/evaluacion-labolar/evaluacion-labolar.component';
 import { EntregaProyectoComponent } from './component/personal/entrega-proyecto/entrega-proyecto.component';
-import { TallerComponent} from './component/taller/taller/taller.component'
+import { TallerComponent } from './component/taller/taller/taller.component';
+import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales/informes-cuatrimestrales.component';
+
+
+
 
 
 const routes: Routes = [
@@ -38,6 +42,7 @@ const routes: Routes = [
   {path:'personal/entrega_proyecto', component: EntregaProyectoComponent},
   //Rutas Talleres
   {path:'taller', component: TallerComponent},
+  {path:'taller/informes_cuatrimestrales', component: InformesCuatrimestralesComponent},
 ];
 
 @NgModule({
