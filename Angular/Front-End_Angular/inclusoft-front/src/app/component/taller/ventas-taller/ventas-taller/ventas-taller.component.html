@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<app-menu></app-menu>
+  <form [formGroup]="formularioRegistro" (submit)="registrarVentasTaller()">
+
+    <div>
+      <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    </div>
+
+    <div class="container" id="contenedorRegistro">
+      <legend>Formulario Materiales Taller</legend>
+    <hr>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="taller">Taller</label>
+      <div class="col-sm-6">
+        <select class="form-control" formControlName="taller" required>
+          <option value="">Seleccione un Taller</option>
+          <option *ngFor="let taller of listadoTalleres" [ngValue]="taller.id">
+            {{ taller.nombre_taller}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <hr>
+
+    </div>
+
+  </form>
+</body>
+</html>

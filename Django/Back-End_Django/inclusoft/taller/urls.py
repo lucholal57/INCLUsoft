@@ -16,4 +16,17 @@ urlpatterns = [
     path('taller/informes_cuatrimestrales/editar/<int:pk>', views.InformeCuatrimestralEditar.as_view()),
     path('taller/informes_cuatrimestrales/eliminar/<int:pk>', views.InformeCuatrimestralEliminar.as_view()),
     
+    #Rutas para materiales del taller
+    path('taller/materiales_taller/listados', views.MaterialesTallerListado.as_view()),
+    path('taller/materiales_taller/<int:pk>', views.MaterialesTallerBuscarPorId.as_view()),
+    path('taller/materiales_taller/registrar', views.MaterialesTallerRegistrar.as_view()),
+    path('taller/materiales_taller/editar/<int:pk>', views.MaterialesTallerEditar.as_view()),
+    path('taller/materiales_taller/eliminar/<int:pk>', views.MaterialesTallerEliminar.as_view()),
+    
+    #Rutas para ventas de taller
+    path('taller/ventas_taller/listados', views.VentasTallerListado.as_view()),
+    path('taller/ventas_taller/<int:pk>', views.VentasTallerBuscarPorId.as_view()),
+    path('taller/ventas_taller/registrar', views.VentasTallerRegistrar.as_view()),
+    path('taller/ventas_taller/editar/<int:pk>', views.VentasTallerEditar.as_view()),
+    path('taller/ventas_taller/eliminar/<int:pk>', views.VentasTallerEliminar.as_view()),
 ]

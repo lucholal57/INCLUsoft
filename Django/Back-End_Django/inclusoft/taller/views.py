@@ -148,7 +148,7 @@ class MaterialesTallerEliminar(APIView):
 class VentasTallerListado(APIView):
     """ view para el listado de ventas del taller"""
     def get(self,request):
-        ventas_taller = Ventas_Taller.objects.all.order_by('id')
+        ventas_taller = Ventas_Taller.objects.all().order_by('id')
         serializer = Ventas_TallerTallerSerializer   (ventas_taller , many = True)
         return Response(serializer.data)
     
