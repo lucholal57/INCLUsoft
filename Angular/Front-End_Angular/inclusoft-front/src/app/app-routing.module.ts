@@ -20,6 +20,7 @@ import { TallerComponent } from './component/taller/taller/taller.component';
 import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales/informes-cuatrimestrales.component';
 import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller/materiales-taller.component';
 import { VentasTallerComponent } from './component/taller/ventas-taller/ventas-taller/ventas-taller.component';
+import { ProduccionTaller } from './entidades/taller/produccion-taller/produccion-taller';
 
 
 
@@ -47,6 +48,7 @@ const routes: Routes = [
   {path:'taller/informes_cuatrimestrales', component: InformesCuatrimestralesComponent},
   {path:'taller/materiales_taller', component: MaterialesTallerComponent},
   {path:'taller/ventas_taller', component: VentasTallerComponent},
+  {path:'taller/produccion_taller', component: ProduccionTaller},
 ];
 
 @NgModule({

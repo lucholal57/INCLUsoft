@@ -29,4 +29,12 @@ urlpatterns = [
     path('taller/ventas_taller/registrar', views.VentasTallerRegistrar.as_view()),
     path('taller/ventas_taller/editar/<int:pk>', views.VentasTallerEditar.as_view()),
     path('taller/ventas_taller/eliminar/<int:pk>', views.VentasTallerEliminar.as_view()),
+    
+    #Rutas para produccion de taller
+    path('taller/produccion_taller/listados', views.ProduccionTallerListado.as_view()),
+    path('taller/produccion_taller/<int:pk>', views.ProduccionTallerBuscarPorId.as_view()),
+    path('taller/produccion_taller/registrar', views.ProduccionTallerRegistrar.as_view()),
+    path('taller/produccion_taller/editar/<int:pk>', views.ProduccionTallerEditar.as_view()),
+    path('taller/produccion_taller/eliminar/<int:pk>', views.ProduccionTallerELiminar.as_view()),
+    
 ]

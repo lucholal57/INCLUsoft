@@ -38,7 +38,7 @@ class Ventas_Taller(models.Model):
     
 class Produccion_Taller(models.Model):
     nombre_produccion = models.CharField(max_length=50)
-    fecha_produccion = models.CharField(max_length=50)
+    fecha_produccion = models.DateField()
     materiales = models.CharField(max_length=50)
     costo_venta = models.CharField(max_length=50)
     #ForeignKey

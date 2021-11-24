@@ -25,6 +25,7 @@ import { InformesCuatrimestralesComponent } from './component/taller/informes-cu
 import { TallerComponent } from './component/taller/taller/taller.component';
 import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller/materiales-taller.component';
 import { VentasTallerComponent } from './component/taller/ventas-taller/ventas-taller/ventas-taller.component';
+import { ProduccionTallerComponent } from './component/taller/produccion-taller/produccion-taller/produccion-taller.component';
 
 
 
@@ -50,6 +51,7 @@ import { VentasTallerComponent } from './component/taller/ventas-taller/ventas-t
     InformesCuatrimestralesComponent,
     MaterialesTallerComponent,
     VentasTallerComponent,
+    ProduccionTallerComponent,
 
   ],
   imports: [
