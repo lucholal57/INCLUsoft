@@ -42,6 +42,8 @@ export class VentasTallerComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTalleres();
+    this.getVentasTaller();
+    this.btnEditar = true;
   }
 
    // Obtenmemos los talleres para mostrar en la lista de seleccion al registrar un material

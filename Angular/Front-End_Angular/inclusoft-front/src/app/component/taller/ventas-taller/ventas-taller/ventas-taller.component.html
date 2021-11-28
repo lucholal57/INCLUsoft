@@ -15,7 +15,7 @@
     </div>
 
     <div class="container" id="contenedorRegistro">
-      <legend>Formulario Materiales Taller</legend>
+      <legend>Formulario venta Taller</legend>
     <hr>
     <div class="form-group row">
       <label class="col-sm-2 col-form-label" for="taller">Taller</label>
@@ -31,8 +31,94 @@
 
     <hr>
 
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Ganancia</label>
+      <div class="col-sm-4">
+        <input
+          type="text"
+          class="form-control"
+          id="ganancia"
+          placeholder="Ingrese Ganancia"
+          formControlName="ganancia"
+          required
+        />
+      </div>
     </div>
 
-  </form>
+       <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Observaciones</label>
+      <div class="col-sm-4">
+        <textarea
+          name="observacionVentas"
+          id="observacionVentas"
+          cols="65"
+          rows="5"
+          formControlName="observacion_ventas"
+          required
+        >
+        </textarea>
+      </div>
+    </div>
+
+    </div>
+
+    <hr>
+
+    <div class="container" id="contenedorBotones">
+      <div class="form-group" >
+        <button
+          class="btn btn-primary"
+          [disabled]="btnRegistrar"
+        >
+          Registrar
+        </button>
+        <button
+          class="btn btn-warning"
+          [disabled]="btnEditar"
+          type="button"
+          (click)="editarVentasTallerId()"
+        >
+          Editar
+        </button>
+        <button
+          class="btn btn-danger"
+          [disabled]="btnCancelar"
+          type="reset"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+ </form>
+
+ <div class="container-fluid" id="contenedorTabla">
+  <legend>Listado Ventas Taller</legend>
+  <table class="table table-bordered table-dark table-responsive-lg">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Taller</th>
+        <th scope="col">Ganancia</th>
+        <th scope="col">Observaciones</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let venta of listadoVentasTaller">
+        <th scope="row">{{ venta.id }}</th>
+        <td scope="row">
+          {{ venta.taller.nombre_taller }}
+        </td>
+        <td scope="row">{{ venta.ganancia }}</td>
+        <td scope="row">{{ venta.observacion_ventas }}</td>
+        <td colspan="2">
+          <button class="btn btn-warning" (click)="VentasTallerId(venta)"> Editar </button>
+          <button class="btn btn-danger" (click)="eliminarVentasTaller(venta)"> Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>

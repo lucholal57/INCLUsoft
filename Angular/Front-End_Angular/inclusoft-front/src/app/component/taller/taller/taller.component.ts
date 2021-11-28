@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // Importamos librerias necesarias
-import { FormBuilder, Validators } from '@angular/forms';
+import {FormBuilder, Validators } from '@angular/forms';
 import { Taller } from '../../../entidades/taller/taller/taller';
 import { TallerService } from '../../../service/taller/taller/taller.service';
 import Swal from 'sweetalert2';

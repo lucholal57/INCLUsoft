@@ -41,7 +41,11 @@ export class ProduccionTallerComponent implements OnInit {
     taller: ['', [Validators.required]],
   });
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getTalleres();
+    this.getProduccionTaller();
+    this.btnEditar = true;
+  }
 
   // Obtenmemos los talleres para mostrar en la lista de seleccion al registrar una produccion
   getTalleres(): void {

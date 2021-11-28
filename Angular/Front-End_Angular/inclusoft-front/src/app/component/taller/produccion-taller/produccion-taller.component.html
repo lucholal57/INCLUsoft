@@ -1,1 +1,160 @@
-<p>produccion-taller works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <app-menu></app-menu>
+    <form
+      [formGroup]="formularioRegistro"
+      (submit)="registrarProduccionTaller()"
+    >
+      <div>
+        <img
+          src="../../../../assets/img/caad.jpg"
+          align="left"
+          alt=""
+          alt=""
+          width="10%"
+        />
+      </div>
+
+      <div class="container" id="contenedorRegistro">
+        <legend>Formulario Produccion Taller</legend>
+        <hr />
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="taller">Taller</label>
+          <div class="col-sm-6">
+            <select class="form-control" formControlName="taller" required>
+              <option value="">Seleccione un Taller</option>
+              <option
+                *ngFor="let taller of listadoTalleres"
+                [ngValue]="taller.id"
+              >
+                {{ taller.nombre_taller }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Nombre Produccion</label>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              id="nombre_produccion"
+              placeholder="Ingrese Nombre de Produccion"
+              formControlName="nombre_produccion"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Fecha de Produccion</label>
+          <div class="col-sm-4">
+            <input
+              type="date"
+              class="form-control"
+              id="fecha_produccion"
+              formControlName="fecha_produccion"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Materiales</label>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              id="materiales_produccion"
+              placeholder="Ingrese Materiales"
+              formControlName="materiales"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Costo de Venta</label>
+          <div class="col-sm-4">
+            <input
+              type="text"
+              class="form-control"
+              id="costo_venta"
+              placeholder="Ingrese Costo de Venta"
+              formControlName="costo_venta"
+              required
+            />
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <div class="container" id="contenedorBotones">
+        <div class="form-group">
+          <button class="btn btn-primary" [disabled]="btnRegistrar">
+            Registrar
+          </button>
+          <button
+            class="btn btn-warning"
+            [disabled]="btnEditar"
+            type="button"
+            (click)="editarProduccionTallerId()"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger"
+            [disabled]="btnCancelar"
+            type="reset"
+            (click)="cancelar()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="container-fluid" id="contenedorTabla">
+      <legend>Listado Produccion Taller</legend>
+      <table class="table table-bordered table-dark table-responsive-lg">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Taller</th>
+            <th scope="col">Nombre Produccion</th>
+            <th scope="col">Fecha Produccion</th>
+            <th scope="col">Materiales</th>
+            <th scope="col">Costo de Venta</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let produccion of listadoProduccionTaller">
+            <th scope="row">{{ produccion.id }}</th>
+            <td scope="row">
+              {{ produccion.taller.nombre_taller }}
+            </td>
+            <td scope="row">{{ produccion.nombre_produccion }}</td>
+            <td scope="row">{{ produccion.fecha_produccion }}</td>
+            <td scope="row">{{ produccion.materiales }}</td>
+            <td scope="row">{{ produccion.costo_venta}}</td>
+            <td colspan="2">
+              <button class="btn btn-warning" (click)="ProduccionTallerId(produccion)"> Editar </button>
+              <button class="btn btn-danger" (click)="eliminarProduccionTaller(produccion)"> Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

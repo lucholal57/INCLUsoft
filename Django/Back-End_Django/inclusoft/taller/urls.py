@@ -37,4 +37,18 @@ urlpatterns = [
     path('taller/produccion_taller/editar/<int:pk>', views.ProduccionTallerEditar.as_view()),
     path('taller/produccion_taller/eliminar/<int:pk>', views.ProduccionTallerELiminar.as_view()),
     
+    #Rutas para Compras Taller
+    path('taller/compras_taller/listados', views.ComprasTallerListado.as_view()),
+    path('taller/compras_taller/<int:pk>', views.ComprasTallerBuscarPorId.as_view()),
+    path('taller/compras_taller/registrar', views.ComprasTallerRegistrar.as_view()),
+    path('taller/compras_taller/editar/<int:pk>', views.ComprasTallerEditar.as_view()),
+    path('taller/compras_taller/eliminar/<int:pk>', views.ComprasTallerEliminar.as_view()),
+    
+    #Rutas para Inventario Taller
+    path('taller/inventario_taller/listados', views.InventarioTallerListado.as_view()),
+    path('taller/inventario_taller/<int:pk>', views.InventarioTallerBuscarPorId.as_view()),
+    path('taller/inventario_taller/registrar', views.InventarioTallerRegistrar.as_view()),
+    path('taller/inventario_taller/editar/<int:pk>', views.InventarioTallerEditar.as_view()),
+    path('taller/inventario_taller/eliminar/<int:pk>', views.InventarioTallerEliminar.as_view()),
+    
 ]

@@ -245,7 +245,8 @@ class ComprasTallerBuscarPorId(APIView):
     """ view para buscar compras por taller por ID """
     def get(self,request,pk):
         compras_taller = Compras_Taller.objects.filter(id=pk)
-        serializer = Compras_TallerSerializer  
+        serializer = Compras_TallerSerializer (compras_taller, many = True)
+        return Response(serializer.data)
         
 class ComprasTallerRegistrar(APIView):
     """ view para registrar compras por taller"""

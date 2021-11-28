@@ -24,7 +24,7 @@ export class MaterialesTallerComponent implements OnInit {
   public btnEditar = false;
   public btnCancelar = false;
 
-  // Ijeccion de o los servicios a utilizar
+  // Injeccion de o los servicios a utilizar
   constructor(
     private servicioTaller : TallerService,
     private servicioMaterialesTaller : MaterialesTallerService,
