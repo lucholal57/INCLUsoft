@@ -1,4 +1,7 @@
 from django.db import models
+from alumno.models import Alumno
+from personal.models import Personal
+
 
 # Create your models here.
 class Taller(models.Model):
@@ -6,10 +9,13 @@ class Taller(models.Model):
     observaciones = models.CharField(max_length=100)
     dias = models.CharField(max_length=50)
     horarios = models.TimeField()
+    alumnos = models.ManyToManyField(Alumno)
+    personals = models.ManyToManyField(Personal)
+    
     
 # METODO STR PARA MOSTRAR LOS STRING EN DJANGO ADMIN
     def __str__(self):
-        return f'Taller : {self.nombre_taller} : {self.observaciones} : {self.dias} : {self.horarios} '
+        return f'Taller : {self.nombre_taller} : {self.observaciones} : {self.dias} : {self.horarios} : {self.alumnos} : {self.personals}'
 
 class Informe_Cuatrimestral(models.Model):
     observaciones_cuatrimestrales = models.CharField(max_length=100);

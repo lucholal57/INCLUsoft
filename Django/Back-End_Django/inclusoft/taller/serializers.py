@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller, Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
-
 # Serializadores
 
 class TallerSerializer(serializers.ModelSerializer):
@@ -10,6 +9,7 @@ class TallerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Taller
         fields = '__all__'
+        depth = 3
         
 class Informe_CuatrimestralTallerSerializer(serializers.ModelSerializer):
     """

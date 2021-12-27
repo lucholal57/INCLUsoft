@@ -34,6 +34,8 @@ export class TallerComponent implements OnInit {
     observaciones: ['', [Validators.required]],
     dias: ['', [Validators.required]],
     horarios: ['', [Validators.required]],
+    personal: ['', [Validators.required]],
+    alumno: ['', [Validators.required]],
   });
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class TallerComponent implements OnInit {
   getTalleres(): void {
     this.servicioTaller.getTalleres().subscribe(
       (res) => {
-        console.log('resultado' + res);
+        console.log('resultadotaller'+res);
         this.listadoTalleres = res;
       },
       (error) => {
@@ -60,11 +62,13 @@ export class TallerComponent implements OnInit {
         .registrarTaller(this.formularioRegistro.value)
         .subscribe(
           (res) => {
+            console.log(res);
             this.alertas.alertsuccess();
             this.getTalleres();
             this.formularioRegistro.reset();
           },
           (error) => {
+            console.log(error);
             this.alertas.alerterror();
           }
         );
