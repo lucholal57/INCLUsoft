@@ -8,6 +8,7 @@ urlpatterns = [
     path('alumno/registrar', views.AlumnoRegistrar.as_view()),
     path('alumno/editar/<int:pk>', views.AlumnoEditar.as_view()),
     path('alumno/eliminar/<int:pk>', views.AlumnoEliminar.as_view()),
+    path('alumno/buscar/nombre/<str:nombre_alumno>', views.BucarAlumnoPorNombre.as_view()),
     
     #Rutas para los datos adicionales
     path('alumno/datos_adicionales/listados', views.DatosAdicionalesListado.as_view()),
@@ -49,6 +50,8 @@ urlpatterns = [
     path('alumno/acta_compromiso/<int:pk>', views.ActaCompromisoBuscarPorId.as_view()),
     path('alumno/acta_compromiso/registrar', views.ActaCompromisoRegistrar.as_view()),
     path('alumno/acta_compromiso/editar/<int:pk>', views.ActaCompromisoEditar.as_view()),
-    path('alumno/acta_compromiso/eliminar/<int:pk>', views.ActaCompromisoEliminar.as_view())
+    path('alumno/acta_compromiso/eliminar/<int:pk>', views.ActaCompromisoEliminar.as_view()),
+    path('alumno/acta_compromiso/buscar/nombre/<str:nombre_alumno>', views.BucarAlumnoPorNombreActaCompromiso.as_view()),
+    
     
 ]

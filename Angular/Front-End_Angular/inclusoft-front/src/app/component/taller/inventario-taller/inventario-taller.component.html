@@ -1,1 +1,115 @@
-<p>inventario-taller works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <app-menu></app-menu>
+
+    <form
+      [formGroup]="formularioRegistro"
+      (submit)="registrarInventarioTaller()"
+    >
+      <div>
+        <img
+          src="../../../../assets/img/caad.jpg"
+          align="left"
+          alt=""
+          alt=""
+          width="10%"
+        />
+      </div>
+
+      <div class="container" id="contenedorRegistro">
+        <legend>Formulario Inventario Taller</legend>
+        <hr />
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="taller">Taller</label>
+          <div class="col-sm-6">
+            <select class="form-control" formControlName="taller" required>
+              <option value="">Seleccione un Taller</option>
+              <option
+                *ngFor="let taller of listadoTalleres"
+                [ngValue]="taller.id"
+              >
+                {{ taller.nombre_taller }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <hr>
+
+ <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Materiales Fin del Ciclo</label>
+      <div class="col-sm-4">
+        <input
+          type="text"
+          class="form-control"
+          id="materiales"
+          placeholder="Ingrese material"
+          formControlName="materiales_fin_ciclo"
+          required
+        />
+      </div>
+    </div>
+      </div>
+
+      <hr>
+      <div class="container" id="contenedorBotones">
+        <div class="form-group" >
+          <button
+            class="btn btn-primary"
+            [disabled]="btnRegistrar"
+          >
+            Registrar
+          </button>
+          <button
+            class="btn btn-warning"
+            [disabled]="btnEditar"
+            type="button"
+            (click)="editarInventarioTallerId()"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger"
+            [disabled]="btnCancelar"
+            type="reset"
+            (click)="cancelar()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="container-fluid" id="contenedorTabla">
+      <legend> Listado Inventario Taller</legend>
+      <table class="table table-bordered table-dark table-responsive-lg">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Taller</th>
+            <th scope="col">Materiales</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inventario of listadoInventarioTaller">
+            <th scope="row">{{ inventario.id }}</th>
+            <td scope="row"> {{ inventario.taller.nombre_taller }}</td>
+            <td scope="row">{{ inventario.materiales_fin_ciclo }}</td>
+            <td colspan="2">
+              <button class="btn btn-warning" (click)="InventarioTallerId(inventario)">Editar</button>
+              <button class="btn btn-danger" (click)="eliminarInventarioTaller(inventario)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

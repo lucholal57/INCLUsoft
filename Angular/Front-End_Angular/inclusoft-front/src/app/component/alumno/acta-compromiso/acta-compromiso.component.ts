@@ -15,14 +15,18 @@ import { AlertService } from '../../../service/alert/alert.service';
   styleUrls: ['./acta-compromiso.component.css']
 })
 export class ActaCompromisoComponent implements OnInit {
+  p: number = 1;
   // Array de actas compromiso para mostrar en la tabla
   listadoActaCompromiso: ActaCompromiso[];
   // Array de alumnos para el select
   listadoAlumnos: Alumno[];
-  // Variable de Botones para deshabilitar
+  // objeto tipo alumno para la busqueda_datos_adicionales
+  buscar : ActaCompromiso = new ActaCompromiso();
+    // Variable de Botones para deshabilitar
   public btnRegistrar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
@@ -49,6 +53,8 @@ export class ActaCompromisoComponent implements OnInit {
     this.getAlumno();
     this.getActaCompromiso();
     this.btnEditar = true;
+    this.ocultarbusqueda = true;
+
   }
 
   // Obtener todos los alumnos para mostrar la lista de seleccion para registrar un acta compromiso
@@ -160,10 +166,40 @@ eliminarActaCompromiso(acta_compromiso: ActaCompromiso ): void{
   });
 }
 
+busqueda(): void {
+ this.servicioActaCompromiso.busquedaAlumno(this.buscar.alumno.nombre_alumno).subscribe(
+   (res) => {
+     console.log(res);
+     if(res.length != 0){
+      this.alertas.alertLoading();
+     }else {
+      this.alertas.alertLoadingError();
+     }
+     this.listadoActaCompromiso = res;
+     this.ocultarbusqueda = false;
+   },
+   (error) => {
+
+     console.log(error);
+   }
+ )
+}
+
+cancelarbusqueda(): void {
+  this.ocultarbusqueda = true;
+  this.getActaCompromiso();
+  this.buscar = new ActaCompromiso();
+}
+
 // Limpiar los campos
 cancelar(): void{
   this.formularioRegistro.reset();
   this.btnRegistrar = false;
   this.btnEditar = true;
 }
+
+
+
+
 }
+

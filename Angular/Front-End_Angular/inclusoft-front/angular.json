@@ -38,9 +38,9 @@
               "node_modules/jquery/dist/jquery.slim.min.js",
 
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              
+
               "node_modules/popper.js/dist/umd/popper.min.js"
-              
+
             ]
           },
           "configurations": {
@@ -51,14 +51,14 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              
-              "optimization": true,
+
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": true,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",

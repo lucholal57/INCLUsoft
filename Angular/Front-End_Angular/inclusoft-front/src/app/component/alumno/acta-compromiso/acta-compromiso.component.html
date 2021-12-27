@@ -146,6 +146,20 @@
 </div>
 </form>
 
+<div class="container" id="contenedorBusqueda">
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <legend>Busquedas</legend>
+    <button class="btn btn-primary" (click)="busqueda()">Buscar</button>
+    <button class="btn btn-warning" (click)="cancelarbusqueda()" [hidden]="ocultarbusqueda">Cancelar</button>
+  </div>
+  <div class="form-group col-md-4">
+  <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+  class="form-control" [(ngModel)]="buscar.alumno.nombre_alumno">
+  </div>
+</div>
+</div>
+
 <div class="container-fluid" id="contenedorTabla">
   <legend>Listado Actas Compromiso</legend>
   <table class="table table-bordered table-dark table-responsive-lg">
@@ -163,7 +177,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let actas of listadoActaCompromiso">
+      <tr *ngFor="let actas of listadoActaCompromiso | paginate: { itemsPerPage: 2, currentPage: p }">
         <th scope="row">{{ actas.id }}</th>
         <td scope="row">
           {{ actas.alumno.nombre_alumno }} {{ actas.alumno.apellido_alumno }}
@@ -181,7 +195,12 @@
       </tr>
     </tbody>
   </table>
+
+  <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
 </div>
 
 </body>
+
+
 </html>

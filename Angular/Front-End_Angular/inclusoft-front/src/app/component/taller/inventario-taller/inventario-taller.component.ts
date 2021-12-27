@@ -39,7 +39,7 @@ export class InventarioTallerComponent implements OnInit {
   })
 
   ngOnInit(): void {
-
+  this.getInventarioTaller();
     this.getTalleres();
     this.btnEditar = true;
   }
@@ -76,6 +76,7 @@ registrarInventarioTaller(): void {
         this.alertas.alertsuccess();
         this.formularioRegistro.reset();
         this.getInventarioTaller();
+        console.log(res);
       },
       (error) => {
         this.alertas.alerterror();

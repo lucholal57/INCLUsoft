@@ -420,3 +420,21 @@ class EnfermeriaEliminar(APIView):
         enfermeria = Enfermeria.objects.get(id=pk)
         enfermeria.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
+    
+class BucarAlumnoPorNombre(APIView):
+   """ view de buscar alumno por nombre"""
+   def get(self, request,nombre_alumno):
+       alumno = Alumno.objects.filter(nombre_alumno__icontains=nombre_alumno)
+       serializer = AlumnoSerializer(alumno, many = True);
+       return Response(serializer.data)
+   
+class BucarAlumnoPorNombreActaCompromiso(APIView):
+       """ view de buscar alumno por nombre"""
+       def get(self,request,nombre_alumno):
+         alumno = Alumno.objects.filter(nombre_alumno__icontains=nombre_alumno)
+         acta_compromiso = Acta_Compromiso.objects.filter(alumno__in = alumno)
+         serializer = Acta_CompromisoAlumnoSerializer(acta_compromiso, many = True);
+         return Response(serializer.data)
+    
+    
+    

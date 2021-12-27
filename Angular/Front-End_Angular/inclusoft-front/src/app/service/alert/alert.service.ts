@@ -36,7 +36,27 @@ export class AlertService {
   alertcampos() {
     Swal.fire('Existen campos obligatorios sin rellenar');
   }
-  
+
+  alertLoading(){
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Busqueda Exitosa',
+      showConfirmButton: false,
+      timer: 1800
+    })
+  }
+
+  alertLoadingError(){
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'No se encontraron coincidencias',
+      showConfirmButton: false,
+      timer: 1800
+    })
+  }
+
   /* Alert eliminar el
 
     Swal.fire({
@@ -51,7 +71,7 @@ export class AlertService {
       if (result.isConfirmed) {
         Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
       }
-      
+
     });
   */
 }

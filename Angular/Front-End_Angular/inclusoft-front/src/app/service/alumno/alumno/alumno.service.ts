@@ -22,7 +22,7 @@ export class AlumnoService {
     return this.http.post<Alumno[]>(this.url + 'registrar' , formularioregistro);
   }
 
-  
+
   getAlumnoId(busqueda_alumno: Alumno): Observable<Alumno[]>{
     return this.http.get<Alumno[]>(this.url + busqueda_alumno.id);
   }
@@ -34,5 +34,9 @@ export class AlumnoService {
 
   eliminarAlumno(id: number): Observable<Alumno[]>{
     return this.http.delete<Alumno[]>(this.url + 'eliminar/' + id);
+  }
+
+  busquedaAlumno(nombre:string): Observable<Alumno[]>{
+    return  this.http.get<Alumno[]>(this.url + 'buscar/nombre/' + nombre)
   }
 }

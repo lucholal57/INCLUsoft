@@ -9,13 +9,13 @@
 <body>
   <app-menu></app-menu>
 <form [formGroup]="formularioRegistro" (submit)="registrarAlumno()">
-  
+
   <div>
     <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
   </div>
 <div class="container" id="contenedorRegistro">
   <legend>Formulario de registro Alumno</legend>
-  
+
   <hr />
   <div class="form-row" >
     <div class="form-group col-md-4">
@@ -30,7 +30,7 @@
         required
       />
     </div>
-  
+
     <div class="form-group col-md-4">
       <label for="apellido">Apellido</label>
       <input
@@ -118,8 +118,21 @@
     <button type="reset" class="btn btn-danger" [disabled]= "btnCancelar" (click)='cancelar()'>Cancelar</button>
   </div>
 </div>
-
 </form>
+<hr>
+<div class="container" id="contenedorBusqueda">
+  <div class="form-row">
+    <div class="form-group col-md-2">
+    <button class="btn btn-primary" (click)="busqueda()">Buscar</button>
+    <button class="btn btn-warning" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+  <div class="form-group col-md-4">
+  <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+  class="form-control" [(ngModel)]="buscar.nombre_alumno">
+  </div>
+</div>
+</div>
+
 
 <div class="container-fluid" id="contenedorTabla">
 <legend>Listado de Alumnos</legend>
@@ -127,8 +140,7 @@
       <thead>
           <tr>
               <th scope="col">ID</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
+              <th scope="col">Nombre y Apellido</th>
               <th scope="col">DNI</th>
               <th scope="col">Telefono</th>
               <th scope="col">F. Nacimiento</th>
@@ -138,31 +150,24 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let alumno of listadoAlumnos" >
+          <tr *ngFor="let alumno of listadoAlumnos  | paginate: { itemsPerPage: 2, currentPage: p }" >
               <th scope="row">{{alumno.id}}</th>
-              <td scope="row">{{alumno.nombre_alumno}}</td>
-              <td scope="row">{{alumno.apellido_alumno}}</td>
+              <td scope="row">{{alumno.nombre_alumno}} {{alumno.apellido_alumno}}</td>
               <td scope="row">{{alumno.dni_alumno}}</td>
               <td scope="row">{{alumno.telefono_alumno}}</td>
               <td scope="row">{{alumno.fecha_nacimiento_alumno}}</td>
               <td scope="row">{{alumno.lugar_nacimiento_alumno}}</td>
               <td scope="row">{{alumno.direccion_alumno}}</td>
-              <td>  
+              <td>
                   <button class="btn btn-warning" (click)="AlumnoId(alumno)">Editar</button>
                   <button class="btn btn-danger" (click)="eliminarAlumno(alumno)">Eliminar</button>
             </td>
           </tr>
       </tbody>
   </table>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
-  </nav>
+
+  <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
 </div>
 </body>
 </html>

@@ -57,9 +57,10 @@ class Compras_Taller(models.Model):
         return f'Compas Taller {self.insumos } {self.observaciones_compra }'
     
 class Inventario_Taller(models.Model):
-    materiales_fin_ciclo : models.CharField(max_length=50)
+    materiales_fin_ciclo = models.CharField(max_length=50, null=True)
     #ForeignKey
     taller = models.ForeignKey(Taller, on_delete=models.CASCADE)
     # METODO STR PARA MOSTRAR LOS STRING
     def __str__(self):
         return f'Inventario Taller : {self.materiales_fin_ciclo}'
+    

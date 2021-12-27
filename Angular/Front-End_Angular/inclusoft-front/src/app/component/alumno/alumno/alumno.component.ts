@@ -11,8 +11,10 @@ import { AlertService } from 'src/app/service/alert/alert.service';
   styleUrls: ['./alumno.component.css'],
 })
 export class AlumnoComponent implements OnInit {
+  p: number = 1;
   // Utilizamos el array solo para poder guardar y mostrar en la tabla
   listadoAlumnos: Alumno[] = [];
+  buscar : Alumno = new Alumno();
 
   // Variables Botones
   public btnRegistrar = false;
@@ -136,6 +138,23 @@ export class AlumnoComponent implements OnInit {
         }
 
       });
+  }
+
+  busqueda(): void {
+    this.servicioAlumno.busquedaAlumno(this.buscar.nombre_alumno).subscribe(
+      (res) => {
+        console.log(res);
+        this.listadoAlumnos = res;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  cancelarbusqueda(): void {
+    this.getAlumnos();
+    this.buscar = new Alumno();
   }
 
   // Limpiar los campos

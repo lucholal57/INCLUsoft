@@ -76,6 +76,7 @@ export class AntecedenteMedicoComponent implements OnInit {
         .registrarAntecedenteMedico(this.formularioRegistro.value)
         .subscribe(
           (res) => {
+            console.log(res);
             this.alertas.alertsuccess();
             this.formularioRegistro.reset();
             this.getAntecedenteMedico();
@@ -153,7 +154,7 @@ export class AntecedenteMedicoComponent implements OnInit {
         );
         Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
       }
-      
+
     });
   }
   // Limpiar los campos
