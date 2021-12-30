@@ -9,8 +9,7 @@ class PersonalSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Personal
-        fields = '__all__'
-        
+        fields = '__all__'   
 
 class Asistencia_PersonalPersonalSerializer(serializers.ModelSerializer):
     """

@@ -6,6 +6,7 @@ from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller, Ventas_Ta
 from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Inventario_TallerSerializer, Inventario_TallerTallerSerializer, Materiales_TallerSerializer, Materiales_TallerTallerSerializer, Produccion_TallerSerializer, Produccion_TallerTallererSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer)
 
 
+
 # Create your views here.
 #VIEW DE TALLER
 

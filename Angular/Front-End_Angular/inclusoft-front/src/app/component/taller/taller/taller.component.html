@@ -82,13 +82,10 @@
           </div>
         </div>
       </div>
-<hr>
+      <hr />
       <div class="container" id="contenedorBotones">
-        <div class="form-group" >
-          <button
-            class="btn btn-primary"
-            [disabled]="btnRegistrar"
-          >
+        <div class="form-group">
+          <button class="btn btn-primary" [disabled]="btnRegistrar">
             Registrar
           </button>
           <button
@@ -109,9 +106,7 @@
           </button>
         </div>
       </div>
-
     </form>
-
 
     <div class="container-fluid" id="contenedorTabla">
       <legend>Listado Talleres</legend>
@@ -129,13 +124,17 @@
         <tbody>
           <tr *ngFor="let taller of listadoTalleres">
             <th scope="row">{{ taller.id }}</th>
-            <td scope="row">{{taller.nombre_taller}}</td>
-            <td scope="row">{{taller.dias}}</td>
-            <td scope="row">{{taller.horarios}}</td>
-            <td scope="row">{{taller.observaciones}}</td>
+            <td scope="row">{{ taller.nombre_taller }}</td>
+            <td scope="row">{{ taller.dias }}</td>
+            <td scope="row">{{ taller.horarios }}</td>
+            <td scope="row">{{ taller.observaciones }}</td>
             <td colspan="2">
-              <button class="btn btn-warning" (click)="TallerId(taller)"> Editar </button>
-              <button class="btn btn-danger" (click)="eliminarTaller(taller)" > Eliminar</button>
+              <button class="btn btn-warning" (click)="TallerId(taller)">
+                Editar
+              </button>
+              <button class="btn btn-danger" (click)="eliminarTaller(taller)">
+                Eliminar
+              </button>
             </td>
           </tr>
         </tbody>

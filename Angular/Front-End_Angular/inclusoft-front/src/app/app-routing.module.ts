@@ -52,7 +52,9 @@ const routes: Routes = [
   {path:'taller/ventas_taller', component: VentasTallerComponent},
   {path:'taller/produccion_taller', component: ProduccionTallerComponent},
   {path:'taller/compra_taller', component: CompraTallerComponent},
-  {path:'taller/inventario_taller', component: InventarioTallerComponent}
+  {path:'taller/inventario_taller', component: InventarioTallerComponent},
+
+
 ];
 
 @NgModule({

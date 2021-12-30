@@ -77,6 +77,7 @@ export class PatologiaComponent implements OnInit {
     if(this.formularioRegistro.valid) {
       this.servicioPatologia.registrarPatologia(this.formularioRegistro.value).subscribe(
         (res) => {
+          console.log('patologias',this.formularioRegistro.value)
           this.alertas.alertsuccess();
           console.log(res);
           this.formularioRegistro.reset();
@@ -89,7 +90,7 @@ export class PatologiaComponent implements OnInit {
     } else {
       this.alertas.alertcampos();
     }
-   
+
   }
   // Obtener patologias por id para mostrar en los campos de los input para su proxima edicion.
   PatologiaId(patologia: Patologia): void{
@@ -104,12 +105,12 @@ export class PatologiaComponent implements OnInit {
         })
         this.btnEditar = false;
         this.btnRegistrar = true;
-        
+
       },
       (error) => {
         this.alertas.alerterror();
       }
-     
+
     );
   }
   // Editar las patologias
@@ -152,10 +153,10 @@ export class PatologiaComponent implements OnInit {
         );
         Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
       }
-      
+
     });
-      
-    
+
+
   }
   // Limpiar los campos
   cancelar(): void{

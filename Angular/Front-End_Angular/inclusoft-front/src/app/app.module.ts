@@ -34,6 +34,7 @@ import { InventarioTallerComponent } from './component/taller/inventario-taller/
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

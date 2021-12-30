@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // Importamos librerias necesarias
-import {FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Taller } from '../../../entidades/taller/taller/taller';
 import { TallerService } from '../../../service/taller/taller/taller.service';
 import Swal from 'sweetalert2';
@@ -34,8 +34,6 @@ export class TallerComponent implements OnInit {
     observaciones: ['', [Validators.required]],
     dias: ['', [Validators.required]],
     horarios: ['', [Validators.required]],
-    personal: ['', [Validators.required]],
-    alumno: ['', [Validators.required]],
   });
 
   ngOnInit(): void {
@@ -47,7 +45,7 @@ export class TallerComponent implements OnInit {
   getTalleres(): void {
     this.servicioTaller.getTalleres().subscribe(
       (res) => {
-        console.log('resultadotaller'+res);
+        console.log('hola', res);
         this.listadoTalleres = res;
       },
       (error) => {
@@ -62,7 +60,6 @@ export class TallerComponent implements OnInit {
         .registrarTaller(this.formularioRegistro.value)
         .subscribe(
           (res) => {
-            console.log(res);
             this.alertas.alertsuccess();
             this.getTalleres();
             this.formularioRegistro.reset();
