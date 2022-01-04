@@ -13,10 +13,24 @@ class TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de Taller
     """
+    alumno_id = AlumnoSerializer(many=True)
+    personal_id = PersonalSerializer(many=True)
+    
     class Meta:
         model = Taller
         fields = ('__all__')
-        depth = 3
+        depth = 2
+        
+
+
+class TallerEditarCrearSerializer(serializers.ModelSerializer):
+    """
+        Serializador de Taller
+    """
+    class Meta:
+        model = Taller
+        fields = ('__all__')
+        depth = 2
 
 
 class Informe_CuatrimestralTallerSerializer(serializers.ModelSerializer):

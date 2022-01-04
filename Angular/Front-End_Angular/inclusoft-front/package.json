@@ -24,6 +24,8 @@
     "bootstrap": "^4.6.1",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
+    "mdb-cli": "^3.7.3",
+    "ng-multiselect-dropdown": "^0.3.7",
     "ngx-pagination": "^5.1.1",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",

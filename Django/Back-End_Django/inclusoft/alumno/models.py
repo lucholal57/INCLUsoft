@@ -12,7 +12,7 @@ class Alumno(models.Model):
 
     # DEFINIMOS EL METODO STR PARA MOSTRAR EL MSJ
     def __str__(self):
-        return f'Alumno : {self.nombre_alumno} : {self.apellido_alumno} : {self.dni_alumno} : {self.telefono_alumno} : {self.fecha_nacimiento_alumno} : {self.lugar_nacimiento_alumno} : {self.direccion_alumno} '
+        return f'Alumno : {self.id} - {self.nombre_alumno}  {self.apellido_alumno} '
 
 class Datos_Adicionales(models.Model):
     jubilacion_si = 'si'

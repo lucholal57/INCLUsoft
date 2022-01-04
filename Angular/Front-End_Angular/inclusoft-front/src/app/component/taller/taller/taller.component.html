@@ -81,6 +81,46 @@
             </textarea>
           </div>
         </div>
+
+        <hr />
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
+          <div class="col-sm-3">
+            <select
+              multiple
+              class="form-control"
+              formControlName="alumno_id"
+              required
+            >
+              <option
+                *ngFor="let alumno of listadoAlumno"
+                [ngValue]="alumno.id"
+              >
+                {{ alumno.nombre_alumno }} {{ alumno.apellido_alumno }}
+              </option>
+            </select>
+            <button class="btn btn-primary" routerLink="/alumno">Registrar Alumno</button>
+          </div>
+
+          <label for="personal" class="col-sm-2 col-form-label">Personal</label>
+          <div class="col-sm-3">
+            <select
+              multiple
+              class="form-control"
+              formControlName="personal_id"
+              required
+            >
+              <option
+                *ngFor="let personal of listadoPersonal"
+                [ngValue]="personal.id"
+              >
+                {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+              </option>
+            </select>
+            <button class="btn btn-primary" routerLink="/personal">Registrar Personal</button>
+          </div>
+        </div>
+        <hr />
       </div>
       <hr />
       <div class="container" id="contenedorBotones">
@@ -118,6 +158,8 @@
             <th scope="col">Dias</th>
             <th scope="col">Horarios</th>
             <th scope="col">Observaciones</th>
+            <th scope="col">Alumnos</th>
+            <th scope="col">Personal</th>
             <th scope="col">Acciones</th>
           </tr>
         </thead>
@@ -128,6 +170,16 @@
             <td scope="row">{{ taller.dias }}</td>
             <td scope="row">{{ taller.horarios }}</td>
             <td scope="row">{{ taller.observaciones }}</td>
+            <td scope="row">
+              <ul *ngFor="let a of taller.alumno_id">
+                <li>{{ a.nombre_alumno }} {{ a.apellido_alumno }}</li>
+              </ul>
+            </td>
+            <td scope="row">
+              <ul *ngFor="let p of taller.personal_id">
+                <li>{{ p.nombre_personal }} {{ p.apellido_personal }}</li>
+              </ul>
+            </td>
             <td colspan="2">
               <button class="btn btn-warning" (click)="TallerId(taller)">
                 Editar

@@ -9,8 +9,9 @@ class Taller(models.Model):
     observaciones = models.CharField(max_length=100)
     dias = models.CharField(max_length=50)
     horarios = models.TimeField()
-    
-    
+    #Relacion ManytoMany 
+    alumno_id = models.ManyToManyField(Alumno)
+    personal_id = models.ManyToManyField(Personal)
 # METODO STR PARA MOSTRAR LOS STRING EN DJANGO ADMIN
     def __str__(self):
         return f'Taller : {self.nombre_taller} : {self.observaciones} : {self.dias} : {self.horarios} '

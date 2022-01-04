@@ -7,6 +7,6 @@ export class Taller {
     observaciones = "";
     dias = "";
     horarios = 0;
-    personal : Personal[];
-    alumno : Alumno[];
+    personal_id  : Personal[];
+    alumno_id  : Alumno[];
 }

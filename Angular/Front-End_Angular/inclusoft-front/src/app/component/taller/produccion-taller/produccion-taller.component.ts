@@ -73,6 +73,7 @@ export class ProduccionTallerComponent implements OnInit {
   }
   // Registrar produccion de taller
   registrarProduccionTaller(): void {
+    console.log('produccion taller valores', this.formularioRegistro.value)
     if (this.formularioRegistro.valid){
       this.servicioProduccionTaller.registrarProduccionTaller(this.formularioRegistro.value).subscribe(
         (res) => {

@@ -12,7 +12,7 @@ class Personal(models.Model):
     
     # METODO STR PARA MOSTRAR LOS STRING EN DJANGO ADMIN    
     def __str__(self):
-        return f'Personal : {self.nombre_personal} : {self.apellido_personal} : {self.dni_personal} : {self.telefono_personal} : {self.fecha_nacimiento_personal} : {self.lugar_nacimiento_personal} : {self.profesion} '
+        return f'Personal : {self.id} - {self.nombre_personal}  {self.apellido_personal} '
 
 class Permiso_Salida(models.Model):
     fecha_permiso = models.DateField()
