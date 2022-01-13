@@ -3,9 +3,8 @@ from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
                      Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
 
 from alumno.serializers import AlumnoSerializer
-from alumno.models import Alumno
 from personal.serializers import PersonalSerializer
-from personal.models import Personal
+
 # Serializadores
 
 
@@ -18,7 +17,7 @@ class TallerSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Taller
-        fields = ('__all__')
+        fields = '__all__'
         depth = 2
         
 
@@ -29,7 +28,7 @@ class TallerEditarCrearSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Taller
-        fields = ('__all__')
+        fields = '__all__'
         depth = 2
 
 

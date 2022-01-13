@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import viewsets
+
 from rest_framework import status
 from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
-                     Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller,Personal, Alumno)
+                     Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
 from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Inventario_TallerSerializer, Inventario_TallerTallerSerializer, Materiales_TallerSerializer,
                           Materiales_TallerTallerSerializer, Produccion_TallerSerializer, Produccion_TallerTallererSerializer, TallerEditarCrearSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer, )
 

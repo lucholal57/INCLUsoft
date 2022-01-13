@@ -23,6 +23,7 @@ import { VentasTallerComponent } from './component/taller/ventas-taller/ventas-t
 import { ProduccionTallerComponent } from './component/taller/produccion-taller/produccion-taller.component';
 import { CompraTallerComponent } from './component/taller/compra-taller/compra-taller.component';
 import { InventarioTallerComponent } from './component/taller/inventario-taller/inventario-taller.component';
+import { AcompananteComponent } from './component/acompanante/acompanante.component';
 
 
 
@@ -53,6 +54,8 @@ const routes: Routes = [
   {path:'taller/produccion_taller', component: ProduccionTallerComponent},
   {path:'taller/compra_taller', component: CompraTallerComponent},
   {path:'taller/inventario_taller', component: InventarioTallerComponent},
+  //Rutas Acompañantes
+  {path:'acompañantes', component: AcompananteComponent},
 
 
 ];

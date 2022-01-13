@@ -15,6 +15,7 @@ import { AlertService } from '../../../service/alert/alert.service';
   styleUrls: ['./acta-compromiso.component.css']
 })
 export class ActaCompromisoComponent implements OnInit {
+  // Variable P para el conteo del paginado
   p: number = 1;
   // Array de actas compromiso para mostrar en la tabla
   listadoActaCompromiso: ActaCompromiso[];

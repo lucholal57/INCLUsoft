@@ -31,6 +31,7 @@ import { ProduccionTallerComponent } from './component/taller/produccion-taller/
 import { CompraTallerComponent } from './component/taller/compra-taller/compra-taller.component';
 import { InventarioTallerComponent } from './component/taller/inventario-taller/inventario-taller.component';
 import { NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import { AcompananteComponent} from './component/acompanante/acompanante.component'
 
 
 
@@ -61,6 +62,7 @@ import { NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     ProduccionTallerComponent,
     CompraTallerComponent,
     InventarioTallerComponent,
+    AcompananteComponent,
 
   ],
   imports: [

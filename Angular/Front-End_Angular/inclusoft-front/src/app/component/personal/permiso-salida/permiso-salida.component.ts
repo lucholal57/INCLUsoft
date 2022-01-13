@@ -93,6 +93,7 @@ formularioRegistro = this.formBuilder.group({
   PermisoSalidaId( permisosalida : PermisoSalida): void {
     this.servicioPermisoSalida.getPermisoSalidaId( permisosalida ).subscribe(
       (res) => {
+        console.log('resultado verificacion modal', res)
         this.formularioRegistro.patchValue({
           id : res[0].id,
           fecha_permiso : res[0].fecha_permiso,
@@ -147,7 +148,7 @@ formularioRegistro = this.formBuilder.group({
         );
         Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
       }
-      
+
     });
   }
 
@@ -157,5 +158,5 @@ formularioRegistro = this.formBuilder.group({
       this.btnRegistrar = false;
       this.btnEditar = true;
     }
-  
+
 }

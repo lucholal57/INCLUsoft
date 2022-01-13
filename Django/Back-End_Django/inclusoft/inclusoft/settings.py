@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'personal',
     'taller',
+    'acompañantes',
     
 ]
 
