@@ -31,7 +31,11 @@ import { ProduccionTallerComponent } from './component/taller/produccion-taller/
 import { CompraTallerComponent } from './component/taller/compra-taller/compra-taller.component';
 import { InventarioTallerComponent } from './component/taller/inventario-taller/inventario-taller.component';
 import { NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
-import { AcompananteComponent} from './component/acompanante/acompanante.component'
+import { AcompananteComponent} from './component/acompanante/acompanante.component';
+import { ViajeComponent } from './component/viaje/viaje.component'
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { EstadisticaComponent } from './component/estadistica/estadistica.component'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -63,6 +67,8 @@ import { AcompananteComponent} from './component/acompanante/acompanante.compone
     CompraTallerComponent,
     InventarioTallerComponent,
     AcompananteComponent,
+    ViajeComponent,
+    EstadisticaComponent,
 
   ],
   imports: [
@@ -73,6 +79,9 @@ import { AcompananteComponent} from './component/acompanante/acompanante.compone
     HttpClientModule,
     NgxPaginationModule,
     NgMultiSelectDropDownModule.forRoot(),
+    NgxChartsModule,
+    BrowserAnimationsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

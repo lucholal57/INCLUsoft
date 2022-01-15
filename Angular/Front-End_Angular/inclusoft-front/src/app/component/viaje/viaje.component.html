@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+<app-menu></app-menu>
+
+<form [formGroup] = "formularioRegistro">
+
+  <div>
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario de Viajes</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label style="color:black">Destino</label>
+        <div class="col-sm-15">
+          <input
+            type="text"
+            class="form-control"
+            id="destino"
+            formControlName="destino"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:black">Fecha</label>
+        <div class="col-sm-15">
+          <input
+            type="date"
+            class="form-control"
+            id="fecha_viaje"
+            formControlName="fecha_viaje"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:black">Gastos</label>
+        <div class="col-sm-15">
+          <input
+            type="text"
+            class="form-control"
+            id="gastos"
+            formControlName="gastos"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" for="alumno">Alumno</label>
+          <select multiple class="form-control" formControlName="alumno" required>
+            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+              {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+            </option>
+          </select>
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" for="alumno">Personal</label>
+          <select multiple class="form-control" formControlName="personal" required>
+            <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+              {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+            </option>
+          </select>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark"  [disabled]="btnGuardar" (click)="registrarViaje()">Guardar</button>
+      <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarViajeId()">Editar</button>
+      <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+    </div>
+  </ng-template>
+
+</form>
+
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col">
+    <legend>Busquedas por Destino</legend>
+    <input type="text" name="nombre_destino" placeholder="Buscar Destino"
+    class="form-control" [(ngModel)]="buscar_destino" required>
+    <hr>
+    <button class="btn btn-primary" (click)="buscarDestino()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda" (click)="cancelarBusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
+<div class="container-fluid" id="contenedorTabla">
+  <legend align="center">Listado Viajes</legend>
+  <table class="table table-bordered table-dark table-responsive-lg">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Destino</th>
+        <th scope="col">Fecha_viaje</th>
+        <th scope="col">Gastos</th>
+        <th scope="col">Alumno</th>
+        <th scope="col">Personal</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let viaje of listadoViaje | paginate: { itemsPerPage: 3, currentPage: p }">
+      <td scope="row">{{viaje.id}}</td>
+      <td scope="row">{{viaje.destino}}</td>
+      <td scope="row">{{viaje.fecha_viaje}}</td>
+      <td scope="row">{{viaje.gastos}}</td>
+      <td scope="row">
+        <ul *ngFor="let a of viaje.alumno">
+          <li>{{ a.nombre_alumno }} {{ a.apellido_alumno }}</li>
+        </ul>
+      </td>
+      <td scope="row">
+        <ul *ngFor="let p of viaje.personal">
+          <li>{{ p.nombre_personal }} {{ p.apellido_personal }}</li>
+        </ul>
+      </td>
+        <td colspan="2">
+          <button class="btn btn-warning" (click)="ViajeId(viaje,content)"> Editar </button>
+          <button class="btn btn-danger" (click)="eliminarViaje(viaje)"> Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+</div>
+
+
+</body>
+</html>

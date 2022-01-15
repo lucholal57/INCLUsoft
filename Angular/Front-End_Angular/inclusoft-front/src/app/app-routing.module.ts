@@ -24,6 +24,8 @@ import { ProduccionTallerComponent } from './component/taller/produccion-taller/
 import { CompraTallerComponent } from './component/taller/compra-taller/compra-taller.component';
 import { InventarioTallerComponent } from './component/taller/inventario-taller/inventario-taller.component';
 import { AcompananteComponent } from './component/acompanante/acompanante.component';
+import { ViajeComponent } from './component/viaje/viaje.component';
+import { EstadisticaComponent} from './component/estadistica/estadistica.component';
 
 
 
@@ -56,6 +58,10 @@ const routes: Routes = [
   {path:'taller/inventario_taller', component: InventarioTallerComponent},
   //Rutas Acompañantes
   {path:'acompañantes', component: AcompananteComponent},
+  //Rutas Viajes
+  {path:'viajes', component: ViajeComponent},
+  //Rutas estadisticas
+  {path:'estadisticas', component: EstadisticaComponent},
 
 
 ];

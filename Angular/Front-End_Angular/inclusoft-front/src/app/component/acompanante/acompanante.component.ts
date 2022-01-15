@@ -121,7 +121,6 @@ registrarAcompanante(): void{
     this.servicioAcompanante.registrarAcompanantes(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
-        this.formularioRegistro.reset();
         this.getAcompanante();
         this.cerrarModal();
 
@@ -133,7 +132,6 @@ registrarAcompanante(): void{
     }else {
       this.alertas.alertcampos();
     }
-    console.log(this.formularioRegistro.value)
 }
 // Obtener acompañantes por id para poder mostrar en ventana modal y editar
 AcompananteId(acompanante : Acompanante, content: any):void{
@@ -165,7 +163,6 @@ editarAcompananteId(): void{
       this.alertas.alertedit();
       this.getAcompanante();
       this.cerrarModal();
-
     },
     (error) => {
       console.log(error)
@@ -196,7 +193,7 @@ eliminarAcompanante(acompanante: Acompanante ): void{
         this.alertas.alerterror();
       }
     );
-      Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
+      Swal.fire('Eliminado!', 'Su eleccion ha sido eliminada.', 'success');
     }
 
   });
@@ -269,10 +266,6 @@ cancelarbusquedaPersonal(): void {
 cancelar(): void{
   this.formularioRegistro.reset();
 }
-
-
-
-
 
 }
 

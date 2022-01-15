@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'personal',
     'taller',
     'acompañantes',
+    'viajes',
     
 ]
 

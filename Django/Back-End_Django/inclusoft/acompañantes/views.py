@@ -47,11 +47,12 @@ def AcompañanteBuscarPorId(request, pk=None):
 
         # Update
         elif request.method == 'PUT':
-             # Consulta para editar el contenido del modal con FILTER
+            # Consulta para editar el contenido del modal con FILTER
             acompañante_edicion = Acompañante.objects.filter(id=pk).first()
             serializer = AcompañantePostPutSerializer(acompañante_edicion, data=request.data)
             if serializer.is_valid():
                 serializer.save()
+                
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -59,10 +60,10 @@ def AcompañanteBuscarPorId(request, pk=None):
         # Delete 
         elif request.method == 'DELETE':
             acompañante.delete()
-            return Response({'message':'Usuario eliminado correctamente!'}, status=status.HTTP_200_OK)
+            return Response({'message':'Acompañante eliminado correctamente!'}, status=status.HTTP_200_OK)
 
     # Validacion no se encontro   
-    return Response({'message':'No se ha encontrado un usuario con estos datos'},status=status.HTTP_400_BAD_REQUEST)
+    return Response({'message':'No se ha encontrado un acompañante con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def BusquedaAlumno(request, nombre_alumno):
