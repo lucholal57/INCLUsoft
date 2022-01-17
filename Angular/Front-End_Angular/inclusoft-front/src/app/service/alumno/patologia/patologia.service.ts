@@ -14,30 +14,30 @@ const httpOption = {
 })
 export class PatologiaService {
 // VAriable para la url
-private url = 'http://127.0.0.1:8000/alumno/patologia/';
+private url = 'http://127.0.0.1:8000/';
 
 // Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
   constructor(private http: HttpClient) { }
 
 // Obtener Patologias
 getPatologias(): Observable<Patologia[]> {
-  return this.http.get<Patologia[]> (this.url + 'listados');
+  return this.http.get<Patologia[]> (this.url + 'patologia');
 }
 // Registrar patologias
-registrarPatologia(patologia: Patologia): Observable<Patologia[]> {
+registrarPatologia(formularioRegistro: any): Observable<Patologia[]> {
   return this.http.post<Patologia[]> (
-    this.url + 'registrar', patologia, httpOption);
+    this.url + 'patologia', formularioRegistro, httpOption);
 }
 // Obtener patologias pasando el ID
 getPatologiasId(patologia: Patologia): Observable<Patologia[]>{
-  return this.http.get<Patologia[]> (this.url + patologia.id);
+  return this.http.get<Patologia[]> (this.url + 'patologia/' + patologia.id);
 }
 // Editar patologias pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
 editarPtologiasId(patologia: Patologia, id: number): Observable<Patologia[]>{
-  return this.http.put<Patologia[]>(this.url + 'editar/' + id, patologia, httpOption);
+  return this.http.put<Patologia[]>(this.url + 'patologia/' + id, patologia, httpOption);
 }
 // Eliminar Patologia pasando el ID
 eliminarPatologia(patologia: Patologia): Observable<Patologia[]>{
-  return this.http.delete<Patologia[]>(this.url + 'eliminar/' + patologia.id);
+  return this.http.delete<Patologia[]>(this.url + 'patologia/' + patologia.id);
 }
 }

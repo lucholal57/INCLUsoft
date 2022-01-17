@@ -35,7 +35,7 @@ def ViajeListado(request, *args, **kwargs):
         
 @api_view(['GET', 'PUT' , 'DELETE'])
 def ViajeBuscarPorId(request, pk=None):
-    # Consulta para obtener el listado en el modal sin Filter
+    # Consulta para obtener el listado en el modal sin First
     viaje = Viaje.objects.filter(id=pk)
     
     # Validacion
@@ -64,6 +64,9 @@ def ViajeBuscarPorId(request, pk=None):
         elif request.method == 'DELETE':
             viaje.delete();
             return Response({'message':'Viaje eliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un Viaje con estos datos'},status=status.HTTP_400_BAD_REQUEST)
         
 @api_view(['GET'])
 def BuscarViajePorDestino(request,destino):

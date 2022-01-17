@@ -12,30 +12,30 @@ const httpOption = {headers: new HttpHeaders ({'content-type' : 'application/jso
 })
 export class PersonalService {
 // Creamos variable con la ruta
-  private url = 'http://127.0.0.1:8000/personal/';
+  private url = 'http://127.0.0.1:8000/';
 
 // Injectamos el servicio httpClient en el constructor para hacer las peticiones
   constructor(private http: HttpClient) { }
 
   getPersonal(): Observable<Personal[]>{
-    return this.http.get<Personal[]>(this.url + 'listados');
+    return this.http.get<Personal[]>(this.url + 'personal');
   }
 
   registrarPersonal( formularioregistro: any): Observable<Personal[]>{
-    return this.http.post<Personal[]>(this.url + 'registrar', formularioregistro);
+    return this.http.post<Personal[]>(this.url + 'personal', formularioregistro,httpOption);
 
   }
 
   getPersonalId(personal: Personal): Observable<Personal[]>{
-    return this.http.get<Personal[]>(this.url + personal.id);
+    return this.http.get<Personal[]>(this.url + 'personal/' + personal.id);
   }
 
   editarPersonal(formularioRegistro: any, id: number): Observable<Personal[]>{
     console.log('mensaje servicio editar', formularioRegistro);
-    return this.http.put<Personal[]>(this.url + 'editar/' + id, formularioRegistro, httpOption);
+    return this.http.put<Personal[]>(this.url + 'personal/' + id, formularioRegistro);
   }
 
   eliminarPersonal(personal: Personal): Observable<Personal[]>{
-    return this.http.delete<Personal[]>(this.url + 'eliminar/' + personal.id);
+    return this.http.delete<Personal[]>(this.url + 'personal/' + personal.id);
   }
 }

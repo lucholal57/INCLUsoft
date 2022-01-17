@@ -4,28 +4,34 @@ import { Alumno } from '../../../entidades/alumno/alumno/alumno';
 import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
 import Swal from 'sweetalert2';
 import { AlertService } from 'src/app/service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-alumno',
   templateUrl: './alumno.component.html',
   styleUrls: ['./alumno.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class AlumnoComponent implements OnInit {
   p: number = 1;
   // Utilizamos el array solo para poder guardar y mostrar en la tabla
   listadoAlumnos: Alumno[] = [];
-  buscar : Alumno = new Alumno();
+  //VAriable para la busqueda por alumno
+  buscar_alumno ="";
 
   // Variables Botones
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusquedaAlumno = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
     private servicioAlumno: AlumnoService,
     private formBuilder: FormBuilder,
-    private alertas: AlertService
+    private alertas: AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
 
   // Formulario reactivo para el registro de datos de la pagina.
@@ -43,7 +49,24 @@ export class AlumnoComponent implements OnInit {
   ngOnInit(): void {
     // Ejecutamos los dos metodos al iniciar la carga de la pagina web
     this.getAlumnos();
+    this.btnGuardar = false;
+    this.btnEditar = false;
+    this.btnCancelar = false;
+    this.ocultarbusquedaAlumno = true;
+  }
+
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
     this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+    this.ocultarbusquedaAlumno = true;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
   // Obtener todos los Alumnos
   getAlumnos(): void {
@@ -57,7 +80,7 @@ export class AlumnoComponent implements OnInit {
       }
     );
   }
-  // Registrar alumno
+  // Guardar alumno
   registrarAlumno(): void {
     if (this.formularioRegistro.valid) {
       this.servicioAlumno
@@ -66,7 +89,7 @@ export class AlumnoComponent implements OnInit {
           (res) => {
             this.alertas.alertsuccess();
             this.getAlumnos();
-            this.formularioRegistro.reset();
+            this.cerrarModal();
           },
           (error) => {
             this.alertas.alerterror();
@@ -77,7 +100,11 @@ export class AlumnoComponent implements OnInit {
     }
   }
   // Obtener alumno por id para mostrar los campos en los input para su proxima edicion
-  AlumnoId(alumno: Alumno): void {
+  AlumnoId(alumno: Alumno, content : any): void {
+    this.modalService.open(content,{size:'lg'});
+    this.btnCancelar = true;
+    this.btnEditar = false;
+    this.btnGuardar = true;
     this.servicioAlumno.getAlumnoId(alumno).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -91,7 +118,7 @@ export class AlumnoComponent implements OnInit {
           direccion_alumno: res[0].direccion_alumno,
         });
         this.btnEditar = false;
-        this.btnRegistrar = true;
+        this.btnGuardar = true;
       },
       (error) => {
         this.alertas.alerterror();
@@ -106,13 +133,13 @@ export class AlumnoComponent implements OnInit {
       .editarAlumno(this.formularioRegistro.value, id)
       .subscribe(
         (res) => {
-           console.log(res)
+          console.log(res)
           this.alertas.alertedit();
           this.getAlumnos();
-          this.cancelar();
+          this.cerrarModal();
         },
         (error) => {
-           console.log(error)
+          console.log(error)
           this.alertas.alerterror();
         }
       );
@@ -140,27 +167,41 @@ export class AlumnoComponent implements OnInit {
       });
   }
 
-  busqueda(): void {
-    this.servicioAlumno.busquedaAlumno(this.buscar.nombre_alumno).subscribe(
+
+// Busqueda de acompañantes por alumno
+busquedaAlumno(): void{
+  if (this.buscar_alumno == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioAlumno.busquedaAlumno(this.buscar_alumno).subscribe(
       (res) => {
-        console.log(res);
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusquedaAlumno = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusquedaAlumno = false;
+        }
         this.listadoAlumnos = res;
       },
       (error) => {
-        console.log(error);
+        this.alertas.alerterror();
       }
     )
   }
+}
 
-  cancelarbusqueda(): void {
-    this.getAlumnos();
-    this.buscar = new Alumno();
-  }
+// Funcion para cancelar busqueda por alumno
+cancelarbusquedaAlumno(): void {
+  this.ocultarbusquedaAlumno = true;
+  this.getAlumnos();
+  this.buscar_alumno = "";
+}
 
-  // Limpiar los campos
-  cancelar(): void {
-    this.formularioRegistro.reset();
-    this.btnEditar = true;
-    this.btnRegistrar = false;
-  }
+ // Funcion cancelar solo para borrar los valores de formulario reactivo
+cancelar(): void{
+  this.formularioRegistro.reset();
+}
+
 }

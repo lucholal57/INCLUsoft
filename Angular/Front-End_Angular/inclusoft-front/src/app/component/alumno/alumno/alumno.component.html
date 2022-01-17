@@ -11,124 +11,151 @@
 <form [formGroup]="formularioRegistro" (submit)="registrarAlumno()">
 
   <div>
-    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
   </div>
-<div class="container" id="contenedorRegistro">
-  <legend>Formulario de registro Alumno</legend>
 
-  <hr />
-  <div class="form-row" >
-    <div class="form-group col-md-4">
-      <label for="nombre">Nombre</label>
-      <input
-        type="text"
-        name="nombre"
-        id="nombre"
-        class="form-control"
-        placeholder="Ingrese el nombre"
-        formControlName="nombre_alumno"
-        required
-      />
+  <ng-template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario de Alumnos</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
 
-    <div class="form-group col-md-4">
-      <label for="apellido">Apellido</label>
-      <input
-        type="text"
-        name="apellido   "
-        id="appelido"
-        class="form-control"
-        placeholder="Ingrese el apellido"
-        formControlName="apellido_alumno"
-        required
-      />
+    <div class="modal-body">
+
+        <div class="form-group">
+          <label style="color:black" for="nombre">Nombre</label>
+          <div class="col-sm-15">
+          <input
+            type="text"
+            name="nombre"
+            id="nombre"
+            class="form-control"
+            placeholder="Ingrese el nombre"
+            formControlName="nombre_alumno"
+            required
+          />
+        </div>
+        </div>
+
+        <div class="form-group">
+          <label style="color:black" for="apellido">Apellido</label>
+          <div class="col-sm-15">
+          <input
+            type="text"
+            name="apellido   "
+            id="appelido"
+            class="form-control"
+            placeholder="Ingrese el apellido"
+            formControlName="apellido_alumno"
+            required
+          />
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label style="color:black" for="nomber">DNI</label>
+          <div class="col-sm-15">
+          <input
+            type="number"
+            name="dni"
+            id="dni"
+            class="form-control"
+            placeholder="Ingrese el DNI"
+            formControlName="dni_alumno"
+            required
+          />
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label style="color:black" for="telefono">Telefono</label>
+          <div class="col-sm-15">
+          <input
+            type="number"
+            name="telefono"
+            id="telefono"
+            class="form-control"
+            placeholder="Ingrese el telefono"
+            formControlName="telefono_alumno"
+            required
+          />
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label style="color:black" for="nomber">F. Nacimiento</label>
+          <div class="col-sm-15">
+          <input
+            type="date"
+            name="nacimiento"
+            id="nacimiento"
+            class="form-control"
+            formControlName="fecha_nacimiento_alumno"
+            required
+          />
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label style="color:black" for="nomber">Lugar Nacimiento</label>
+          <div class="col-sm-15">
+          <input
+            type="text"
+            name="lugarn"
+            id="lugarn"
+            class="form-control"
+            placeholder="Ingrese el lugar de nacimiento"
+            formControlName="lugar_nacimiento_alumno"
+            required
+          />
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label style="color:black" for="nomber">Direccion</label>
+          <div class="col-sm-15">
+          <input
+            type="text"
+            name="direccion"
+            id="direccion"
+            class="form-control"
+            placeholder="Ingrese la direccion"
+            formControlName="direccion_alumno"
+            required
+          />
+        </div>
+      </div>
+
     </div>
 
-    <div class="form-group col-md-4">
-      <label for="nomber">DNI</label>
-      <input
-        type="number"
-        name="dni"
-        id="dni"
-        class="form-control"
-        placeholder="Ingrese el DNI"
-        formControlName="dni_alumno"
-        required
-      />
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="registrarAlumno()" [disabled]="btnGuardar">Guardar</button>
+      <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarAlumnoId()">Editar</button>
+      <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
     </div>
+  </ng-template>
 
-    <div class="form-group col-md-4">
-      <label for="telefono">Telefono</label>
-      <input
-        type="number"
-        name="telefono"
-        id="telefono"
-        class="form-control"
-        placeholder="Ingrese el telefono"
-        formControlName="telefono_alumno"
-        required
-      />
-    </div>
-
-    <div class="form-group col-md-4">
-      <label for="nomber">F. Nacimiento</label>
-      <input
-        type="date"
-        name="nacimiento"
-        id="nacimiento"
-        class="form-control"
-        formControlName="fecha_nacimiento_alumno"
-        required
-      />
-    </div>
-
-    <div class="form-group col-md-4">
-      <label for="nomber">Lugar Nacimiento</label>
-      <input
-        type="text"
-        name="lugarn"
-        id="lugarn"
-        class="form-control"
-        placeholder="Ingrese el lugar de nacimiento"
-        formControlName="lugar_nacimiento_alumno"
-        required
-      />
-    </div>
-
-    <div class="form-group col-md-12">
-      <label for="nomber">Direccion</label>
-      <input
-        type="text"
-        name="direccion"
-        id="direccion"
-        class="form-control"
-        placeholder="Ingrese la direccion"
-        formControlName="direccion_alumno"
-        required
-      />
-    </div>
-  </div>
-<hr>
-</div>
-
-  <div class="container" id="contenedorBotones" >
-    <div class="form-group">
-      <button  class="btn btn-primary" [disabled]="btnRegistrar">Registrar</button>
-      <button type="button" class="btn btn-warning" [disabled]= "btnEditar" (click)='editarAlumnoId()'>Editar</button>
-    <button type="reset" class="btn btn-danger" [disabled]= "btnCancelar" (click)='cancelar()'>Cancelar</button>
-  </div>
-</div>
 </form>
-<hr>
+
 <div class="container" id="contenedorBusqueda">
   <div class="form-row">
-    <div class="form-group col-md-2">
-    <button class="btn btn-primary" (click)="busqueda()">Buscar</button>
-    <button class="btn btn-warning" (click)="cancelarbusqueda()">Cancelar</button>
+    <div class="form-group">
+      <legend>Busquedas por Alumno</legend>
+      <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+  class="form-control" [(ngModel)]="buscar_alumno">
+  <hr>
+    <button class="btn btn-primary" (click)="busquedaAlumno()">Buscar</button>
+    <button class="btn btn-warning" [hidden]="ocultarbusquedaAlumno" (click)="cancelarbusquedaAlumno()">Cancelar</button>
   </div>
-  <div class="form-group col-md-4">
-  <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
-  class="form-control" [(ngModel)]="buscar.nombre_alumno">
+</div>
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
   </div>
 </div>
 </div>
@@ -150,7 +177,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let alumno of listadoAlumnos  | paginate: { itemsPerPage: 2, currentPage: p }" >
+          <tr *ngFor="let alumno of listadoAlumnos  | paginate: { itemsPerPage: 3, currentPage: p }" >
               <th scope="row">{{alumno.id}}</th>
               <td scope="row">{{alumno.nombre_alumno}} {{alumno.apellido_alumno}}</td>
               <td scope="row">{{alumno.dni_alumno}}</td>
@@ -159,7 +186,7 @@
               <td scope="row">{{alumno.lugar_nacimiento_alumno}}</td>
               <td scope="row">{{alumno.direccion_alumno}}</td>
               <td>
-                  <button class="btn btn-warning" (click)="AlumnoId(alumno)">Editar</button>
+                  <button class="btn btn-warning" (click)="AlumnoId(alumno, content)">Editar</button>
                   <button class="btn btn-danger" (click)="eliminarAlumno(alumno)">Eliminar</button>
             </td>
           </tr>

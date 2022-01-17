@@ -1,56 +1,48 @@
 from django.urls import path
-from . import views
+from taller.views import (TallerListado,TallerBuscarPorId,BusquedaTallerPorNombre,
+                        InformeCuatrimestralListado,InformeCuatrimestralBuscarPorId,BusquedaInformeCuatrimestralTaller,
+                        MaterialesTallerListado,MaterialesTallerBuscarPorId,BusquedaMaterialesTaller,
+                        VentasTallerListado,VentasTallerBuscarPorId,BusquedaVentasTaller,
+                        ProduccionTallerListado,ProduccionTallerBuscarPorId,BusquedaProduccionTaller,
+                        ComprasTallerListado,ComprasTallerBuscarPorId,BusquedaComprasTaller,
+                        InventarioTallerListado,InventarioTallerBuscarPorId,BusquedaInventarioTaller,)
 
 
 
 urlpatterns = [
     #Rutas para el taller
-    path('taller/listados', views.TallerListado.as_view()),
-    path('taller/<int:pk>', views.TallerBuscarPorId.as_view()),
-    path('taller/registrar', views.TallerRegistrar.as_view()),
-    path('taller/editar/<int:pk>', views.TallerEditar.as_view()),
-    path('taller/eliminar/<int:pk>', views.TallerEliminar.as_view()),
+    path('taller', TallerListado),
+    path('taller/<int:pk>', TallerBuscarPorId),
+    path('taller/buscar/<str:nombre_taller>', BusquedaTallerPorNombre),
     
     #Rutas para informes cuatrimestrales
-    path('taller/informes_cuatrimestrales/listados', views.InformeCuatrimestralListado.as_view()),
-    path('taller/informes_cuatrimestrales/<int:pk>', views.InformeCuatrimestralBuscarPorId.as_view()),
-    path('taller/informes_cuatrimestrales/registrar', views.InformeCuatrimestralRegistrar.as_view()),
-    path('taller/informes_cuatrimestrales/editar/<int:pk>', views.InformeCuatrimestralEditar.as_view()),
-    path('taller/informes_cuatrimestrales/eliminar/<int:pk>', views.InformeCuatrimestralEliminar.as_view()),
-    
+    path('informes_cuatrimestrales', InformeCuatrimestralListado),
+    path('informes_cuatrimestrales/<int:pk>', InformeCuatrimestralBuscarPorId),
+    path('informes_cuatrimestrales/buscar/<str:nombre_taller>', BusquedaInformeCuatrimestralTaller),
+
     #Rutas para materiales del taller
-    path('taller/materiales_taller/listados', views.MaterialesTallerListado.as_view()),
-    path('taller/materiales_taller/<int:pk>', views.MaterialesTallerBuscarPorId.as_view()),
-    path('taller/materiales_taller/registrar', views.MaterialesTallerRegistrar.as_view()),
-    path('taller/materiales_taller/editar/<int:pk>', views.MaterialesTallerEditar.as_view()),
-    path('taller/materiales_taller/eliminar/<int:pk>', views.MaterialesTallerEliminar.as_view()),
+    path('materiales_taller', MaterialesTallerListado),
+    path('materiales_taller/<int:pk>', MaterialesTallerBuscarPorId),
+    path('materiales_taller/buscar/<str:nombre_taller>', BusquedaMaterialesTaller),
     
     #Rutas para ventas de taller
-    path('taller/ventas_taller/listados', views.VentasTallerListado.as_view()),
-    path('taller/ventas_taller/<int:pk>', views.VentasTallerBuscarPorId.as_view()),
-    path('taller/ventas_taller/registrar', views.VentasTallerRegistrar.as_view()),
-    path('taller/ventas_taller/editar/<int:pk>', views.VentasTallerEditar.as_view()),
-    path('taller/ventas_taller/eliminar/<int:pk>', views.VentasTallerEliminar.as_view()),
-    
+    path('ventas_taller', VentasTallerListado),
+    path('ventas_taller/<int:pk>', VentasTallerBuscarPorId),
+    path('ventas_taller/busqueda/<str:nombre_taller>', BusquedaVentasTaller),
+
     #Rutas para produccion de taller
-    path('taller/produccion_taller/listados', views.ProduccionTallerListado.as_view()),
-    path('taller/produccion_taller/<int:pk>', views.ProduccionTallerBuscarPorId.as_view()),
-    path('taller/produccion_taller/registrar', views.ProduccionTallerRegistrar.as_view()),
-    path('taller/produccion_taller/editar/<int:pk>', views.ProduccionTallerEditar.as_view()),
-    path('taller/produccion_taller/eliminar/<int:pk>', views.ProduccionTallerELiminar.as_view()),
+    path('produccion_taller', ProduccionTallerListado),
+    path('produccion_taller/<int:pk>', ProduccionTallerBuscarPorId),
+    path('produccion_taller/', BusquedaProduccionTaller),
     
     #Rutas para Compras Taller
-    path('taller/compras_taller/listados', views.ComprasTallerListado.as_view()),
-    path('taller/compras_taller/<int:pk>', views.ComprasTallerBuscarPorId.as_view()),
-    path('taller/compras_taller/registrar', views.ComprasTallerRegistrar.as_view()),
-    path('taller/compras_taller/editar/<int:pk>', views.ComprasTallerEditar.as_view()),
-    path('taller/compras_taller/eliminar/<int:pk>', views.ComprasTallerEliminar.as_view()),
+    path('compras_taller', ComprasTallerListado),
+    path('compras_taller/<int:pk>', ComprasTallerBuscarPorId),
+    path('compras_taller/buscar/<str:nombre_taller>', BusquedaComprasTaller),
     
     #Rutas para Inventario Taller
-    path('taller/inventario_taller/listados', views.InventarioTallerListado.as_view()),
-    path('taller/inventario_taller/<int:pk>', views.InventarioTallerBuscarPorId.as_view()),
-    path('taller/inventario_taller/registrar', views.InventarioTallerRegistrar.as_view()),
-    path('taller/inventario_taller/editar/<int:pk>', views.InventarioTallerEditar.as_view()),
-    path('taller/inventario_taller/eliminar/<int:pk>', views.InventarioTallerEliminar.as_view()),
-    
+    path('inventario_taller', InventarioTallerListado),
+    path('inventario_taller/<int:pk>', InventarioTallerBuscarPorId),
+    path('inventario_taller/buscar/<str:nombre_taller>', BusquedaInventarioTaller),
+   
 ]

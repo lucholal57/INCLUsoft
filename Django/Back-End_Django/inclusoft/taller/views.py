@@ -1,417 +1,455 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.views import APIView
-
 from rest_framework import status
-from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
-                     Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
-from .serializers import (Compras_TallerSerializer, Compras_TallerTallerSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralTallerSerializer, Inventario_TallerSerializer, Inventario_TallerTallerSerializer, Materiales_TallerSerializer,
-                          Materiales_TallerTallerSerializer, Produccion_TallerSerializer, Produccion_TallerTallererSerializer, TallerEditarCrearSerializer, TallerSerializer, Informe_CuatrimestralTallerSerializer, Ventas_TallerSerializer, Ventas_TallerTallerSerializer, )
+from rest_framework.decorators import api_view
+
+from taller.models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
+ Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
+
+from taller.serializers import (Compras_TallerSerializer, Compras_TallerPostPutSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralPostPutSerializer,                    Inventario_TallerSerializer, Inventario_TallerPostPutSerializer, Materiales_TallerSerializer,
+Materiales_TallerPostPutSerializer, Produccion_TallerSerializer, Produccion_TallerPostPutSerializer, TallerPostPutSerializer, TallerSerializer, Ventas_TallerSerializer, Ventas_TallerPostPutSerializer, )
 
 
 # Create your views here.
 # VIEW DE TALLER
-
-class TallerListado(APIView):
-    """ Listado Taller """
-
-    def get(self, request):
-        taller = Taller.objects.all().order_by('id')
-        serializer = TallerSerializer(taller, many=True)
-        return Response(serializer.data)
-
-
-class TallerBuscarPorId(APIView):
-    """ view de busqueda de taller por ID"""
-
-    def get(self, request, pk):
-        taller = Taller.objects.filter(id=pk)
-        serializer = TallerSerializer(taller, many=True)
-        return Response(serializer.data)
-
-
-class TallerRegistrar(APIView):
-    """ view para registrar taller
-    def post(self, request):
-        serializer = TallerSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)       
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def TallerListado(request, *args, **kwargs):
     
-    """
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        serializer = TallerEditarCrearSerializer(data=data)
+    #List
+    if request.method == 'GET':
+        #Queryset
+        taller = Taller.objects.all().order_by('id')
+        serializer = TallerSerializer(taller,many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #Create 
+    elif request.method == 'POST':
+        serializer = TallerPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             nuevo_taller = Taller.objects.create(**serializer.validated_data)
-        
-            nuevo_taller.alumno_id.set(data.get('alumno_id'))
-            nuevo_taller.personal_id.set(data.get('personal_id'))
-        
-            
-            return Response(serializer.data)
+            nuevo_taller.alumno_id.set(request.data.get('alumno_id'))
+            nuevo_taller.personal_id.set(request.data.get('personal_id'))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+# Busqueda por id de taller para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def TallerBuscarPorId(request, pk=None):
+    # Consulta para obtener el listado en el modal sin First
+    taller = Taller.objects.filter(id=pk)
     
-
-class TallerEditar(APIView):
-    """ view para editar un taller """
-
-    def put(self, request, pk):
-        taller = Taller.objects.get(id=pk)
-        serializer = TallerEditarCrearSerializer(instance=taller, data=request.data)
-        if serializer.is_valid():
-            taller_actualizado= serializer.save()
+    #Validacion
+    if taller:
+        #Queryset
+        if request.method == 'GET':
+            serializer = TallerPostPutSerializer(taller, many=True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido del modal con First
+            taller_edicion = Taller.objects.filter(id=pk).first()
+            serializer = TallerPostPutSerializer(instance=taller_edicion, data=request.data)
+            if serializer.is_valid():
+                taller_actualizado =serializer.save()
+                taller_actualizado.alumno_id.set(request.data.get('alumno_id'))
+                taller_actualizado.personal_id.set(request.data.get('personal_id'))
+                return Response(serializer.data, status = status.HTTP_200_OK)
+            else:
+                return Response(serializer.data, status = status.HTTP_400_BAD_REQUEST)
             
-            taller_actualizado.alumno_id.set(request.data.get('alumno_id'))
-            taller_actualizado.personal_id.set(request.data.get('personal_id'))
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors, status = 400)
+        #Delete
+        elif request.method == 'DELETE':
+            taller.delete()
+            return Response({'message':'Tallereliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un Taller con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-
-class TallerEliminar(APIView):
-    """ view para eliminar taller """
-
-    def delete(self, request, pk):
-        taller = Taller.objects.get(id=pk)
-        taller.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#Busqueda de taller por nombre
+@api_view(['GET'])
+def BusquedaTallerPorNombre(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    serializer = TallerSerializer(taller, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
 
 # VIEW DE INFORMES CUATRIMESTRALES
-
-
-class InformeCuatrimestralListado(APIView):
-    """ view para listar informes cuatrimetrales"""
-
-    def get(self, request):
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def InformeCuatrimestralListado(request):
+    
+    #List
+    if request.method == 'GET':
+        #Queryset
         informe_cuatrimestral = Informe_Cuatrimestral.objects.all().order_by('id')
-        serializer = Informe_CuatrimestralTallerSerializer(
-            informe_cuatrimestral, many=True)
-        return Response(serializer.data)
-
-
-class InformeCuatrimestralBuscarPorId(APIView):
-    """ view para buscar informes cuatrimestrales por id"""
-
-    def get(self, request, pk):
-        informe_cuatrimestral = Informe_Cuatrimestral.objects.filter(id=pk)
-        serializer = Informe_CuatrimestralSerializer(
-            informe_cuatrimestral, many=True)
-        return Response(serializer.data)
-
-
-class InformeCuatrimestralRegistrar(APIView):
-    """ view para registrar informe cuatrimestral"""
-
-    def post(self, request):
-        informe_cuatrimestral = Informe_Cuatrimestral.objects.all()
-        serializer = Informe_CuatrimestralSerializer(data=request.data)
+        serializer = Informe_CuatrimestralSerializer(informe_cuatrimestral, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #Create
+    elif request.method == 'POST':
+        serializer = Informe_CuatrimestralPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def InformeCuatrimestralBuscarPorId(request, pk=None):
+    #Consulta para obtener el listado en el modal sin First
+    informe_cuatrimestral = Informe_Cuatrimestral.objects.filter(id=pk)
+    
+    #Validacion
+    if informe_cuatrimestral:
+        #Queryset
+        if request.method == 'GET':
+            serializer = Informe_CuatrimestralPostPutSerializer(informe_cuatrimestral, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            # Consulta para editar el contenido con First
+            informe_cuatrimestral_edicion = Informe_Cuatrimestral.objects.filter(id=pk).first()
+            serializer = Informe_CuatrimestralPostPutSerializer(informe_cuatrimestral_edicion, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+            informe_cuatrimestral.delete()
+            return Response({'message':'Informe Cuatrimestral eliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un acompañante con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-
-class InformeCuatrimestralEditar(APIView):
-    """ view para editar informes cuatrimestrales"""
-
-    def put(self, request, pk):
-        informe_cuatrimestral = Informe_Cuatrimestral.objects.get(id=pk)
-        serializer = Informe_CuatrimestralSerializer(
-            informe_cuatrimestral, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-
-
-class InformeCuatrimestralEliminar(APIView):
-    """ view para eliminar informes cuatrimestrales"""
-
-    def delete(self, request, pk):
-        informe_cuatrimestral = Informe_Cuatrimestral.objects.get(id=pk)
-        informe_cuatrimestral.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
+#Busqueda de informe cuatrimestal por taller
+@api_view(['GET'])
+def BusquedaInformeCuatrimestralTaller(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    informe_cuatrimestral = Informe_Cuatrimestral.objects.filter(taller__in = taller)
+    serializer = Informe_CuatrimestralSerializer(informe_cuatrimestral, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+        
 # VIEW DE MATERIALES DE TALLER
-
-class MaterialesTallerListado(APIView):
-    """ view para listar materiales de talller """
-
-    def get(self, request):
-        materiales_taller = Materiales_Taller.objects.all().order_by('id')
-        serializer = Materiales_TallerTallerSerializer(
-            materiales_taller, many=True)
-        return Response(serializer.data)
-
-
-class MaterialesTallerBuscarPorId(APIView):
-    """ view para buscar materiales de taller por id"""
-
-    def get(self, request, pk):
-        materiales_taller = Materiales_Taller.objects.filter(id=pk)
-        serializer = Materiales_TallerSerializer(materiales_taller, many=True)
-        return Response(serializer.data)
-
-
-class MaterialesTallerRegistrar(APIView):
-    """ view para registrar materiales de taller"""
-
-    def post(self, request):
-        materiales_taller = Materiales_Taller.objects.all()
-        serializer = Materiales_TallerSerializer(data=request.data)
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def MaterialesTallerListado(request):
+    
+    #List
+    if request.method == 'GET':
+        #Queryset
+        materiales = Materiales_Taller.objects.all().order_by('id')
+        serializer = Materiales_TallerSerializer(materiales, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #Create
+    elif request.method == 'POST':
+        serializer = Materiales_TallerPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def MaterialesTallerBuscarPorId(request, pk=None):
+    #Consulta para obtener el listado en el modal sin First
+    materiales = Materiales_Taller.objects.filter(id=pk)
+    
+    #Validacion
+    if materiales:
+        #Queryset
+        if request.method == 'GET':
+            serializer = Materiales_TallerPostPutSerializer(materiales, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            # Consulta para editar el contenido con First
+            materiales_edicion = Materiales_Taller.objects.filter(id=pk).first()
+            serializer = Materiales_TallerPostPutSerializer(materiales_edicion, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+            materiales.delete()
+            return Response({'message':'MAteriales eliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un material con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-
-class MaterialesTallerEditar(APIView):
-    """ view para editar materiales de taller"""
-
-    def put(self, request, pk):
-        materiales_taller = Materiales_Taller.objects.get(id=pk)
-        serializer = Materiales_TallerSerializer(
-            materiales_taller, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-
-
-class MaterialesTallerEliminar(APIView):
-    """ view para eliminar materiales de taller"""
-
-    def delete(self, request, pk):
-        materiales_taller = Materiales_Taller.objects.get(id=pk)
-        materiales_taller.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#Busqueda de materiales por taller
+@api_view(['GET'])
+def BusquedaMaterialesTaller(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    materiales = Materiales_Taller.objects.filter(taller__in = taller)
+    serializer = Materiales_TallerSerializer(materiales, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
 
 # VIEW DE VENTAS DE TALLER
-
-
-class VentasTallerListado(APIView):
-    """ view para el listado de ventas del taller"""
-
-    def get(self, request):
-        ventas_taller = Ventas_Taller.objects.all().order_by('id')
-        serializer = Ventas_TallerTallerSerializer(ventas_taller, many=True)
-        return Response(serializer.data)
-
-
-class VentasTallerBuscarPorId(APIView):
-    """ view para buscar por id ventas de talleres"""
-
-    def get(self, request, pk):
-        ventas_taller = Ventas_Taller.objects.filter(id=pk)
-        serializer = Ventas_TallerSerializer(ventas_taller, many=True)
-        return Response(serializer.data)
-
-
-class VentasTallerRegistrar(APIView):
-    """ view de registro de ventas taller"""
-
-    def post(self, request):
-        serializer = Ventas_TallerSerializer(data=request.data)
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def VentasTallerListado(request):
+    
+    #List
+    if request.method == 'GET':
+        #Queryset
+        ventas = Ventas_Taller.objects.all().order_by('id')
+        serializer = Ventas_TallerSerializer(ventas, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #Create
+    elif request.method == 'POST':
+        serializer = Ventas_TallerPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def VentasTallerBuscarPorId(request, pk=None):
+    # Consulta para obtener el listado en el modal sin First
+    ventas = Ventas_Taller.objects.filter(id=pk)
+    
+    #validacion
+    if ventas:
+        #List
+        if request.method == 'GET':
+            #Queryset
+            serializer = Ventas_TallerPostPutSerializer(ventas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            # Consulta para editar el contenido con First
+            ventas_edicion = Ventas_Taller.objects.filter(id=pk).first()
+            serializer = Ventas_TallerPostPutSerializer(ventas_edicion, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+            ventas.delete()
+            return Response({'message':'Venta eliminada correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado una venta con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
+#Busqueda de ventas por taller
+@api_view(['GET'])
+def BusquedaVentasTaller(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    ventas = Ventas_Taller.objects.filter(taller__in = taller)
+    serializer = Ventas_TallerSerializer(ventas, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
 
-class VentasTallerEditar(APIView):
-    """ view para editar ventas de taller"""
-
-    def put(self, request, pk):
-        ventas_taller = Ventas_Taller.objects.get(id=pk)
-        serializer = Ventas_TallerSerializer(ventas_taller, data=request.data)
+# VIEW DE PRODUCCION DE TALLERES
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def ProduccionTallerListado(request):
+    
+    #List
+    if request.method == 'GET':
+        produccion = Produccion_Taller.objects.all().order_by('id')
+        serializer = Produccion_TallerSerializer(produccion, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #Create
+    elif request.method == 'POST':
+        serializer = Produccion_TallerPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+# Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def ProduccionTallerBuscarPorId(request, pk=None):
+    # Consulta para obtener el listado en el modal sin First
+    produccion = Produccion_Taller.objects.filter(id=pk)
+    
+    #Validacion
+    if produccion:
+        
+        #List
+        if request.method == 'GET':
+            serializer = Produccion_TallerPostPutSerializer(produccion, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido con First
+            produccion_edicion = Produccion_Taller.objects.filter(id=pk).first()
+            serializer = Produccion_TallerPostPutSerializer(produccion_edicion, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+            produccion.delete()
+            return Response({'message':'Produccion eliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado una produccion con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-
-class VentasTallerEliminar(APIView):
-    """ view para eliminar ventas de taller"""
-
-    def delete(self, request, pk):
-        ventas_taller = Ventas_Taller.objects.get(id=pk)
-        ventas_taller.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    # VIEW DE PRODUCCION DE TALLERES
-
-
-class ProduccionTallerListado(APIView):
-    """ view de listado de produccion por taller"""
-
-    def get(self, request):
-        produccion_taller = Produccion_Taller.objects.all().order_by('id')
-        serializer = Produccion_TallerTallererSerializer(
-            produccion_taller, many=True)
-        return Response(serializer.data)
-
-
-class ProduccionTallerBuscarPorId(APIView):
-    """ view para buscar produccion por taller"""
-
-    def get(self, request, pk):
-        produccion_taller = Produccion_Taller.objects.filter(id=pk)
-        serializer = Produccion_TallerSerializer(produccion_taller, many=True)
-        return Response(serializer.data)
-
-
-class ProduccionTallerRegistrar(APIView):
-    """ view de registro para produccion de talleres"""
-    def post(self, request):
-        print(request.data)
-        serializer = Produccion_TallerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-
-
-class ProduccionTallerEditar(APIView):
-    """ view para editar produccion de taller"""
-
-    def put(self, request, pk):
-        produccion_taller = Produccion_Taller.objects.get(id=pk)
-        serializer = Produccion_TallerSerializer(
-            produccion_taller, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-
-
-class ProduccionTallerELiminar(APIView):
-    """ view para eliminar produccion de taller"""
-
-    def delete(self, request, pk):
-        produccion_taller = Produccion_Taller.objects.get(id=pk)
-        produccion_taller.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
+#Busqueda de produccion por taller
+@api_view(['GET'])
+def BusquedaProduccionTaller(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    produccion = Produccion_Taller.objects.filter(taller__in = taller)
+    serializer = Produccion_TallerSerializer(produccion, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+    
 # VIEW DE COMPRAS TALLER
-
-
-class ComprasTallerListado(APIView):
-    """ View de listado de compras por taller"""
-
-    def get(self, request):
-        compras_taller = Compras_Taller.objects.all().order_by('id')
-        serializer = Compras_TallerTallerSerializer(compras_taller, many=True)
-        return Response(serializer.data)
-
-
-class ComprasTallerBuscarPorId(APIView):
-    """ view para buscar compras por taller por ID """
-
-    def get(self, request, pk):
-        compras_taller = Compras_Taller.objects.filter(id=pk)
-        serializer = Compras_TallerSerializer(compras_taller, many=True)
-        return Response(serializer.data)
-
-
-class ComprasTallerRegistrar(APIView):
-    """ view para registrar compras por taller"""
-
-    def post(self, request):
-        serializer = Compras_TallerSerializer(data=request.data)
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def ComprasTallerListado(request):
+    
+    #List
+    if request.method == 'GET':
+        compras = Compras_Taller.objects.all().order_by('id')
+        serializer = Compras_TallerSerializer(compras, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    #Create
+    elif request.method == 'POST':
+        serializer = Compras_TallerPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def ComprasTallerBuscarPorId(request, pk=None):
+    #Consulta para obtener el listado en el modal sin First
+    compras = Compras_Taller.objects.filter(id=pk)
+    
+    #Validacion
+    if compras:
+        #Queryset
+        if request.method == 'GET':
+            serializer = Compras_TallerPostPutSerializer(compras, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido con First
+            compras_edicion = Compras_Taller.objects.filter(id=pk).first()
+            serializer = Compras_TallerPostPutSerializer(compras_edicion, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        if request.method == 'DELETE':
+            compras.delete()
+            return Response({'message':'Compra eliminado correctamente!'}, status=status.HTTP_200_OK)
+    
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado una compra con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
+#Busqueda de compra por taller
+@api_view(['GET'])
+def BusquedaComprasTaller(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    compras = Compras_Taller.objects.filter(taller__in = taller)
+    serializer = Compras_TallerSerializer(compras, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
 
-class ComprasTallerEditar(APIView):
-    """ View de edicion de compras por taller"""
-
-    def put(self, request, pk):
-        compras_taller = Compras_Taller.objects.get(id=pk)
-        serializer = Compras_TallerSerializer(
-            compras_taller, data=request.data)
+# VIEW DE INVENTARIO TALLER
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def InventarioTallerListado(request):
+    
+    #List
+    if request.method == 'GET':
+        inventario = Inventario_Taller.objects.all().order_by('id')
+        serializer = Inventario_TallerSerializer(inventario, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #Create
+    elif request.method == 'POST':
+        serializer = Inventario_TallerPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def InventarioTallerBuscarPorId(request, pk=None):
+    # Consulta para obtener el listado en el modal sin First
+    inventario = Inventario_Taller.objects.filter(id=pk)
+    
+    #Validacion
+    if inventario:
+        #List
+        if request.method == 'GET':
+            #Queryset
+            serializer = Inventario_TallerPostPutSerializer(inventario,many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            # Consulta para editar el contenido con First
+            inventario_edicion= Inventario_Taller.objects.filter(id=pk).first()
+            serializer = Inventario_TallerPostPutSerializer(inventario_edicion, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        if request.method == 'DELETE':
+            inventario.delete()
+            return Response({'message':'Inventarioeliminado correctamente!'}, status=status.HTTP_200_OK)
+    
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un inventario con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-
-class ComprasTallerEliminar(APIView):
-    """ view para eliminar compras de talleres"""
-
-    def delete(self, request, pk):
-        compras_taller = Compras_Taller.objects.get(id=pk)
-        compras_taller.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    # VIEW DE INVENTARIO TALLER
-
-
-class InventarioTallerListado(APIView):
-    """ view de listado de los inventarios por taller"""
-
-    def get(self, request):
-        inventario_taller = Inventario_Taller.objects.all().order_by('id')
-        serializer = Inventario_TallerTallerSerializer(
-            inventario_taller, many=True)
-        return Response(serializer.data)
-
-
-class InventarioTallerBuscarPorId(APIView):
-    """ view de busqueda de inventarios de taller por ID"""
-
-    def get(self, request, pk):
-        inventario_taller = Inventario_Taller.objects.filter(id=pk)
-        serializer = Inventario_TallerSerializer(inventario_taller, many=True)
-        return Response(serializer.data)
-
-
-class InventarioTallerRegistrar(APIView):
-    """View para registrar inventarios por taller"""
-
-    def post(self, request):
-        serializer = Inventario_TallerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-
-
-class InventarioTallerEditar(APIView):
-    """ view para editar inventarios de taller"""
-
-    def put(self, request, pk):
-        inventario_taller = Inventario_Taller.objects.get(id=pk)
-        serializer = Inventario_TallerSerializer(
-            inventario_taller, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-
-
-class InventarioTallerEliminar(APIView):
-    """  view para eliminar inventarios de taller"""
-
-    def delete(self, request, pk):
-        inventario_taller = Inventario_Taller.objects.get(id=pk)
-        inventario_taller.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#Busqueda de inventario por taller
+@api_view(['GET'])
+def BusquedaInventarioTaller(request,nombre_taller):
+    taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
+    inventario = Inventario_Taller.objects.filter(taller__in = taller)
+    serializer = Inventario_TallerSerializer(inventario, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)

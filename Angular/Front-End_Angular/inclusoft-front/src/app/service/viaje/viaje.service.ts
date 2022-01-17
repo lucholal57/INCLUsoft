@@ -38,8 +38,5 @@ export class ViajeService {
   eliminarViaje(viaje : Viaje) : Observable<Viaje[]> {
     return this.http.delete<Viaje[]>(this.url + 'viajes/' + viaje.id);
   }
-  // Buscar viaje por destino
-  busquedaDestino(destino : string): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.url + 'viajes/buscar/' + destino);
-  }
+
 }

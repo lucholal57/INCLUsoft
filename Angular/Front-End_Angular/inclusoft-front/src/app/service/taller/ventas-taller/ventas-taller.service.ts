@@ -14,29 +14,29 @@ const httpOption = {
 })
 export class VentasTallerService {
   // Variable para la url
-  private url = 'http://127.0.0.1:8000/taller/ventas_taller/';
+  private url = 'http://127.0.0.1:8000/';
 
  // Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
   constructor(private http: HttpClient) { }
 
   // obtener ventas de taller
   getVentasTaller(): Observable<VentasTaller[]> {
-    return this.http.get<VentasTaller[]>(this.url + 'listados');
+    return this.http.get<VentasTaller[]>(this.url + 'ventas_taller');
   }
   // Registrar ventas del taller
   registrarVentasTaller(formularioRegistro: any): Observable<VentasTaller[]> {
-    return this.http.post<VentasTaller[]>(this.url + 'registrar' , formularioRegistro, httpOption)
+    return this.http.post<VentasTaller[]>(this.url + 'ventas_taller' , formularioRegistro, httpOption)
   }
   // Obtener material de taller pasando el ID
   getVentasTallerId(ventas : VentasTaller): Observable<VentasTaller[]> {
-    return this.http.get<VentasTaller[]>(this.url + ventas.id)
+    return this.http.get<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id)
   }
   // Editar ventas taller pasando el ID, el tipo de objetoy la constante de cabecera HttpHeaders
   editarVentasTallerId(formularioRegistro: any, id: number): Observable<VentasTaller[]> {
-    return this.http.put<VentasTaller[]>(this.url + 'editar/' + id, formularioRegistro, httpOption);
+    return this.http.put<VentasTaller[]>(this.url + 'ventas_taller/' + id, formularioRegistro);
   }
   // Eliminar ventas del taller
   eliminarVentasTaller(ventas : VentasTaller): Observable<VentasTaller[]> {
-    return this.http.delete<VentasTaller[]>(this.url + 'eliminar/' + ventas.id)
+    return this.http.delete<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id)
   }
 }

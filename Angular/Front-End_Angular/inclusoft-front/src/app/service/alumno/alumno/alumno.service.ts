@@ -10,33 +10,33 @@ const httpOption = {headers: new HttpHeaders ({'content-type': ' application/jso
 })
 export class AlumnoService {
 
-  private url = 'http://127.0.0.1:8000/alumno/'
+  private url = 'http://127.0.0.1:8000/'
 
   constructor(private http: HttpClient) { }
 
   getAlumnos(): Observable<Alumno[]>{
-    return this.http.get<Alumno[]>(this.url + 'listados');
+    return this.http.get<Alumno[]>(this.url + 'alumno');
   }
 
   registrarAlumno(formularioregistro: any): Observable<Alumno[]>{
-    return this.http.post<Alumno[]>(this.url + 'registrar' , formularioregistro);
+    return this.http.post<Alumno[]>(this.url + 'alumno' , formularioregistro);
   }
 
 
   getAlumnoId(busqueda_alumno: Alumno): Observable<Alumno[]>{
-    return this.http.get<Alumno[]>(this.url + busqueda_alumno.id);
+    return this.http.get<Alumno[]>(this.url + 'alumno/' + busqueda_alumno.id);
   }
 
   editarAlumno(formularioregistro: any, id: number): Observable<Alumno[]>{
-    return this.http.put<Alumno[]>(this.url + 'editar/' + id, formularioregistro, httpOption);
+    return this.http.put<Alumno[]>(this.url + 'alumno/' + id, formularioregistro, httpOption);
 
   }
 
   eliminarAlumno(id: number): Observable<Alumno[]>{
-    return this.http.delete<Alumno[]>(this.url + 'eliminar/' + id);
+    return this.http.delete<Alumno[]>(this.url + 'alumno/' + id);
   }
 
   busquedaAlumno(nombre:string): Observable<Alumno[]>{
-    return  this.http.get<Alumno[]>(this.url + 'buscar/nombre/' + nombre)
+    return  this.http.get<Alumno[]>(this.url + 'alumno/buscar/' + nombre)
   }
 }

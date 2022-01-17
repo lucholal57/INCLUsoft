@@ -1,10 +1,51 @@
+<!--
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Formulario de Asignaciones</h4>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
 
-<ngx-charts-advanced-pie-chart
-[view]="view"
-[results]="getAlumno"
-[gradient]="gradient"
-(select)="onSelect($event)"
-(activate)="onActivate($event)"
-(deactivate)="onDeactivate($event)"
->
-</ngx-charts-advanced-pie-chart>
+    <div class="form-group">
+      <label style="color:black" for="alumno">Alumno</label>
+        <select class="form-control" formControlName="alumno" required>
+          <option value="">Seleccione un Alumno</option>
+          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+          </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+      <label style="color:black" for="alumno">Personal</label>
+        <select class="form-control" formControlName="personal" required>
+          <option value="">Seleccione un Personal</option>
+          <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+            {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+          </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+      <label style="color:black">Observaciones</label>
+      <div class="col-sm-15">
+        <input
+          type="text"
+          class="form-control"
+          id="observaciones"
+          formControlName="observaciones_acompanante"
+          required
+        />
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="registrarAcompanante()" [disabled]="btnGuardar">Guardar</button>
+    <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarAcompananteId()">Editar</button>
+    <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+  </div>
+</ng-template>
+-->

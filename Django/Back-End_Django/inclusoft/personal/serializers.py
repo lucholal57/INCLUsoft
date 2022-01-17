@@ -11,7 +11,7 @@ class PersonalSerializer(serializers.ModelSerializer):
         model = Personal
         fields = '__all__' 
 
-class Asistencia_PersonalPersonalSerializer(serializers.ModelSerializer):
+class AsistenciaSerializer(serializers.ModelSerializer):
     """
         Serializador de Asistencia Personal con Personal incluido por eso en el nombre figuran dos veces la palabra personal
     """
@@ -20,7 +20,7 @@ class Asistencia_PersonalPersonalSerializer(serializers.ModelSerializer):
         model = Asistencia_Personal
         fields = '__all__'
         depth = 2     
-class Asistencia_PersonalSerializer(serializers.ModelSerializer):
+class AsistenciaPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador Asistencia Personal Solamente
     """
@@ -29,7 +29,7 @@ class Asistencia_PersonalSerializer(serializers.ModelSerializer):
         fields = '__all__'     
         
 
-class Permiso_SalidaPersonalSerializer(serializers.ModelSerializer):
+class Permiso_SalidaSerializer(serializers.ModelSerializer):
     """
         Serialiador de Permisos de Salida con Personal
     """
@@ -39,7 +39,7 @@ class Permiso_SalidaPersonalSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2      
         
-class Permiso_SalidaSerializer(serializers.ModelSerializer):
+class Permiso_SalidaPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de Permisos de Salida
     """
@@ -47,7 +47,7 @@ class Permiso_SalidaSerializer(serializers.ModelSerializer):
         model = Permiso_Salida
         fields = '__all__'
 
-class Evaluacion_LabolarPersonalSerializer(serializers.ModelSerializer):
+class Evaluacion_LaboralSerializer(serializers.ModelSerializer):
     """
         Serializador de Evaluacion Laboral con Personal
     """
@@ -56,7 +56,7 @@ class Evaluacion_LabolarPersonalSerializer(serializers.ModelSerializer):
         model = Evaluacion_Laboral
         fields = '__all__'
         depth = 2       
-class Evaluacion_LaboralSerializer(serializers.ModelSerializer):
+class Evaluacion_LaboralPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador Evaluacion Laboral
     """
@@ -64,7 +64,7 @@ class Evaluacion_LaboralSerializer(serializers.ModelSerializer):
         model = Evaluacion_Laboral
         fields = '__all__'
 
-class Entrega_ProyectoPersonalSerializer(serializers.ModelSerializer):
+class Entrega_ProyectoSerializer(serializers.ModelSerializer):
     """
         Serializador Entrega de Proyectos con personal
     """
@@ -73,7 +73,7 @@ class Entrega_ProyectoPersonalSerializer(serializers.ModelSerializer):
         model = Entrega_Proyecto
         fields = '__all__'
         depth = 2       
-class Entrega_ProyectoSerializer(serializers.ModelSerializer):
+class Entrega_ProyectoPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador Entrega Proyecto
     """        

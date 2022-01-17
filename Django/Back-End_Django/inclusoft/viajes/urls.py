@@ -6,5 +6,5 @@ urlpatterns = [
     #Rutas para viajes
     path('viajes', ViajeListado),
     path('viajes/<int:pk>', ViajeBuscarPorId),
-    path('viajes/buscar/<str:destino>', BuscarViajePorDestino)
+    path('viajes/buscar/destino/<str:destino>', BuscarViajePorDestino)
 ]

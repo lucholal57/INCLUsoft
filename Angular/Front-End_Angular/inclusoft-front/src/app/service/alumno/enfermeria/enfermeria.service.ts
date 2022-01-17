@@ -14,29 +14,29 @@ const httpOption = {
 })
 export class EnfermeriaService {
 // Variable para la url
-private url = 'http://127.0.0.1:8000/alumno/enfermeria/';
+private url = 'http://127.0.0.1:8000/';
 
 // Injectamos en el constructor el servicio Httpcliente para hacer las peticiones
 constructor(private http: HttpClient) { }
 
 // Obtener Enfermeria
 getEnfermeria(): Observable<Enfermeria[]> {
-  return this.http.get<Enfermeria[]>(this.url + 'listados');
+  return this.http.get<Enfermeria[]>(this.url + 'enfermeria');
 }
 // Registrar Enfermeria
-registrarEnfermeria(enfermeria: Enfermeria): Observable<Enfermeria[]> {
-  return this.http.post<Enfermeria[]>(this.url + 'registrar' , enfermeria, httpOption);
+registrarEnfermeria(formularioRegistro: any): Observable<Enfermeria[]> {
+  return this.http.post<Enfermeria[]>(this.url + 'enfermeria' , formularioRegistro, httpOption);
 }
 // Obtener Enfermeria pasando el ID
 getEnfermeriaId( enfermeria: Enfermeria): Observable<Enfermeria[]> {
-  return this.http.get<Enfermeria[]>(this.url + enfermeria.id);
+  return this.http.get<Enfermeria[]>(this.url + 'enfermeria/' +  enfermeria.id);
 }
 // Editar enfermeria pasando el ID y el tipo de objeto y la constante de acbecera HttpHeaders
 editarEnfermeriaId(enfermeria: Enfermeria, id : number): Observable<Enfermeria[]> {
-  return this.http.put<Enfermeria[]>(this.url + 'editar/' + id , enfermeria, httpOption);
+  return this.http.put<Enfermeria[]>(this.url + 'enfermeria/' + id , enfermeria);
 }
 // Eliminar Enfermeria pasando el ID
 eliminarEnfermeria(enfermeria: Enfermeria): Observable<Enfermeria[]> {
-  return this.http.delete<Enfermeria[]>(this.url + 'eliminar/' + enfermeria.id);
+  return this.http.delete<Enfermeria[]>(this.url + 'enfermeria/' + enfermeria.id);
 }
 }

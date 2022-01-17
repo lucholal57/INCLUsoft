@@ -8,11 +8,12 @@ import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
-
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-acta-compromiso',
   templateUrl: './acta-compromiso.component.html',
-  styleUrls: ['./acta-compromiso.component.css']
+  styleUrls: ['./acta-compromiso.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class ActaCompromisoComponent implements OnInit {
   // Variable P para el conteo del paginado
@@ -21,20 +22,22 @@ export class ActaCompromisoComponent implements OnInit {
   listadoActaCompromiso: ActaCompromiso[];
   // Array de alumnos para el select
   listadoAlumnos: Alumno[];
-  // objeto tipo alumno para la busqueda_datos_adicionales
-  buscar : ActaCompromiso = new ActaCompromiso();
+  //  variable para buscar por alumno
+  buscar_alumno= "";
     // Variable de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
-  public ocultarbusqueda = false;
+  public ocultarbusqueda_Alumno = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
     private servicioAlumno: AlumnoService,
     private servicioActaCompromiso: ActaCompromisoService,
     private formBuilder: FormBuilder,
-    private alertas : AlertService
+    private alertas : AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) { }
 
   // Formulario reactivo para el registro de datos
@@ -54,8 +57,20 @@ export class ActaCompromisoComponent implements OnInit {
     this.getAlumno();
     this.getActaCompromiso();
     this.btnEditar = true;
-    this.ocultarbusqueda = true;
+    this.ocultarbusqueda_Alumno = true;
 
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
   // Obtener todos los alumnos para mostrar la lista de seleccion para registrar un acta compromiso
@@ -88,8 +103,8 @@ registrarActaCompromiso(): void{
     this.servicioActaCompromiso.registrarActaCompromiso(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
-        this.formularioRegistro.reset();
         this.getActaCompromiso();
+        this.cerrarModal();
       },
       (error) => {
       this.alertas.alerterror();
@@ -100,7 +115,11 @@ registrarActaCompromiso(): void{
   }
 }
 // Obtener Acta Compromiso por id para mostrar en los campos de los input en su proxima edicion
-ActaCompromisoId(acta_compromiso: ActaCompromiso): void{
+ActaCompromisoId(acta_compromiso: ActaCompromiso, content : any): void{
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
   this.servicioActaCompromiso.getActaCompromisoId(acta_compromiso). subscribe(
     (res) => {
       this.formularioRegistro.patchValue({
@@ -113,8 +132,6 @@ ActaCompromisoId(acta_compromiso: ActaCompromiso): void{
         dni_persona_autorizada: res[0].dni_persona_autorizada,
         alumno: res[0].alumno,
       });
-      this.btnEditar = false;
-      this.btnRegistrar = true;
     },
     (error) => {
      this.alertas.alerterror();
@@ -130,7 +147,7 @@ editarActaCompromisoId(): void{
       console.log(res);
       this.alertas.alertedit();
       this.getActaCompromiso();
-      this.cancelar();
+      this.cerrarModal();
     },
     (error) => {
       console.log(error);
@@ -167,35 +184,40 @@ eliminarActaCompromiso(acta_compromiso: ActaCompromiso ): void{
   });
 }
 
-busqueda(): void {
- this.servicioActaCompromiso.busquedaAlumno(this.buscar.alumno.nombre_alumno).subscribe(
-   (res) => {
-     console.log(res);
-     if(res.length != 0){
-      this.alertas.alertLoading();
-     }else {
-      this.alertas.alertLoadingError();
-     }
-     this.listadoActaCompromiso = res;
-     this.ocultarbusqueda = false;
-   },
-   (error) => {
-
-     console.log(error);
-   }
- )
+// Busqueda de acompañantes por alumno
+busquedaAlumno(): void{
+  if (this.buscar_alumno == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioActaCompromiso.busquedaAlumno(this.buscar_alumno).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Alumno = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Alumno = false;
+        }
+        this.listadoActaCompromiso = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
 }
 
 cancelarbusqueda(): void {
-  this.ocultarbusqueda = true;
+  this.ocultarbusqueda_Alumno = true;
   this.getActaCompromiso();
-  this.buscar = new ActaCompromiso();
+  this.buscar_alumno = "";
 }
 
 // Limpiar los campos
 cancelar(): void{
   this.formularioRegistro.reset();
-  this.btnRegistrar = false;
+  this.btnGuardar = false;
   this.btnEditar = true;
 }
 

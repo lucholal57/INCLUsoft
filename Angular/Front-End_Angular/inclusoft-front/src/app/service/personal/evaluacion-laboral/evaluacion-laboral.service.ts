@@ -16,33 +16,33 @@ const httpOption = {
 })
 export class EvaluacionLaboralService {
   // Variable para la url
-  private url = 'http://127.0.0.1:8000/personal/evaluacion_laboral/';
+  private url = 'http://127.0.0.1:8000/';
 
   // Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
   constructor (private http: HttpClient) { }
 
   // Obtener Evaluaciones Laborales
   getEvaluacionLaboral(): Observable<EvaluacionLaboral[]>{
-    return this.http.get<EvaluacionLaboral[]>(this.url + 'listados');
+    return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral');
   }
 
  // Registras Evaluacion Laboral
  registrarEvaluacionLaboral(formularioRegistro: any): Observable<EvaluacionLaboral[]> {
-   return this.http.post<EvaluacionLaboral[]>(this.url + 'registrar', formularioRegistro); 
+   return this.http.post<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral', formularioRegistro, httpOption);
  }
 
  // Obtener Evaluaciones laborales pasando el ID
  getEvaluacionesLaboralesId(evaluacioneslaborales: EvaluacionLaboral): Observable<EvaluacionLaboral[]> {
-   return this.http.get<EvaluacionLaboral[]>(this.url + evaluacioneslaborales.id)
+   return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' +  evaluacioneslaborales.id)
  }
 
  // Editar evaluaciones laborales pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
  editarEvaluacionLaboralId(formularioRegistro: any, id: number): Observable<EvaluacionLaboral[]> {
-   return this.http.put<EvaluacionLaboral[]>(this.url + 'editar/' + id, formularioRegistro, httpOption);
+   return this.http.put<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + id, formularioRegistro);
  }
 
  // Eliminar evaluaciones laborales
  elimarEvaluacionLaboral( evaluacionlaboral : EvaluacionLaboral): Observable<EvaluacionLaboral[]>{
-   return this.http.delete<EvaluacionLaboral[]>(this.url + 'eliminar/' + evaluacionlaboral.id);
+   return this.http.delete<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + evaluacionlaboral.id);
  }
 }

@@ -113,7 +113,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let acompanante of listadoAcompanantes | paginate: { itemsPerPage: 7, currentPage: p }">
+      <tr *ngFor="let acompanante of listadoAcompanantes | paginate: { itemsPerPage: 3, currentPage: p }">
       <td scope="row">{{acompanante.id}}</td>
       <td scope="row">{{acompanante.observaciones_acompanante}}</td>
       <td scope="row">{{acompanante.alumno.nombre_alumno}} {{acompanante.alumno.apellido_alumno }}</td>

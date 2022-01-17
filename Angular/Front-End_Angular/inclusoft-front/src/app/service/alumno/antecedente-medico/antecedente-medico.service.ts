@@ -14,29 +14,29 @@ const httpOption = {
 })
 export class AntecedenteMedicoService {
 // Variable para la url
-  private url = 'http://127.0.0.1:8000/alumno/antecedente_medico/';
+  private url = 'http://127.0.0.1:8000/';
 
 // Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
   constructor(private http: HttpClient) { }
 
 // Obtener Antecedentes medicos
 getAntecedenteMedico(): Observable<AntecedenteMedico[]>{
-  return this.http.get<AntecedenteMedico[]>(this.url + 'listados');
+  return this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico');
 }
 // Registrar Antecedentes medicos
 registrarAntecedenteMedico(formularioRegistro: any): Observable<AntecedenteMedico[]>{
-  return this.http.post<AntecedenteMedico[]>(this.url + 'registrar', formularioRegistro);
+  return this.http.post<AntecedenteMedico[]>(this.url + 'antecedente_medico', formularioRegistro,httpOption);
 }
 // Obtener Antecedente Medico pasando el ID
 getAntecedenteMedicoId(antecedente_medico: AntecedenteMedico): Observable<AntecedenteMedico[]>{
-  return this.http.get<AntecedenteMedico[]>(this.url + antecedente_medico.id);
+  return this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id);
 }
 // Editar Antecedente Medico pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
 editarAntecedenteMedicoId(formularioRegistro: any, id: number): Observable<AntecedenteMedico[]>{
-  return this.http.put<AntecedenteMedico[]>(this.url + 'editar/' + id, formularioRegistro, httpOption);
+  return this.http.put<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + id, formularioRegistro);
 }
 // Eliminar Antecedente Medico pasando el ID
 elimnarAntecedenteMedico(antecedente_medico: AntecedenteMedico): Observable<AntecedenteMedico[]>{
-  return this.http.delete<AntecedenteMedico[]>(this.url + 'eliminar/' + antecedente_medico.id);
+  return this.http.delete<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id);
 }
 }

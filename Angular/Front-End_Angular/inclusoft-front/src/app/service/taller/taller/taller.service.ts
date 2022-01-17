@@ -14,29 +14,29 @@ const httpOption = {
 })
 export class TallerService {
   // Variable para la url
-  private url = 'http://127.0.0.1:8000/taller/';
+  private url = 'http://127.0.0.1:8000/';
 
   // Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
   constructor(private http: HttpClient) {}
 
   // Obtenemos los talleres
   getTalleres(): Observable<Taller[]> {
-    return this.http.get<Taller[]>(this.url + 'listados');
+    return this.http.get<Taller[]>(this.url + 'taller');
   }
   // Registrar Taller
   registrarTaller(formularioRegistro: any): Observable<Taller[]> {
-    return this.http.post<Taller[]>(this.url + 'registrar' , formularioRegistro, httpOption);
+    return this.http.post<Taller[]>(this.url + 'taller' , formularioRegistro, httpOption);
   }
   // Obtener talleres pasando el ID
   getTallerId(taller: Taller): Observable<Taller[]>{
-    return this.http.get<Taller[]>(this.url + taller.id);
+    return this.http.get<Taller[]>(this.url + 'taller/' + taller.id);
   }
   // Editar Taller pasando el ID , tipo de objeto y constante de cabecera HttpHeaders
   editarTallerId(formularioRegistro: any, id: number): Observable<Taller[]> {
-    return this.http.put<Taller[]>(this.url + 'editar/' + id, formularioRegistro, httpOption);
+    return this.http.put<Taller[]>(this.url + 'taller/' + id, formularioRegistro);
   }
   // Eliminar Taller pasando el ID
   eliminarTaller(id: number): Observable<Taller[]>{
-    return this.http.delete<Taller[]>(this.url + 'eliminar/' + id);
+    return this.http.delete<Taller[]>(this.url + 'taller/' + id);
   }
 }

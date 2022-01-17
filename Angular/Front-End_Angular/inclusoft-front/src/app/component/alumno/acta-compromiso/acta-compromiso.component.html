@@ -11,153 +11,130 @@
 <form [formGroup]="formularioRegistro" (submit)="registrarActaCompromiso()">
 
   <div>
-    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
   </div>
 
-
-  <div class="container" id="contenedorRegistro">
-    <legend>Formulario Acta Compromiso</legend>
-    <hr>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
-      <div class="col-sm-6">
-        <select class="form-control" formControlName="alumno" required>
-          <option value="">Seleccione un Alumno</option>
-          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
-            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
-          </option>
-        </select>
-      </div>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario Acta Compromiso</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
 
-    <hr />
+    <div class="modal-body">
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">DIAS</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="dias"
-          placeholder="SEPARAR POR COMA"
-          formControlName="dias"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black" for="alumno">Alumno</label>
+          <select class="form-control" formControlName="alumno" required>
+            <option value="">Seleccione un Alumno</option>
+            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+              {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+            </option>
+          </select>
       </div>
-    </div>
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Ingreso</label>
-      <div class="col-sm-4">
-        <input
-          type="time"
-          class="form-control"
-          id="horaIngreso"
-          formControlName="ingreso"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black">DIAS</label>
+          <input
+            type="text"
+            class="form-control"
+            id="dias"
+            placeholder="SEPARAR POR COMA"
+            formControlName="dias"
+            required
+          />
       </div>
-    </div>
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Salida</label>
-      <div class="col-sm-4">
-        <input
-          type="time"
-          class="form-control"
-          id="horaSalida"
-          formControlName="salida"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black">Ingreso</label>
+          <input
+            type="time"
+            class="form-control"
+            id="horaIngreso"
+            formControlName="ingreso"
+            required
+          />
       </div>
-    </div>
 
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Traslado</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="traslado"
-          placeholder="Ingrese como se traslada el alumno"
-          formControlName="traslado"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black">Salida</label>
+          <input
+            type="time"
+            class="form-control"
+            id="horaSalida"
+            formControlName="salida"
+            required
+          />
       </div>
-    </div>
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Persona Autorizada</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="persona_autorizada"
-          placeholder="Ingrese persona autorizada al retiro"
-          formControlName="personas_autorizadas_retiro"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black">Traslado</label>
+          <input
+            type="text"
+            class="form-control"
+            id="traslado"
+            placeholder="Ingrese como se traslada el alumno"
+            formControlName="traslado"
+            required
+          />
       </div>
-    </div>
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">DNI</label>
-      <div class="col-sm-4">
-        <input
-          type="number"
-          class="form-control"
-          id="dni"
-          placeholder="Ingrese el DNI de la persona autorizada"
-          formControlName="dni_persona_autorizada"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black">Persona Autorizada</label>
+          <input
+            type="text"
+            class="form-control"
+            id="persona_autorizada"
+            placeholder="Ingrese persona autorizada al retiro"
+            formControlName="personas_autorizadas_retiro"
+            required
+          />
       </div>
-    </div>
-  </div>
-  <hr />
 
-  <div class="container" id="contenedorBotones">
-  <div class="form-group" >
-    <button
-      class="btn btn-primary"
-      [disabled]="btnRegistrar"
-    >
-      Registrar
-    </button>
-    <button
-      class="btn btn-warning"
-      [disabled]="btnEditar"
-      type="button"
-      (click)="editarActaCompromisoId()"
-    >
-      Editar
-    </button>
-    <button
-      class="btn btn-danger"
-      [disabled]="btnCancelar"
-      type="reset"
-      (click)="cancelar()"
-    >
-      Cancelar
-    </button>
-  </div>
-</div>
+      <div class="form-group">
+        <label style="color:black">DNI</label>
+          <input
+            type="number"
+            class="form-control"
+            id="dni"
+            placeholder="Ingrese el DNI de la persona autorizada"
+            formControlName="dni_persona_autorizada"
+            required
+          />
+      </div>
+
+    </div>
+    <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="registrarActaCompromiso()" [disabled]="btnGuardar">Guardar</button>
+    <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarActaCompromisoId()">Editar</button>
+    <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+    </div>
+  </ng-template>
+
 </form>
 
 <div class="container" id="contenedorBusqueda">
+
   <div class="form-row">
-    <div class="form-group col-md-2">
-      <legend>Busquedas</legend>
-    <button class="btn btn-primary" (click)="busqueda()">Buscar</button>
-    <button class="btn btn-warning" (click)="cancelarbusqueda()" [hidden]="ocultarbusqueda">Cancelar</button>
-  </div>
-  <div class="form-group col-md-4">
-  <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
-  class="form-control" [(ngModel)]="buscar.alumno.nombre_alumno">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Alumno</legend>
+    <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+    class="form-control" [(ngModel)]="buscar_alumno" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaAlumno()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Alumno" (click)="cancelarbusqueda()">Cancelar</button>
   </div>
 </div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
 </div>
 
 <div class="container-fluid" id="contenedorTabla">
@@ -177,7 +154,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let actas of listadoActaCompromiso | paginate: { itemsPerPage: 2, currentPage: p }">
+      <tr *ngFor="let actas of listadoActaCompromiso | paginate: { itemsPerPage: 3, currentPage: p }">
         <th scope="row">{{ actas.id }}</th>
         <td scope="row">
           {{ actas.alumno.nombre_alumno }} {{ actas.alumno.apellido_alumno }}
@@ -189,7 +166,7 @@
         <td scope="row">{{ actas.personas_autorizadas_retiro }}</td>
         <td scope="row">{{ actas.dni_persona_autorizada }}</td>
         <td colspan="2">
-          <button class="btn btn-warning" (click)="ActaCompromisoId(actas)"> Editar </button>
+          <button class="btn btn-warning" (click)="ActaCompromisoId(actas, content)"> Editar </button>
           <button class="btn btn-danger" (click)="eliminarActaCompromiso(actas)"> Eliminar</button>
         </td>
       </tr>

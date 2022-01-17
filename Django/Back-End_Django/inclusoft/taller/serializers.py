@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
-                     Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
+ Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
 
 from alumno.serializers import AlumnoSerializer
 from personal.serializers import PersonalSerializer
@@ -22,7 +22,7 @@ class TallerSerializer(serializers.ModelSerializer):
         
 
 
-class TallerEditarCrearSerializer(serializers.ModelSerializer):
+class TallerPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de Taller
     """
@@ -32,7 +32,7 @@ class TallerEditarCrearSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Informe_CuatrimestralTallerSerializer(serializers.ModelSerializer):
+class Informe_CuatrimestralSerializer(serializers.ModelSerializer):
     """
         Serializador de informe cuatrimestral con talleres
     """
@@ -44,7 +44,7 @@ class Informe_CuatrimestralTallerSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Informe_CuatrimestralSerializer(serializers.ModelSerializer):
+class Informe_CuatrimestralPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de informes cuatrimestrales
     """
@@ -53,7 +53,7 @@ class Informe_CuatrimestralSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class Materiales_TallerTallerSerializer(serializers.ModelSerializer):
+class Materiales_TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de materiales con el taller en conjuntoi por eso figuran dos veces la palabra traller
     """
@@ -65,7 +65,7 @@ class Materiales_TallerTallerSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Materiales_TallerSerializer(serializers.ModelSerializer):
+class Materiales_TallerPostPutSerializer(serializers.ModelSerializer):
     """
         Serializer de material del taller
     """
@@ -74,7 +74,7 @@ class Materiales_TallerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class Ventas_TallerTallerSerializer(serializers.ModelSerializer):
+class Ventas_TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de ventas taller con taller por eso el nombre repetido
     """
@@ -86,13 +86,13 @@ class Ventas_TallerTallerSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Ventas_TallerSerializer(serializers.ModelSerializer):
+class Ventas_TallerPostPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ventas_Taller
         fields = '__all__'
 
 
-class Produccion_TallerTallererSerializer(serializers.ModelSerializer):
+class Produccion_TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de producccion taller con taller
     """
@@ -104,7 +104,7 @@ class Produccion_TallerTallererSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Produccion_TallerSerializer(serializers.ModelSerializer):
+class Produccion_TallerPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador produccion taller
     """
@@ -113,7 +113,7 @@ class Produccion_TallerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class Compras_TallerTallerSerializer(serializers.ModelSerializer):
+class Compras_TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de compras taller con taller
     """
@@ -125,7 +125,7 @@ class Compras_TallerTallerSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Compras_TallerSerializer(serializers.ModelSerializer):
+class Compras_TallerPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de compras taller
     """
@@ -134,7 +134,7 @@ class Compras_TallerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class Inventario_TallerTallerSerializer(serializers.ModelSerializer):
+class Inventario_TallerSerializer(serializers.ModelSerializer):
     """
         Serializador de inventario taller con taller
     """
@@ -146,7 +146,7 @@ class Inventario_TallerTallerSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-class Inventario_TallerSerializer(serializers.ModelSerializer):
+class Inventario_TallerPostPutSerializer(serializers.ModelSerializer):
     """
         Serilizador de inventario taller
     """

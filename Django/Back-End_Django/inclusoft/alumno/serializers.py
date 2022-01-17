@@ -12,7 +12,7 @@ class AlumnoSerializer(serializers.ModelSerializer):
         model = Alumno
         fields = '__all__'
         
-class Datos_AdicionalesAlumnoSerializer(serializers.ModelSerializer):
+class Datos_AdicionalesSerializer(serializers.ModelSerializer):
     """
         Serializador de Datos Adicionales con alumnos
     
@@ -22,7 +22,7 @@ class Datos_AdicionalesAlumnoSerializer(serializers.ModelSerializer):
         model = Datos_Adicionales
         fields = '__all__'
         depth = 2                     
-class Datos_AdicionalesSerializer(serializers.ModelSerializer):
+class Datos_AdicionalesPostPutSerializer(serializers.ModelSerializer):
     """ 
         Serializador de Datos Adicionales
     """
@@ -30,7 +30,7 @@ class Datos_AdicionalesSerializer(serializers.ModelSerializer):
         model = Datos_Adicionales
         fields = '__all__'
         
-class Asistencia_AlumnoSerializer(serializers.ModelSerializer):
+class AsistenciaSerializer(serializers.ModelSerializer):
     """
         Serializador de Asistencia con alumnos
     
@@ -40,7 +40,7 @@ class Asistencia_AlumnoSerializer(serializers.ModelSerializer):
         model = Asistencia_Alumno
         fields = '__all__'
         depth = 2               
-class AsistenciaSerializer(serializers.ModelSerializer):
+class AsistenciaPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de Asistencias
 
@@ -49,7 +49,7 @@ class AsistenciaSerializer(serializers.ModelSerializer):
         model = Asistencia_Alumno
         fields = '__all__'
         
-class Antecedente_MedicoAlumnoSerializer(serializers.ModelSerializer):
+class Antecedente_MedicoSerializer(serializers.ModelSerializer):
     """
         Serializador de antecedentes medicos con alumnos
     
@@ -59,7 +59,7 @@ class Antecedente_MedicoAlumnoSerializer(serializers.ModelSerializer):
         model = Antecedente_Medico
         fields = '__all__'
         depth = 2       
-class Antecedente_MedicoSerializer(serializers.ModelSerializer):
+class Antecedente_MedicoPostPutSerializer(serializers.ModelSerializer):
     """
         serializador de antecedentes medicos
     
@@ -68,17 +68,17 @@ class Antecedente_MedicoSerializer(serializers.ModelSerializer):
         model = Antecedente_Medico
         fields = '__all__' 
         
-class PatologiaAlumnoSerializer(serializers.ModelSerializer):
+class PatologiaSerializer(serializers.ModelSerializer):
     """
-         Serializador de patologias con alumnos
+        Serializador de patologias con alumnos
     
     """    
     alumnos = AlumnoSerializer(read_only=True)  
     class Meta:
-          model = Patologia
-          fields = '__all__'
-          depth = 2         
-class PatologiaSerializer(serializers.ModelSerializer):
+        model = Patologia
+        fields = '__all__'
+        depth = 2         
+class PatologiaPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de patologias
     
@@ -87,7 +87,7 @@ class PatologiaSerializer(serializers.ModelSerializer):
         model = Patologia
         fields = '__all__'
     
-class  Acta_CompromisoAlumnoSerializer(serializers.ModelSerializer):
+class  Acta_CompromisoSerializer(serializers.ModelSerializer):
     """
         Serializador de acta compromiso con alumnos
     
@@ -97,7 +97,7 @@ class  Acta_CompromisoAlumnoSerializer(serializers.ModelSerializer):
         model = Acta_Compromiso
         fields = '__all__'
         depth = 2
-class Acta_CompromisoSerializer(serializers.ModelSerializer):
+class Acta_CompromisoPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de Actas de compromiso
     
@@ -106,7 +106,7 @@ class Acta_CompromisoSerializer(serializers.ModelSerializer):
         model = Acta_Compromiso
         fields = '__all__'
 
-class EnfermeriaAlumnoSerializer(serializers.ModelSerializer):
+class EnfermeriaSerializer(serializers.ModelSerializer):
     """
         Serializador de enfermeria con alumnos
     
@@ -116,7 +116,7 @@ class EnfermeriaAlumnoSerializer(serializers.ModelSerializer):
         model = Enfermeria
         fields = '__all__'
         depth = 2        
-class EnfermeriaSerializer(serializers.ModelSerializer):
+class EnfermeriaPostPutSerializer(serializers.ModelSerializer):
     """
         Serializador de enfermeria
     

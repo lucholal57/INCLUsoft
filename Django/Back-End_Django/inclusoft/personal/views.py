@@ -1,281 +1,322 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.decorators import api_view
 from .models import (Personal, Permiso_Salida, Evaluacion_Laboral, Asistencia_Personal, Entrega_Proyecto)
-from .serializers import (Asistencia_PersonalPersonalSerializer, Asistencia_PersonalSerializer, Entrega_ProyectoPersonalSerializer, Entrega_ProyectoSerializer, Evaluacion_LabolarPersonalSerializer, Evaluacion_LaboralSerializer, Permiso_SalidaPersonalSerializer, Permiso_SalidaSerializer, PersonalSerializer)
+from .serializers import (AsistenciaSerializer, AsistenciaPostPutSerializer, Entrega_ProyectoSerializer, Entrega_ProyectoPostPutSerializer, Evaluacion_LaboralSerializer, Evaluacion_LaboralPostPutSerializer, Permiso_SalidaSerializer, Permiso_SalidaPostPutSerializer, PersonalSerializer)
 
 # Create your views here.
 #VIEW DE PERSONAL
-
-class PersonalListado(APIView):
-    """
-        view de listado de todo el personal
-    """
-    def get(self,request):
-        personal = Personal.objects.all().order_by('id')
-        serializer = PersonalSerializer(personal, many=True)
-        return Response(serializer.data)
-
-class PersonalBuscarPorId(APIView):
-    """
-        view de buscar personal por ID
-    """
-    def get(self,request,pk):
-        personal = Personal.objects.filter(id=pk)
-        serializer = PersonalSerializer(personal, many=True)
-        return Response(serializer.data)
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def PersonalListado(request):
     
-class PersonalRegistrar(APIView):
-    """
-        view para registrar personal
-    """
-    def post(self, request):
-        serializer = PersonalSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+    #List
+    if request.method == 'GET':
+        #Queryset
+        personal = Personal.objects.all().order_by('id')
+        serializer = PersonalSerializer(personal , many = True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    #Create
+    elif request.method == 'POST':
+        serializer = PersonalSerializer(data= request.data)
         
-class PersonalEditar(APIView):
-    """
-        view para editar un personal
-    """
-    def put(self,request,pk):
-        personal = Personal.objects.get(id=pk)
-        serializer = PersonalSerializer(personal, data=request.data)
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def PersonalBuscarPorId(request, pk=None):
+    #consulta par obtener el listado en el modal sin First
+    personal = Personal.objects.filter(id=pk)
+    
+    # Validacion
+    if personal:
+        #Queryset
+        if request.method == 'GET':
+            serializer = PersonalSerializer(personal, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido del modal con First
+            personal_edicion = Personal.objects.filter(id=pk).first()
+            serializer = PersonalSerializer(personal_edicion,data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    
+        #Delete
+        elif request.method == 'DELETE':
+            personal.delete()
+            return Response({'message':'Personal eliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un personal con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-class PersonalEliminar(APIView):
-    """
-        view para eliminar un personal
-    """
-    def delete(self,request,pk):
-        personal = Personal.objects.get(id=pk)
-        personal.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#Busqueda de personal 
+@api_view(['GET'])
+def BusquedaPersonal(request, nombre_personal):
+    personal = Personal.objects.filter(nombre_personal__icontains = nombre_personal)
+    serializer = PersonalSerializer(personal, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
+        
 
 #VIEW DE ASISTENCIA PERSONAL
-
-class AsistenciaPersonalListado(APIView):
-    """
-        View para listar las asistencias del personal
-    """
-    def get(self, request):
-        asistencia_personal = Asistencia_Personal.objects.all().order_by('id')
-        serializer = Asistencia_PersonalPersonalSerializer(asistencia_personal, many = True)
-        return Response(serializer.data)
-
-class AsistenciaPersonalBuscarPorId(APIView):
-    """
-        view de busqueda por id de asistencias personal para mostrar en los input
-    """
-    def get(self, request, pk):
-        asistencia_personal = Asistencia_Personal.objects.filter(id=pk)
-        serializer = Asistencia_PersonalSerializer(asistencia_personal, many=True)
-        return Response(serializer.data)
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def AsistenciaListado(request):
     
-class AsistenciaPersonalRegistrar(APIView):
-    """
-        view para registrar asistencia personal
-    """
-    def post(self,request):
-        asistencia_personal = Asistencia_Personal.objects.all()
-        serializer = Asistencia_PersonalSerializer(data = request.data)
+    #List
+    if request.method == 'GET':
+        #Queryset
+        asistencia = Asistencia_Personal.objects.order_by('id')
+        serializer = AsistenciaSerializer(asistencia, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+    
+    #create
+    elif request.method == 'POST':
+        serializer = AsistenciaPostPutSerializer(data=request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+# Busqueda pore id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def AsistenciaBuscarPorId(request, pk=None):
+    #Consulta para obtener el listado en el modal sin First
+    asistencia = Asistencia_Personal.objects.filter(id=pk)
+    
+    #Validacion
+    if asistencia:
+        #Queryset
+        if request.method == 'GET':
+            serializer = AsistenciaPostPutSerializer(asistencia, many = True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido del modal con First
+            asistencia_edicion = Asistencia_Personal.objects.filter(id=pk).first()
+            serializer = AsistenciaPostPutSerializer(asistencia_edicion,data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        asistencia.delete()
+        return Response({'message':'Asistencia eliminado correctamente!'}, status=status.HTTP_200_OK)
 
-class AsistenciaPersonalEditar(APIView):
-    """
-        view para editar asistencia personal
-    """
-    def put(self,request,pk):
-        asistencia_personal = Asistencia_Personal.objects.get(id=pk)
-        serializer = Asistencia_PersonalSerializer(asistencia_personal, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado una asistencia con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-class AsitenciaPersonalEliminar(APIView):
-    """
-        view para eliminar asistencia personal
-    """
-    def delete(self,request, pk):
-        asistencia_personal = Asistencia_Personal.objects.get(id=pk)
-        asistencia_personal.delete();
-        return Response(status = status.HTTP_204_NO_CONTENT)
+# Busqueda de personal en listado de asistencias por nombre
+@api_view(['GET'])
+def BusquedaAsistenciaPersonal(request, nombre_personal):
+    personal = Personal.objects.filter(nombre_personal__icontains = nombre_personal)
+    asistencia = Asistencia_Personal.objects.filter(personal__in = personal)
+    serializer = AsistenciaSerializer(asistencia, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
+        
 
 # VIEW DE PERMISOS SALIDAS PERSONAL
-
-class PermisoSalidaListado(APIView):
-    """
-        view para listar los permisos de salidas del personal
-    """        
-    def get(self,request):
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def PermisoSalidaListado(request):
+    
+    #List
+    if request.method == 'GET':
+        #Queryset
         permiso_salida = Permiso_Salida.objects.all().order_by('id')
-        serializer = Permiso_SalidaPersonalSerializer(permiso_salida, many=True)
-        return Response(serializer.data)
+        serializer = Permiso_SalidaSerializer(permiso_salida, many = True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
     
-class PermisoSalidaBuscarPorId(APIView):
-    """
-        view de busqueda por id de permisos de salida para mostrar en los input
-    """
-    def get(self,request,pk):
-        permiso_salida = Permiso_Salida.objects.filter(id=pk)
-        serializer = Permiso_SalidaSerializer(permiso_salida, many=True)
-        return Response(serializer.data)
-    
-class PermisoSalidaRegistrar(APIView):
-    """p
-        view para registrar permisos de salidas personal
-    """
-    def post(self,request):
-        permiso_salida = Permiso_Salida.objects.all()
-        serializer = Permiso_SalidaSerializer(data = request.data)
+    #Create
+    elif request.method == 'POST':
+        serializer = Permiso_SalidaPostPutSerializer(data = request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-class PermisoSalidaEditar(APIView):
-    """
-        view para editar permisos de salida
-    """
-    def put(self,request,pk):
-        permiso_salida = Permiso_Salida.objects.get(id=pk)
-        serializer = Permiso_SalidaSerializer(permiso_salida, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-        
-class PermisoSalidaEliminar(APIView):
-    """
-        view para eliminar permisos de salida
-    """
-    def delete(self,request,pk):
-        permiso_salida = Permiso_Salida.objects.get(id=pk)
-        permiso_salida.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+# Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def PermisoSalidaBuscarPorId(request, pk=None):
+    # Consulta para obtener el listado en el modal sin First
+    permiso_salida = Permiso_Salida.objects.filter(id=pk)
     
-# VIEW DE EVALUACION PERSONAL
+    #Validacion
+    if permiso_salida:
+        #Queryset
+        if request.method == 'GET':
+            serializer = Permiso_SalidaPostPutSerializer(permiso_salida, many = True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido del modal con First
+            permiso_salida_edicion = Permiso_Salida.objects.filter(id=pk).first()
+            serializer = Permiso_SalidaPostPutSerializer(permiso_salida_edicion, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+                permiso_salida.delete()
+                return Response({'message':'Permiso de salida eliminado correctamente!'}, status=status.HTTP_200_OK)
+            
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un permiso de salida con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
-class EvaluacionLaboralListado(APIView):
-    """
-        view para listar las evaluaciones laborales con respecto a un personal
-    """
-    def get(self,request):
-        evaluacion_laboral = Evaluacion_Laboral.objects.all().order_by('id');
-        serializer = Evaluacion_LabolarPersonalSerializer(evaluacion_laboral, many = True)
-        return Response(serializer.data)
+# Busqueda de personal en listado de permisos de salida por nombre
+@api_view(['GET'])
+def BusquedaPermisoSalidaPersonal(request, nombre_personal):
+    personal = Personal.objects.filter(nombre_personal__icontains = nombre_personal)
+    permiso_salida = Permiso_Salida.objects.filter(personal__in = personal)
+    serializer = Permiso_SalidaSerializer(permiso_salida, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
+                
+# VIEW DE EVALUACION PERSONAL
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def EvaluacionLaboralListado(request):
     
-class EvaluacionLaboralBuscarPorId(APIView):
-    """
-        view de busqueda por id de evaluaciones laborales para mostrar en los input
-    """
-    def get(self,request,pk):
-        evaluacion_laboral = Evaluacion_Laboral.objects.filter(id=pk)
-        serializer = Evaluacion_LaboralSerializer(evaluacion_laboral, many = True)
-        return Response(serializer.data)
+    #List
+    if request.method == 'GET':
+        #Queryset
+        evaluacion_laboral = Evaluacion_Laboral.objects.all().order_by('id')
+        serializer = Evaluacion_LaboralSerializer(evaluacion_laboral, many=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
     
-class EvaluacionLaboralRegistrar(APIView):
-    """
-        view para registrar evaluaciones laborales de un personal
-    """
-    def post(self, request):
-        evaluacion_laboral = Evaluacion_Laboral.objects.all();
-        serializer = Evaluacion_LaboralSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-    
-class EvaluacionLaboralEditar(APIView):
-    """
-        view para editar evaluacion laboral
-    """
-    def put(self, request,pk):
-        evaluacion_laboral = Evaluacion_Laboral.objects.get(id=pk)
-        serializer = Evaluacion_LaboralSerializer(evaluacion_laboral, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+    #Create
+    elif request.method == 'POST':
+        serializer = Evaluacion_LaboralPostPutSerializer(data= request.data)
         
-class EvaluacionLaboralEliminar(APIView):
-    """
-        view para eliminar evaluaciones laborales
-    """
-    def delete(self, request,pk):
-        evaluacion_laboral = Evaluacion_Laboral.objects.get(id=pk)
-        evaluacion_laboral.delete()
-        return Response(status = status.HTTP_204_NO_CONTENT)
+        #Validacion
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def EvaluacionLaboralBuscarPorId(request, pk=None):
+    #Consulta para obtener el listado en el modal sin First
+    evaluacion_laboral = Evaluacion_Laboral.objects.filter(id=pk)
+    
+    #Validacion
+    if evaluacion_laboral:
+        #Queryset
+        if request.method == 'GET':
+            serializer = Evaluacion_LaboralPostPutSerializer(evaluacion_laboral, many = True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido del modal con First
+            evaluacion_laboral_edicion = Evaluacion_Laboral.objects.filter(id=pk).first()
+            serializer = Evaluacion_LaboralPostPutSerializer(evaluacion_laboral_edicion, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+            evaluacion_laboral.delete()
+            return Response({'message':'Evaluacion laboral eliminada correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado una evaluacion laboral con estos datos'},status=status.HTTP_400_BAD_REQUEST)
+
+# Busqueda de personal en listado de evaluacion laboral  por nombre
+@api_view(['GET'])
+def BusquedaEvaluacionLaboralPersonal(request, nombre_personal):
+    personal = Personal.objects.filter(nombre_personal__icontains = nombre_personal)
+    evaluacion_laboral = Evaluacion_Laboral.objects.filter(personal__in = personal)
+    serializer = Evaluacion_LaboralSerializer(evaluacion_laboral, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
 
 # VIEW DE ENTREGA PROYECTOS 
-
-class EntregaProyectosListado(APIView):
-    """
-        view para listar entrega de proyectos 
-    """
-    def get(self, request):
+#Listado y Creacion
+@api_view(['GET', 'POST'])
+def EntregaProyectoListado(request):
+    
+    #List
+    if request.method == 'GET':
+        #Queryset
         entrega_proyecto = Entrega_Proyecto.objects.all().order_by('id')
-        serializer = Entrega_ProyectoPersonalSerializer( entrega_proyecto, many = True)
-        return Response(serializer.data)
+        serializer = Entrega_ProyectoSerializer(entrega_proyecto, many = True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
     
-class EntregaProyectoBuscarPorId(APIView):
-    """
-        view de busqueda por id de entrega proyectos para mostrar en los input
-    """
-    def get(self, request,pk):
-        entrega_proyecto = Entrega_Proyecto.objects.filter(id=pk)
-        serializer = Entrega_ProyectoSerializer(entrega_proyecto , many = True)
-        return Response(serializer.data)
-    
-class EntregaProyectoRegistrar(APIView):
-    """
-        view para registrar entregas de proyectos
-    """
-    def post(self, request):
-        entrega_proyecto = Entrega_Proyecto.objects.all()
-        serializer = Entrega_ProyectoSerializer(data = request.data)
+    #Create
+    elif request.method == 'POST':
+        serializer = Entrega_ProyectoPostPutSerializer(data= request.data)
+        
+        #Validacion
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-class EntregaProyectoEditar(APIView):
-    """
-        view para editar las entrega de proyectos
-    """
-    def put(self,request,pk):
-        entrega_proyecto = Entrega_Proyecto.objects.get(id=pk)
-        serializer = Entrega_ProyectoSerializer(entrega_proyecto, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+#Busqueda por id para la edicion y eliminacion
+@api_view(['GET', 'PUT', 'DELETE'])
+def EntregaProyectoBuscarPorId(request, pk=None):
+    #Consulta para obtener el listado en el modal sin First
+    entrega_proyecto = Entrega_Proyecto.objects.filter(id=pk)
+    
+    #Validacion
+    if entrega_proyecto:
+        #Queryset
+        if request.method == 'GET':
+            serializer = Entrega_ProyectoPostPutSerializer(entrega_proyecto, many = True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         
-class EntregaProyectoEliminar(APIView):
-    """
-        view para eliminar entregas de proyectos
-    """
-    def delete(self,request,pk):
-        entrega_proyecto = Entrega_Proyecto.objects.get(id=pk)
-        entrega_proyecto.delete()
-        return Response(status = status.HTTP_204_NO_CONTENT)
+        #Update
+        elif request.method == 'PUT':
+            #Consulta para editar el contenido del modal con First
+            entrega_proyecto_edicion = Entrega_Proyecto.objects.filter(id=pk).first()
+            serializer = Entrega_ProyectoPostPutSerializer(entrega_proyecto_edicion, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        #Delete
+        elif request.method == 'DELETE':
+            entrega_proyecto.delete()
+            return Response({'message':'Entrega Proyecto eliminado correctamente!'}, status=status.HTTP_200_OK)
+        
+# Validacion no se encontro   
+    return Response({'message':'No se ha encontrado un acompañante con estos datos'},status=status.HTTP_400_BAD_REQUEST)
+
+# Busqueda de personal en listado de entregas proyecto  por nombre
+@api_view(['GET'])
+def BusquedaEntregaProyectoPersonal(request, nombre_personal):
+    personal = Personal.objects.filter(nombre_personal__icontains = nombre_personal)
+    entrega_proyecto = Entrega_Proyecto.objects.filter(personal__in = personal)
+    serializer = Entrega_ProyectoSerializer(entrega_proyecto, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
+

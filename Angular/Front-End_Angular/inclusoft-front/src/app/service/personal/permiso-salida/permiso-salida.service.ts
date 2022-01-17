@@ -14,29 +14,29 @@ const httpOption = {
 })
 export class PermisoSalidaService {
   //variable para la URL|
-  private url = "http://127.0.0.1:8000/personal/permiso_salida/";
+  private url = "http://127.0.0.1:8000/";
 
   //Injectamos en el constructor el servicio de HttpClient para hacer las peticiones
   constructor(private http : HttpClient) { }
 
   // Obtener permisos de salida
   getPermisoSalida(): Observable<PermisoSalida[]> {
-    return this.http.get<PermisoSalida[]>(this.url + 'listados');
+    return this.http.get<PermisoSalida[]>(this.url + 'permiso_salida');
   }
   // Registrar permisos de salida
   registrarPermisoSalida(formularioRegistro: any): Observable<PermisoSalida[]> {
-    return this.http.post<PermisoSalida[]>(this.url + 'registrar' , formularioRegistro)
+    return this.http.post<PermisoSalida[]>(this.url + 'permiso_salida' , formularioRegistro , httpOption)
   }
   //Obtener permisos de salida pasando el ID
   getPermisoSalidaId(permisosalida : PermisoSalida): Observable<PermisoSalida[]> {
-    return this.http.get<PermisoSalida[]>(this.url + permisosalida.id)
+    return this.http.get<PermisoSalida[]>(this.url + 'permiso_salida/' +  permisosalida.id)
   }
   // Editar permisos de salida pasando el ID y el tipo de objeto con la constante de cabecera HttpHeaders
   editarPermisoSalidaId(formularioRegistro : any, id: number): Observable<PermisoSalida[]> {
-    return this.http.put<PermisoSalida[]>(this.url + 'editar/' + id , formularioRegistro , httpOption);
+    return this.http.put<PermisoSalida[]>(this.url + 'permiso_salida/' + id , formularioRegistro );
   }
   // Eliminar permisos de salida
   eliminarPermisoSalida( permisosalida : PermisoSalida): Observable<PermisoSalida[]> {
-    return this.http.delete<PermisoSalida[]>(this.url + 'eliminar/' + permisosalida.id);
+    return this.http.delete<PermisoSalida[]>(this.url + 'permiso_salida/' + permisosalida.id);
   }
 }

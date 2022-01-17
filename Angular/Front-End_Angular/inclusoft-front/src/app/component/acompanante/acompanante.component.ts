@@ -11,8 +11,9 @@ import { PersonalService } from 'src/app/service/personal/personal/personal.serv
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../service/alert/alert.service';
-
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+// Servicio de busqueda
+import { BusquedaService } from 'src/app/service/busqueda/busqueda.service';
 
 @Component({
   selector: 'app-acompanante',
@@ -45,6 +46,7 @@ export class AcompananteComponent implements OnInit {
     private servicioAcompanante: AcompananteService,
     private formBuilder: FormBuilder,
     private alertas : AlertService,
+    private buscar : BusquedaService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) {}
@@ -204,7 +206,7 @@ busquedaAlumno(): void{
   if (this.buscar_alumno == ""){
     this.alertas.alertcampos();
   }else{
-    this.servicioAcompanante.busquedaAlumno(this.buscar_alumno).subscribe(
+    this.buscar.busquedaAlumno(this.buscar_alumno).subscribe(
       (res) => {
         console.log(res)
         if (res.length != 0){
@@ -228,7 +230,7 @@ busquedaPersonal(): void{
   if (this.buscar_personal == ""){
     this.alertas.alertcampos();
   }else{
-    this.servicioAcompanante.busquedaPersonal(this.buscar_personal).subscribe(
+    this.buscar.busquedaPersonal(this.buscar_personal).subscribe(
       (res) => {
         console.log(res)
         if (res.length != 0){
@@ -245,7 +247,6 @@ busquedaPersonal(): void{
       }
     )
   }
-
 }
 
 // Funcion para cancelar busqueda por alumno
@@ -260,7 +261,6 @@ cancelarbusquedaPersonal(): void {
   this.getAcompanante();
   this.buscar_personal = "";
 }
-
 
 // Funcion cancelar solo para borrar los valores de formulario reactivo
 cancelar(): void{
