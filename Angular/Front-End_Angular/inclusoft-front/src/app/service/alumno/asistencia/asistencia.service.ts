@@ -41,4 +41,8 @@ editarAsistenciasId(formularioRegistro: any, id: number): Observable<Asistencia[
 eliminarAsistencia(asistencia: Asistencia): Observable<Asistencia[]> {
   return this.http.delete<Asistencia[]>(this.url + 'asistencia/' + asistencia.id);
 }
+// Busqueda de alumno por asistencia
+busquedaAlumno(nombre:string): Observable<Asistencia[]>{
+  return  this.http.get<Asistencia[]>(this.url + 'asistencia/buscar/' + nombre)
+}
 }

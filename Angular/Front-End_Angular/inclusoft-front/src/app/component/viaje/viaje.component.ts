@@ -13,8 +13,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../service/alert/alert.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// Servicio de busqueda
-import { BusquedaService } from 'src/app/service/busqueda/busqueda.service';
+
 
 @Component({
   selector: 'app-viaje',
@@ -45,7 +44,6 @@ export class ViajeComponent implements OnInit {
     private servicioViaje: ViajeService,
     private formBuilder: FormBuilder,
     private alertas : AlertService,
-    private buscar : BusquedaService,
     config: NgbModalConfig,
     private modalService: NgbModal,
   ) { }
@@ -198,7 +196,7 @@ buscarDestino(): void {
   if (this.buscar_destino == ""){
     this.alertas.alertcampos();
   }else{
-    this.buscar.busquedaDestino(this.buscar_destino).subscribe(
+    this.servicioViaje.busquedaDestino(this.buscar_destino).subscribe(
       (res) => {
         if (res.length != 0)
         {

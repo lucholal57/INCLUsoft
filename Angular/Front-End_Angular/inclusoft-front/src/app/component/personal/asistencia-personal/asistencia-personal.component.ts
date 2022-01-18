@@ -6,22 +6,29 @@ import Swal from 'sweetalert2';
 import { AsistenciaPersonalService } from 'src/app/service/personal/asistencia-personal/asistencia-personal.service';
 import { AsistenciaPersonal } from 'src/app/entidades/personal/asistencia-personal/asistencia-personal';
 import { AlertService } from 'src/app/service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-asistencia-personal',
   templateUrl: './asistencia-personal.component.html',
-  styleUrls: ['./asistencia-personal.component.css']
+  styleUrls: ['./asistencia-personal.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class AsistenciaPersonalComponent implements OnInit {
-  // Utilizamos el array del tipo personal para el select 
+  // Variable P para el conteo del paginado
+  p: number = 1;
+  // Utilizamos el array del tipo personal para el select
   listadoPersonal: Personal[];
   // Utilizamos un array del tipo asistencia personal para listar en la tabla
   listadoAsistenciaPersonal: AsistenciaPersonal [];
+  //  variable para buscar por personalo
+  buscar_personal= "";
 
   // Variable Botones
-  public btnRegistrar = false;
+  public btnGuardar= false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Personal = false;
 
 // Injeccion de o los servicios a utilizar
   constructor(
@@ -29,6 +36,8 @@ export class AsistenciaPersonalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private servicioAsistenciaPersonal : AsistenciaPersonalService,
     private alertas : AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) { }
 
 // Formulario reactivo para el registro de datos de la pagina
@@ -44,9 +53,22 @@ formularioRegistro = this.formBuilder.group({
     this.getPersonal();
     this.getAsistenciasPersonal();
     this.btnEditar = true;
+    this.ocultarbusqueda_Personal = true;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
-// Obtener todo el personal para mostrar en la tabla  
+// Obtener todo el personal para mostrar en la tabla
 getPersonal() : void {
   this.servicioPersonal.getPersonal().subscribe(
     (res) => {
@@ -75,8 +97,8 @@ registrarAsistenciaPersonal(){
     this.servicioAsistenciaPersonal.registrarAsistenciaPersonal(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
-        this.formularioRegistro.reset();
         this.getAsistenciasPersonal();
+        this.cerrarModal();
       },
       (error) => {
         this.alertas.alerterror();
@@ -88,7 +110,11 @@ registrarAsistenciaPersonal(){
   this.ngOnInit();
 }
 // Obtener asistencias por id para mostrar en los campos de los imput para su proxima edicion
-AsistenciaPersonalId( asistenciapersonal: AsistenciaPersonal): void{
+AsistenciaPersonalId( asistenciapersonal: AsistenciaPersonal, content : any): void{
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
   this.servicioAsistenciaPersonal.getAsistenciaPersonalId(asistenciapersonal).subscribe(
     (res) => {
       this.formularioRegistro.patchValue({
@@ -98,8 +124,6 @@ AsistenciaPersonalId( asistenciapersonal: AsistenciaPersonal): void{
         estado: res[0].estado,
         personal: res[0].personal,
       });
-      this.btnEditar = false;
-      this.btnRegistrar = true;
     },
     (eror) => {
       this.alertas.alerterror();
@@ -115,7 +139,7 @@ editarAsistenciaPersonalId(): void {
       console.log(res);
       this.alertas.alertedit();
       this.getAsistenciasPersonal();
-      this.cancelar();
+      this.cerrarModal();
     },
     (error)=>{
       console.log(error);
@@ -147,13 +171,42 @@ eliminarAsistenciaPersonal(asistenciapersonal: AsistenciaPersonal):void {
       );
       Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
     }
-    
+
   });
 }
- // Linpiar los campos
- cancelar(): void{
+// Busqueda de asistencias por personal
+busquedaPersonal(): void{
+  if (this.buscar_personal == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioAsistenciaPersonal.busquedaPersonal(this.buscar_personal).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Personal = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Personal = false;
+        }
+        this.listadoAsistenciaPersonal = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Personal = true;
+  this.getAsistenciasPersonal()
+  this.buscar_personal = "";
+}
+ // Limpiar los campos
+cancelar(): void{
   this.formularioRegistro.reset();
-  this.btnRegistrar = false;
+  this.btnGuardar = false;
   this.btnEditar = true;
 }
 

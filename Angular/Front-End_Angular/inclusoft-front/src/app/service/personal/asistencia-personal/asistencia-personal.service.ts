@@ -44,4 +44,8 @@ export class AsistenciaPersonalService {
   eliminarAsistenciaPersonal( asistenciapersonal: AsistenciaPersonal):Observable<AsistenciaPersonal[]> {
     return this.http.delete<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' + asistenciapersonal.id);
   }
+  // Busqueda de personal por asistencia
+busquedaPersonal(nombre:string): Observable<AsistenciaPersonal[]>{
+  return  this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/buscar/' + nombre)
+}
 }

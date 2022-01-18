@@ -12,68 +12,87 @@
 <form [formGroup]="formularioRegistro" (submit)="registrarEnfermeria()">
 
     <div>
-        <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+        <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
       </div>
 
-
-<div class="container" id="contenedorRegistro">
-    <legend>Formulario Enfermeria</legend>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
-        <div class="col-sm-6">
-        <select class="form-control" formControlName="alumno" required>
-            <option value="">Seleccione un Alumno</option>
-            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
-                {{ alumnos.nombre_alumno}} {{ alumnos.apellido_alumno}}
-            </option>
-        </select>
-     </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Fecha</label>
-        <div class="col-sm-4">
-            <input
-             type="date" 
-             class="form-control" 
-             id="fechaEnfermeria" 
-             formControlName="fecha_observacion"
-             required >
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Formulario de Enfermeria</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-    </div>
 
-    <hr>
-    
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Observaciones</label>
-        <div class="col-sm-4">
-            <textarea
-             name="observacionEnfermeria"
-              id="observacionEnfermeria" 
-              cols="65" 
-              rows="5"
-              formControlName="observaciones"
-              required >
-            </textarea>
-        </div>
-    </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label style="color:black" for="alumno">Alumno</label>
+              <select class="form-control" formControlName="alumno" required>
+                <option value="">Seleccione un Alumno</option>
+                <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+                  {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+                </option>
+              </select>
+          </div>
 
-    <hr>
-</div>
-
-    <div class="container" id="contenedoresBotones">
         <div class="form-group">
-        <button class="btn btn-primary" [disabled]="btnRegistrar">Registrar</button>
-        <button class="btn btn-warning" type="button" [disabled]="btnEditar"(click)="editarEnfermeriaId()">Editar</button>
-        <button class="btn btn-danger" type="reset" [disabled]="btnCancelar" (click)="cancelar()">Cancelar</button>
-    </div>   
-</div>
-    
+            <label style="color:black">Fecha</label>
+              <input
+                type="date"
+                class="form-control"
+                id="fechaEnfermeria"
+                formControlName="fecha_observacion"
+                required >
+        </div>
+
+        <div class="form-group">
+            <label style="color:black">Observaciones</label>
+            <div class="col">
+                <textarea
+                name="observacionEnfermeria"
+                id="observacionEnfermeria"
+                cols="65"
+                rows="5"
+                formControlName="observaciones"
+                required >
+                </textarea>
+        </div>
+      </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="registrarEnfermeria()" [disabled]="btnGuardar">Guardar</button>
+          <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarEnfermeriaId()">Editar</button>
+          <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+        </div>
+
+        </div>
+      </ng-template>
 </form>
-    
+
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Alumno</legend>
+    <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+    class="form-control" [(ngModel)]="buscar_alumno" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaAlumno()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Alumno" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
     <div class="container-fluid" id="contenedorTabla">
-        <legend>Listado de Enfermeria</legend>
+        <legend align="center">Listado de Enfermeria</legend>
         <table class="table table-bordered table-hover table-dark">
             <thead>
                 <tr>
@@ -85,18 +104,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let enfermeria of listadoEnfermeria">
+                <tr *ngFor="let enfermeria of listadoEnfermeria | paginate: { itemsPerPage: 5, currentPage: p }">
                     <th scope="row">{{ enfermeria.id}}</th>
                     <th scope="row">{{ enfermeria.alumno.nombre_alumno}} {{ enfermeria.alumno.apellido_alumno}}
                     </th>
                     <th scope="row">{{ enfermeria.fecha_observacion}}</th>
                     <th scope="row">{{ enfermeria.observaciones}}</th>
-                    <th scope="row"> <button class="btn btn-warning" (click)="EnfermeriaId(enfermeria)">Editar</button> <button class="btn btn-danger" (click)="eliminarEnfermeria(enfermeria)">Eliminar</button></th>
+                    <th scope="row"> <button class="btn btn-warning" (click)="EnfermeriaId(enfermeria,content)">Editar</button> <button class="btn btn-danger" (click)="eliminarEnfermeria(enfermeria)">Eliminar</button></th>
                 </tr>
             </tbody>
         </table>
+
+        <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
     </div>
-
-
 </body>
 </html>

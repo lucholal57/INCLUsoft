@@ -8,22 +8,29 @@ import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import  { AlertService } from '../../../service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-patologia',
   templateUrl: './patologia.component.html',
-  styleUrls: ['./patologia.component.css']
+  styleUrls: ['./patologia.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class PatologiaComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array de patologias para mostrar en la tabla
   listadoPatologias: Patologia[];
   // Array de alumnos para el select
   listadoAlumnos: Alumno[];
+  //  variable para buscar por alumno
+  buscar_alumno= "";
 
   // Variables de botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Alumno = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
@@ -31,6 +38,8 @@ export class PatologiaComponent implements OnInit {
     private servicioPatologia: PatologiaService,
     private formBuilder: FormBuilder,
     private alertas : AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) { }
 
   //Formulario reactivo para el registro de datos
@@ -47,6 +56,19 @@ export class PatologiaComponent implements OnInit {
     this.getAlumno();
     this.getPatologias();
     this.btnEditar = true;
+    this.ocultarbusqueda_Alumno = true;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
   // Obtener todos los alunmnos para mostrar la lista de seleccion para registrar una patologia
@@ -77,11 +99,9 @@ export class PatologiaComponent implements OnInit {
     if(this.formularioRegistro.valid) {
       this.servicioPatologia.registrarPatologia(this.formularioRegistro.value).subscribe(
         (res) => {
-          console.log('patologias',this.formularioRegistro.value)
           this.alertas.alertsuccess();
-          console.log(res);
-          this.formularioRegistro.reset();
           this.getPatologias();
+          this.cerrarModal();
         },
         (error) => {
          this.alertas.alerterror();
@@ -93,7 +113,11 @@ export class PatologiaComponent implements OnInit {
 
   }
   // Obtener patologias por id para mostrar en los campos de los input para su proxima edicion.
-  PatologiaId(patologia: Patologia): void{
+  PatologiaId(patologia: Patologia, content : any): void{
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
     this.servicioPatologia.getPatologiasId(patologia).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -103,9 +127,6 @@ export class PatologiaComponent implements OnInit {
           observacion: res[0].observacion,
           alumno: res[0].alumno,
         })
-        this.btnEditar = false;
-        this.btnRegistrar = true;
-
       },
       (error) => {
         this.alertas.alerterror();
@@ -122,7 +143,7 @@ export class PatologiaComponent implements OnInit {
         console.log(res);
         this.alertas.alertedit();
         this.getPatologias();
-        this.cancelar();
+        this.cerrarModal();
       },
       (error) => {
         console.log(error);
@@ -155,13 +176,41 @@ export class PatologiaComponent implements OnInit {
       }
 
     });
-
-
   }
+  // Busqueda de acompañantes por alumno
+busquedaAlumno(): void{
+  if (this.buscar_alumno == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioPatologia.busquedaAlumno(this.buscar_alumno).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Alumno = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Alumno = false;
+        }
+        this.listadoPatologias = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Alumno = true;
+  this.getPatologias()
+  this.buscar_alumno = "";
+}
+
   // Limpiar los campos
   cancelar(): void{
     this.formularioRegistro.reset();
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
     this.btnEditar = true;
   }
 }

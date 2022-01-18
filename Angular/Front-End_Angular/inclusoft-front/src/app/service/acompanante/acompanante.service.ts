@@ -38,5 +38,13 @@ export class AcompananteService {
   eliminarAcompanante(acompanante: Acompanante): Observable<Acompanante[]>{
     return this.http.delete<Acompanante[]>(this.url + 'acompañante/' + acompanante.id );
   }
+   // Busqueda por Alumnos
+   busquedaAlumno(nombre:string): Observable<Acompanante[]>{
+    return  this.http.get<Acompanante[]>(this.url + 'acompañante/buscar/alumno/' + nombre)
+  }
+  // Busqueda por Personal
+  busquedaPersonal(nombre:string): Observable<Acompanante[]>{
+    return  this.http.get<Acompanante[]>(this.url + 'acompañante/buscar/personal/' + nombre)
+  }
 
 }

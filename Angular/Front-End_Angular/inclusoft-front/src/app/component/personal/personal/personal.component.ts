@@ -5,27 +5,36 @@ import { Personal } from '../../../entidades/personal/personal/personal';
 import { PersonalService } from '../../../service/personal/personal/personal.service';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
   styleUrls: ['./personal.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class PersonalComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array del tipo Persona para guardar y mostrar en la tabla
   listadoPersonal: Personal[] = [];
+  //  variable para buscar por alumno
+  buscar_personal= "";
 
   // Variable Botones
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Personal = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
     private servicioPersonal: PersonalService,
     private formBuilder: FormBuilder,
-    private alertas : AlertService
+    private alertas : AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
 
   // Formulario reactivo para el registro de datos
@@ -43,6 +52,19 @@ export class PersonalComponent implements OnInit {
   ngOnInit(): void {
     this.getPersonal();
     this.btnEditar = true;
+    this.ocultarbusqueda_Personal = true;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
   // Obtener todo el personal
@@ -65,8 +87,8 @@ export class PersonalComponent implements OnInit {
         .subscribe(
           (res) => {
             this.alertas.alertsuccess();
-            this.formularioRegistro.reset();
             this.getPersonal();
+            this.cerrarModal();
           },
           (error) => {
             this.alertas.alerterror();
@@ -77,7 +99,11 @@ export class PersonalComponent implements OnInit {
     }
   }
   // Obtener alumno por id para mostrar los campos en los input para su proxima edicion.
-  PersonalId(personal: Personal): void {
+  PersonalId(personal: Personal, content : any): void {
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
     this.servicioPersonal.getPersonalId(personal).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -90,8 +116,6 @@ export class PersonalComponent implements OnInit {
           lugar_nacimiento_personal: res[0].lugar_nacimiento_personal,
           profesion: res[0].profesion,
         });
-        this.btnEditar = false;
-        this.btnRegistrar = true;
       },
       (error) => {
         this.alertas.alerterror();
@@ -108,7 +132,7 @@ export class PersonalComponent implements OnInit {
         (res) => {
           this.alertas.alertedit();
           this.getPersonal();
-          this.cancelar();
+          this.cerrarModal();
         },
         (error) => {
           this.alertas.alerterror();
@@ -140,12 +164,40 @@ export class PersonalComponent implements OnInit {
       }
 
     });
-
   }
+  // Busqueda de acompañantes por alumno
+busquedaPersonal(): void{
+  if (this.buscar_personal== ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioPersonal.busquedaPersonal(this.buscar_personal).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Personal = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Personal = false;
+        }
+        this.listadoPersonal = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Personal = true;
+  this.getPersonal();
+  this.buscar_personal = "";
+}
   // Limpiar los campos
   cancelar(): void {
     this.formularioRegistro.reset();
     this.btnEditar = true;
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
   }
 }

@@ -12,85 +12,85 @@
 <form [formGroup]="formularioRegistro" (submit)="registrarAntecedenteMedico()">
 
   <div>
-    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
   </div>
 
-<div class="container" id="contenedorRegistro">
-  <legend>Formulario Antecedentes Medicos</legend>
-
-  <div class="form-group row">
-    <label class="col-sm-2 col-from-label" for="alumno">Alumno</label>
-    <div class="col-sm-6">
-      <select class="form-control" formControlName="alumno" required>
-        <option value="">Seleccione un Alumno</option>
-        <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
-          {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
-        </option>
-      </select>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario de Antecedentes Medicos</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </div>
+    <div class="modal-body">
 
-  <hr />
+      <div class="form-group">
+        <label style="color:black"  for="alumno">Alumno</label>
+          <select class="form-control" formControlName="alumno" required>
+            <option value="">Seleccione un Alumno</option>
+            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+              {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+            </option>
+          </select>
+      </div>
 
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Grupo Sanguineo </label>
-    <div class="col-sm-4">
-      <input
-        type="text"
-        class="form-control"
-        formControlName="grupo_sanguineo"
-        placeholder="Ingrese Grupo Sanguineo"
-        required
-      />
+      <div class="form-group">
+        <label style="color:black" >Grupo Sanguineo </label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="grupo_sanguineo"
+            placeholder="Ingrese Grupo Sanguineo"
+            required
+          />
+      </div>
+
+      <div class="form-gropu">
+        <label style="color:black" >Factor RH</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="factor_rh"
+            placeholder="Ingrese Factor"
+            required
+          />
+      </div>
+
     </div>
-  </div>
-
-  <div class="form-gropu row">
-    <label class="col-sm-2 col-form-label">Factor RH</label>
-    <div class="col-sm-4">
-      <input
-        type="text"
-        class="form-control"
-        formControlName="factor_rh"
-        placeholder="Ingrese Factor"
-        required
-      />
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="registrarAntecedenteMedico()" [disabled]="btnGuardar">Guardar</button>
+      <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarAntecedenteMedicoId()">Editar</button>
+      <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
     </div>
-  </div>
-  <hr />
-</div>
- 
-<div class="container"  id="contenedorBotones">
-  <div class="form-group">
-    <button
-      class="btn btn-primary"
-      [disabled]="btnRegistrar"
-    >
-      Registrar
-    </button>
-    <button
-      class="btn btn-warning"
-      [disabled]="btnEditar"
-      type="button"
-      (click)="editarAntecedenteMedicoId()"
-    >
-      Editar
-    </button>
-    <button
-      class="btn btn-danger"
-      [disabled]="btnCancelar"
-      type="reset"
-      (click)="cancelar()"
-    >
-      Cancelar
-    </button>
-  </div>
-</div>
+  </ng-template>
 
 </form>
 
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Alumno</legend>
+    <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+    class="form-control" [(ngModel)]="buscar_alumno" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaAlumno()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Alumno" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
   <div class="container-fluid" id="containerTabla">
-    <legend>Listado de Antecedentes Medicos</legend>
+    <legend align="center">Listado de Antecedentes Medicos</legend>
     <table class="table table-bordered table-hover table-dark">
       <thead>
         <tr>
@@ -102,7 +102,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let antecedente_medico of listadoAntecedenteMedico">
+        <tr *ngFor="let antecedente_medico of listadoAntecedenteMedico | paginate: { itemsPerPage: 3, currentPage: p }">
           <th scope="row">{{ antecedente_medico.id }}</th>
           <td scope="row">
             {{ antecedente_medico.alumno.nombre_alumno }}
@@ -113,7 +113,7 @@
           <td>
             <button
               class="btn btn-warning"
-              (click)="AntecedenteMedicoId(antecedente_medico)"
+              (click)="AntecedenteMedicoId(antecedente_medico, content)"
             >
               Editar
             </button>
@@ -127,7 +127,9 @@
         </tr>
       </tbody>
     </table>
-  </div>
 
+    <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+  </div>
 </body>
 </html>

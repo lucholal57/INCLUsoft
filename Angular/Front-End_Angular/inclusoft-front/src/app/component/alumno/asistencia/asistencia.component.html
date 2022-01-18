@@ -11,91 +11,96 @@
 
 <form [formGroup]="formularioRegistro" (submit)="registrarAsistencia()">
 
-    
+
   <div>
-    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
   </div>
 
-  <div class="container" id="contenedorRegistro">
-    <legend>Formulario Asistencias</legend>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
-      <div class="col-sm-6">
-        <select class="form-control" formControlName="alumno" required>
-          <option value="">Seleccione un Alumno</option>
-          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
-            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
-          </option>
-        </select>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario de Asistencias</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label style="color:black"  for="alumno">Alumno</label>
+          <select class="form-control" formControlName="alumno" required>
+            <option value="">Seleccione un Alumno</option>
+            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+              {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+            </option>
+          </select>
       </div>
-    </div>
 
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Fecha</label>
-      <div class="col-sm-4">
-        <input
-          type="date"
-          class="form-control"
-          id="fechaAsistencia"
-          formControlName="fecha_asistencia"
-          required
-        />
+      <div class="form-group">
+        <label style="color:black" >Fecha</label>
+          <input
+            type="date"
+            class="form-control"
+            id="fechaAsistencia"
+            formControlName="fecha_asistencia"
+            required
+          />
       </div>
-    </div>
 
-    <div class="form-group row">
+      <div class="form-group">
 
-    <label class="col-sm-2 col-form-label">Asistencia</label>
+      <label style="color:black" >Asistencia</label>
+      <div class="col">
 
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="estado_asistencia" id="asistenciaRadio" value="Presente" formControlName="estado_asistencia" required>
-      <label class="form-check-label" for="asistenciaRadio">Presente</label>
-    </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="asistenciaRadio" style="color:black"> *Presente</label>
+        <input class="form-check-input" type="radio" name="estado_asistencia" id="asistenciaRadio" value="Presente" formControlName="estado_asistencia" required>
+      </div>
 
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="estado_asistencia" id="asistenciaRadio2" value="Ausente" formControlName="estado_asistencia" required>
-      <label class="form-check-label" for="asistenciaRadio2">Ausente</label>
-    </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="asistenciaRadio2" style="color:black"> *Ausente</label>
+        <input class="form-check-input" type="radio" name="estado_asistencia" id="asistenciaRadio2" value="Ausente" formControlName="estado_asistencia" required>
+      </div>
 
-  </div>
-
-  </div>
-
-  <hr />
-
-  <div class="container" id="contenedorBotones">
-    <div class="form-group">
-      <button
-        class="btn btn-primary"
-        [disabled]="btnRegistrar"
-      >
-        Registrar
-      </button>
-      <button
-        class="btn btn-warning"
-        (click)="editarAsistenciaId()"
-        type="button"
-        [disabled]="btnEditar"
-      >
-        Editar
-      </button>
-      <button
-        class="btn btn-danger"
-        [disabled]="btnCancelar"
-        type="reset"
-        (click)="cancelar()"
-      >
-        Cancelar
-      </button>
     </div>
   </div>
-  
+
+
+
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="registrarAsistencia()" [disabled]="btnGuardar">Guardar</button>
+      <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarAsistenciaId()">Editar</button>
+      <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+    </div>
+  </ng-template>
+
 </form>
 
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Alumno</legend>
+    <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+    class="form-control" [(ngModel)]="buscar_alumno" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaAlumno()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Alumno" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
 <div class="container-fluid" id="contenedorTabla">
-  <legend>Listado de Asistencias</legend>
+  <legend align="center">Listado de Asistencias</legend>
   <table class="table table-bordered table-hover table-dark">
     <thead>
       <tr>
@@ -107,7 +112,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let asistencia of listadoAsistencias">
+      <tr *ngFor="let asistencia of listadoAsistencias | paginate: { itemsPerPage: 3, currentPage: p }">
         <th scope="row">{{ asistencia.id }}</th>
         <td scope="row">
           {{ asistencia.alumno.nombre_alumno }}
@@ -116,7 +121,7 @@
         <td scope="row">{{ asistencia.fecha_asistencia }}</td>
         <td scope="row">{{ asistencia.estado_asistencia }}</td>
         <td scope="row">
-          <button class="btn btn-warning" (click)="AsistenciaId(asistencia)">
+          <button class="btn btn-warning" (click)="AsistenciaId(asistencia,content)">
             Editar
           </button>
           <button
@@ -129,7 +134,9 @@
       </tr>
     </tbody>
   </table>
-</div>
 
+  <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+</div>
 </body>
 </html>

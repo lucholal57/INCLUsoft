@@ -45,5 +45,9 @@ export class DatosAdicionalesService {
   eliminarDatosAdicionales(datos_adicionales: DatosAdicionales): Observable<DatosAdicionales[]> {
     return this.http.delete<DatosAdicionales[]>(this.url + 'datos_adicionales/' + datos_adicionales.id);
   }
+  // Busqueda de alumno por asistencia
+busquedaAlumno(nombre:string): Observable<DatosAdicionales[]>{
+  return  this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales/buscar/' + nombre)
+}
 
 }

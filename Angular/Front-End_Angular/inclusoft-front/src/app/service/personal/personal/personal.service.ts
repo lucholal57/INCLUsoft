@@ -38,4 +38,8 @@ export class PersonalService {
   eliminarPersonal(personal: Personal): Observable<Personal[]>{
     return this.http.delete<Personal[]>(this.url + 'personal/' + personal.id);
   }
+  // Busqueda de personal por nombre
+busquedaPersonal(nombre:string): Observable<Personal[]>{
+  return  this.http.get<Personal[]>(this.url + 'personal/buscar/' + nombre)
+}
 }

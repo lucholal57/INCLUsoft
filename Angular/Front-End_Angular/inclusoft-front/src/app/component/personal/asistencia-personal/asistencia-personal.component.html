@@ -12,104 +12,107 @@
  <form [formGroup]="formularioRegistro" (submit)="registrarAsistenciaPersonal()" >
 
     <div>
-        <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+        <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
       </div>
-    
-    <div class="container" id="contenedorRegistro">
-        <legend> Formulario Asistencia Personal</legend>
-        <div class="form-group row">
-            <label for="personal" class="col-sm-2 col-form-label">Personal</label>
-            <div class="col-sm-6">
-                <select class="form-control" formControlName="personal" required>
-                    <option value="">Seleccione un Personal
-                    </option>
-                    <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
-                        {{ personal.nombre_personal }} {{ personal.apellido_personal }}
-                    </option>
-                </select>
-            </div>
-        </div>
 
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Formulario de Personal</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label style="color:black" for="alumno">Personal</label>
+              <select class="form-control" formControlName="personal" required>
+                <option value="">Seleccione un Personal</option>
+                <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+                  {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+                </option>
+              </select>
+          </div>
+
+
+    <div class="form-group">
+      <label style="color:black">Hora Ingreso</label>
+          <input type="time"
+          class="form-control"
+          id="horaIngresoPersonal"
+          formControlName="hora_ingreso"
+          required
+          />
+  </div>
+
+  <div class="form-group">
+      <label style="color:black">Hora Salida</label>
+          <input type="time"
+          class="form-control"
+          id="horaSalidaPersonal"
+          formControlName="hora_salida"
+          required
+          />
+  </div>
+
+  <div class="form-group">
+
+      <label style="color:black"> Asistencia</label>
+      <div class="col">
+
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="estado" id="asistenciaPersonalRadio" value="Presente"
+          formControlName="estado" required
+          >
+          <label class="form-check-label" for="asistenciaPersonalRadio" style="color:black"> Presente </label>
+      </div>
+
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="estado" id="asistenciaPersonalRadio2" value="Ausente"
+          formControlName="estado" required
+          >
+          <label class="form-check-label" for="asistenciaPersonalRadio2" style="color:black"> Ausente </label>
+      </div>
+
+    </div>
+
+  </div >
+
+  </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="registrarAsistenciaPersonal()" [disabled]="btnGuardar">Guardar</button>
+          <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarAsistenciaPersonalId()">Editar</button>
+          <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+        </div>
+      </ng-template>
+
+</form>
+
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Personal</legend>
+    <input type="text" name="nombre_personal" placeholder="Buscar personal"
+    class="form-control" [(ngModel)]="buscar_personal" required>
     <hr>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Hora Ingreso</label>
-        <div class="col-sm-4">
-            <input type="time"
-            class="form-control"
-            id="horaIngresoPersonal"
-            formControlName="hora_ingreso"
-            required
-            />
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Hora Salida</label>
-        <div class="col-sm-4">
-            <input type="time"
-            class="form-control"
-            id="horaSalidaPersonal"
-            formControlName="hora_salida"
-            required
-            />
-        </div>
-    </div>
-
-    <div class="form-group row">
-
-        <label class="col-sm-2 col-form-label"> Asistencia</label>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="estado" id="asistenciaPersonalRadio" value="Presente"
-            formControlName="estado" required
-            >
-            <label class="form-check-label" for="asistenciaPersonalRadio"> Presente </label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="estado" id="asistenciaPersonalRadio2" value="Ausente"
-            formControlName="estado" required
-            >
-            <label class="form-check-label" for="asistenciaPersonalRadio2"> Ausente </label>
-        </div>
-
-    </div >
+    <button class="btn btn-primary" (click)="busquedaPersonal()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Personal" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
 </div>
 
 <hr>
 
-<div class="container" id="contenedorBotones">
-    <div class="form-group">
-      <button
-        class="btn btn-primary"
-        [disabled]="btnRegistrar"
-      >
-        Registrar
-      </button>
-      <button
-        class="btn btn-warning"
-        (click)="editarAsistenciaPersonalId()"
-        type="button"
-        [disabled]="btnEditar"
-      >
-        Editar
-      </button>
-      <button
-        class="btn btn-danger"
-        [disabled]="btnCancelar"
-        type="reset"
-        
-      >
-        Cancelar
-      </button>
-    </div>
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
   </div>
+</div>
 
-</form>
+</div>
 
 <div class="container-fluid" id="contenedorTabla">
-    <legend>Listado de Asistencia del Personal</legend>
+    <legend align="center">Listado de Asistencia del Personal</legend>
     <table class="table table-bordered table-hover table-dark">
         <thead>
             <tr>
@@ -122,7 +125,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let asistenciapersonal of listadoAsistenciaPersonal">
+            <tr *ngFor="let asistenciapersonal of listadoAsistenciaPersonal | paginate: { itemsPerPage: 5, currentPage: p }">
                 <th scope="row">{{ asistenciapersonal.id }}</th>
                 <td scope="row">{{ asistenciapersonal.personal.nombre_personal }} {{ asistenciapersonal.personal.apellido_personal}} </td>
                 <td scope="row">{{ asistenciapersonal.hora_ingreso }}</td>
@@ -130,7 +133,7 @@
                 <td scope="row">{{ asistenciapersonal.estado }}</td>
                 <!-- Falta colocar las funciones de los botones al haer (click) -->
                 <td scope="row">
-                    <button class="btn btn-warning" (click)='AsistenciaPersonalId(asistenciapersonal)' >
+                    <button class="btn btn-warning" (click)="AsistenciaPersonalId(asistenciapersonal,content)" >
                       Editar
                     </button>
                     <button
@@ -143,7 +146,10 @@
             </tr>
         </tbody>
     </table>
-</div>
 
+    <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+
+</div>
 </body>
 </html>

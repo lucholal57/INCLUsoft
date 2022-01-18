@@ -39,4 +39,8 @@ editarEnfermeriaId(enfermeria: Enfermeria, id : number): Observable<Enfermeria[]
 eliminarEnfermeria(enfermeria: Enfermeria): Observable<Enfermeria[]> {
   return this.http.delete<Enfermeria[]>(this.url + 'enfermeria/' + enfermeria.id);
 }
+// Busqueda de alumno por asistencia
+busquedaAlumno(nombre:string): Observable<Enfermeria[]>{
+  return  this.http.get<Enfermeria[]>(this.url + 'enfermeria/buscar/' + nombre)
+}
 }

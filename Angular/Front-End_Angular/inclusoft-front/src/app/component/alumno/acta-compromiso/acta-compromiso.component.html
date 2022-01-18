@@ -138,7 +138,7 @@
 </div>
 
 <div class="container-fluid" id="contenedorTabla">
-  <legend>Listado Actas Compromiso</legend>
+  <legend align="center">Listado Actas Compromiso</legend>
   <table class="table table-bordered table-dark table-responsive-lg">
     <thead>
       <tr>
@@ -154,7 +154,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let actas of listadoActaCompromiso | paginate: { itemsPerPage: 3, currentPage: p }">
+      <tr *ngFor="let actas of listadoActaCompromiso | paginate: { itemsPerPage: 5, currentPage: p }">
         <th scope="row">{{ actas.id }}</th>
         <td scope="row">
           {{ actas.alumno.nombre_alumno }} {{ actas.alumno.apellido_alumno }}
@@ -176,8 +176,5 @@
   <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
 
 </div>
-
 </body>
-
-
 </html>

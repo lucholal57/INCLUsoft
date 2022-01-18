@@ -40,4 +40,8 @@ editarPtologiasId(patologia: Patologia, id: number): Observable<Patologia[]>{
 eliminarPatologia(patologia: Patologia): Observable<Patologia[]>{
   return this.http.delete<Patologia[]>(this.url + 'patologia/' + patologia.id);
 }
+// Busqueda de alumno por asistencia
+busquedaAlumno(nombre:string): Observable<Patologia[]>{
+  return  this.http.get<Patologia[]>(this.url + 'patologia/buscar/' + nombre)
+}
 }

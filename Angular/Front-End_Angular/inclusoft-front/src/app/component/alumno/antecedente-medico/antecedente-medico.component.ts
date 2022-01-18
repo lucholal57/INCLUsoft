@@ -7,28 +7,37 @@ import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from 'src/app/service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-antecedente-medico',
   templateUrl: './antecedente-medico.component.html',
   styleUrls: ['./antecedente-medico.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class AntecedenteMedicoComponent implements OnInit {
+   // Variable P para el conteo del paginado
+  p: number = 1;
   // Array de antecedente-medico para mostrar en la tabla
   listadoAntecedenteMedico: AntecedenteMedico[];
   // Array de alumnos para el select
   listadoAlumnos: Alumno[];
+  //  variable para buscar por alumno
+  buscar_alumno= "";
 
   // Variables de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar= false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Alumno = false;
 
   // Injeccion de o los constructores a utilizar
   constructor(
     private servicioAntecedenteMedico: AntecedenteMedicoService,
     private servicioAlumno: AlumnoService,
     private formBuilder: FormBuilder,
+    config: NgbModalConfig,
+    private modalService: NgbModal,
     private alertas: AlertService
   ) {}
 
@@ -45,6 +54,20 @@ export class AntecedenteMedicoComponent implements OnInit {
     this.getAlumno();
     this.getAntecedenteMedico();
     this.btnEditar = true;
+    this.ocultarbusqueda_Alumno = true;
+  }
+
+   // Open funcion para abrir ventana modal
+   open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
   // Obtener todos los alumnos
   getAlumno(): void {
@@ -78,8 +101,8 @@ export class AntecedenteMedicoComponent implements OnInit {
           (res) => {
             console.log(res);
             this.alertas.alertsuccess();
-            this.formularioRegistro.reset();
             this.getAntecedenteMedico();
+            this.cerrarModal();
           },
           (error) => {
             this.alertas.alerterror();
@@ -90,7 +113,11 @@ export class AntecedenteMedicoComponent implements OnInit {
     }
   }
   // Obtener Antecedente Medico por id para mostrar en los campos de los input para su proxima edicion
-  AntecedenteMedicoId(antecedente_medico: AntecedenteMedico): void {
+  AntecedenteMedicoId(antecedente_medico: AntecedenteMedico, content : any): void {
+    this.modalService.open(content,{size:'lg'});
+    this.btnCancelar = true;
+    this.btnEditar = false;
+    this.btnGuardar = true;
     this.servicioAntecedenteMedico
       .getAntecedenteMedicoId(antecedente_medico)
       .subscribe(
@@ -101,8 +128,6 @@ export class AntecedenteMedicoComponent implements OnInit {
             factor_rh: res[0].factor_rh,
             alumno: res[0].alumno,
           });
-          this.btnEditar = false;
-          this.btnRegistrar = true;
         },
         (error) => {
           this.alertas.alerterror();
@@ -120,7 +145,7 @@ export class AntecedenteMedicoComponent implements OnInit {
           console.log(res);
           this.alertas.alertedit();
           this.getAntecedenteMedico();
-          this.cancelar();
+          this.cerrarModal();
         },
         (error) => {
           console.log(error);
@@ -157,10 +182,40 @@ export class AntecedenteMedicoComponent implements OnInit {
 
     });
   }
+
+  // Busqueda de acompañantes por alumno
+busquedaAlumno(): void{
+  if (this.buscar_alumno == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioAntecedenteMedico.busquedaAlumno(this.buscar_alumno).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Alumno = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Alumno = false;
+        }
+        this.listadoAntecedenteMedico = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+  // Cancelar Busqueda
+  cancelarbusqueda(): void {
+    this.ocultarbusqueda_Alumno = true;
+    this.getAntecedenteMedico();
+    this.buscar_alumno = "";
+  }
   // Limpiar los campos
   cancelar(): void {
     this.formularioRegistro.reset();
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
     this.btnEditar = true;
   }
 }

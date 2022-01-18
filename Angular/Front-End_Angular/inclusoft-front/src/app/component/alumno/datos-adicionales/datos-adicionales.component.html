@@ -12,224 +12,217 @@
 <form [formGroup]="formularioRegistro" (submit)="registrarDatosAdicionales()">
 
   <div>
-    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
-  </div>
-  
-  <div class="container" id="contenedorRegistro">
-    <legend>Formulario Datos Adicionales</legend>
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
-      <div class="col-sm-6">
-        <select class="form-control" formControlName="alumno">
-          <option value="">Seleccione un Alumno</option>
-          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
-            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Jubilacion</label>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="jubilacion" id="jubilacionRadio" value="si" formControlName="jubilacion" required>
-      <label class="form-check-label" for="jubilacionRadio">Si</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="jubilacion" id="jubilacionRadio2" value="no" formControlName="jubilacion" required>
-      <label class="form-check-label" for="jubilacionRadio2">No</label>
-    </div>
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
   </div>
 
-<hr>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Pension</label>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="pension" id="pensionRadio1" value="si" formControlName="pension" required>
-        <label class="form-check-label" for="pensionRadio1">Si</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="pension" id="pensionRadio2" value="no" formControlName="pension" required>
-        <label class="form-check-label" for="pensionRadio2">No</label>
-      </div>
-    </div>
-<hr>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Cobertura Social</label>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="cobertura_social" id="cobertura_socialRadio1" value="si" formControlName="cobertura_social" required>
-        <label class="form-check-label" for="cobertura_socialRadio1">Si</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="cobertura_social" id="cobertura_socialRadio2" value="no" formControlName="cobertura_social" required>
-        <label class="form-check-label" for="cobertura_socialRadio2">No</label>
-      </div>
-    </div>
-<hr>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Certificado Discapacidad</label>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="certificado_discapacidad" id="certificado_discapacidad1" value="si" formControlName="certificado_discapacidad" required>
-        <label class="form-check-label" for="certificado_discapacidad1">Si</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="certificado_discapacidad" id="certificado_discapacidad2" value="no" formControlName="certificado_discapacidad" required>
-        <label class="form-check-label" for="certificado_discapacidad2">No</label>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Vigencia</label>
-      <div class="col-sm-4">
-        <input
-          type="date"
-          class="form-control"
-          id="vigencia"
-          formControlName="vigencia_certificado"
-          required
-        />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Nivel Educacional</label>
-      <div class="col-sm-4">
-        <input
-          type="text"
-          class="form-control"
-          id="nivel_educacional"
-          placeholder="Ingrese el nivel educacional"
-          formControlName="nivel_educacional"
-          required
-        />
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Grupo Familiar</label>
-      <div class="col-sm-8">
-        <input
-          type="text"
-          class="form-control"
-          id="grupo_familiar"
-          placeholder="Ingrese el grupo familiar"
-          formControlName="grupo_familiar_convivencia"
-          required
-        />
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Actividades</label>
-      <div class="col-sm-8">
-        <input
-          type="text"
-          class="form-control"
-          id="acticvidades"
-          placeholder="Ingrese actividades que realiza"
-          formControlName="actividades_realiza"
-          required
-        />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Trabajo Madre</label>
-      <div class="col-sm-8">
-        <input
-          type="text"
-          class="form-control"
-          id="trabajo_madre"
-          placeholder="Ingrese lugar de trabajo madre"
-          formControlName="trabajo_madre"
-          required
-        />
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Trabajo Padre</label>
-      <div class="col-sm-8">
-        <input
-          type="text"
-          class="form-control"
-          id="trabajo_padre"
-          placeholder="Ingrese lugar de trabajo padre"
-          formControlName="trabajo_padre"
-          required
-        />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Telefono Madre</label>
-      <div class="col-sm-8">
-        <input
-          type="number"
-          class="form-control"
-          id="telefono_madre"
-          placeholder="Ingrese telefono madre"
-          formControlName="telefono_madre"
-          required
-        />
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Telefono Padre</label>
-      <div class="col-sm-8">
-        <input
-          type="number"
-          class="form-control"
-          id="telefono_padre"
-          placeholder="Ingrese telefono padre"
-          formControlName="telefono_padre"
-          required
-        />
-      </div>
-    </div>
-  </div>
-  <hr />
-
-  <div class="container" id="contenedorBotones">
-    <div class="form-group">
-      <button class="btn btn-primary" [disabled]="btnRegistrar">
-        Registrar
-      </button>
-      <button
-        class="btn btn-warning"
-        [disabled]="btnEditar"
-        type="button"
-        (click)="editarDatosAdicionalesId()"
-      >
-        Editar
-      </button>
-      <button
-        class="btn btn-danger"
-        [disabled]="btnCancelar"
-        type="reset"
-        (click)="cancelar()"
-      >
-        Cancelar
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario Datos Adicionales</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
       </button>
     </div>
-  </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label style="color:black"  for="alumno">Alumno</label>
+          <select class="form-control" formControlName="alumno">
+            <option value="">Seleccione un Alumno</option>
+            <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
+              {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
+            </option>
+          </select>
+      </div>
+
+      <div class="form-group">
+      <label style="color:black" >Jubilacion</label>
+      <div class="col">
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="jubilacion" id="jubilacionRadio" value="si" formControlName="jubilacion" required>
+        <label class="form-check-label" for="jubilacionRadio" style="color:black" >Si</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="jubilacion" id="jubilacionRadio2" value="no" formControlName="jubilacion" required>
+        <label class="form-check-label" for="jubilacionRadio2" style="color:black" >No</label>
+      </div>
+
+    </div>
+
+    </div>
+
+      <div class="form-group">
+        <label style="color:black">Pension</label>
+        <div class="col">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="pension" id="pensionRadio1" value="si" formControlName="pension" required>
+          <label class="form-check-label" for="pensionRadio1" style="color:black" >Si</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="pension" id="pensionRadio2" value="no" formControlName="pension" required>
+          <label class="form-check-label" for="pensionRadio2" style="color:black" >No</label>
+        </div>
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label style="color:black">Cobertura Social</label>
+        <div class="col">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="cobertura_social" id="cobertura_socialRadio1" value="si" formControlName="cobertura_social" required>
+          <label class="form-check-label" for="cobertura_socialRadio1" style="color:black" >Si</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="cobertura_social" id="cobertura_socialRadio2" value="no" formControlName="cobertura_social" required>
+          <label class="form-check-label" for="cobertura_socialRadio2" style="color:black" >No</label>
+        </div>
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label style="color:black">Certificado Discapacidad</label>
+        <div class="col">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="certificado_discapacidad" id="certificado_discapacidad1" value="si" formControlName="certificado_discapacidad" required>
+          <label class="form-check-label" for="certificado_discapacidad1"style="color:black" >Si</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="certificado_discapacidad" id="certificado_discapacidad2" value="no" formControlName="certificado_discapacidad" required>
+          <label class="form-check-label" for="certificado_discapacidad2" style="color:black" >No</label>
+        </div>
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label style="color:black" >Vigencia</label>
+          <input
+            type="date"
+            class="form-control"
+            id="vigencia"
+            formControlName="vigencia_certificado"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Nivel Educacional</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nivel_educacional"
+            placeholder="Ingrese el nivel educacional"
+            formControlName="nivel_educacional"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Grupo Familiar</label>
+          <input
+            type="text"
+            class="form-control"
+            id="grupo_familiar"
+            placeholder="Ingrese el grupo familiar"
+            formControlName="grupo_familiar_convivencia"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Actividades</label>
+          <input
+            type="text"
+            class="form-control"
+            id="acticvidades"
+            placeholder="Ingrese actividades que realiza"
+            formControlName="actividades_realiza"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Trabajo Madre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="trabajo_madre"
+            placeholder="Ingrese lugar de trabajo madre"
+            formControlName="trabajo_madre"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Trabajo Padre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="trabajo_padre"
+            placeholder="Ingrese lugar de trabajo padre"
+            formControlName="trabajo_padre"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Telefono Madre</label>
+          <input
+            type="number"
+            class="form-control"
+            id="telefono_madre"
+            placeholder="Ingrese telefono madre"
+            formControlName="telefono_madre"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black" >Telefono Padre</label>
+          <input
+            type="number"
+            class="form-control"
+            id="telefono_padre"
+            placeholder="Ingrese telefono padre"
+            formControlName="telefono_padre"
+            required
+          />
+      </div>
+
+    </div>
+    <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="registrarDatosAdicionales()" [disabled]="btnGuardar">Guardar</button>
+    <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarDatosAdicionalesId()">Editar</button>
+    <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+    </div>
+  </ng-template>
+
 </form>
 
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Alumno</legend>
+    <input type="text" name="nombre_alumno" placeholder="Buscar alumno"
+    class="form-control" [(ngModel)]="buscar_alumno" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaAlumno()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Alumno" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
 <div class="container-fluid" id="contenedorTabla">
-  <legend>Listado de datos adicionales</legend>
+  <legend align="center">Listado de Datos Adicionales</legend>
 
   <div class="row justify-content-center">
     <table class="table table-bordered table-hover table-dark">
@@ -278,7 +271,7 @@
           <td>
             <button
               class="btn btn-warning"
-              (click)="DatosAdicionalesId(datos_adicionales)"
+              (click)="DatosAdicionalesId(datos_adicionales,content)"
             >
               Editar
             </button>

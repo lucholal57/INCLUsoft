@@ -134,7 +134,7 @@ ActaCompromisoId(acta_compromiso: ActaCompromiso, content : any): void{
       });
     },
     (error) => {
-     this.alertas.alerterror();
+      this.alertas.alerterror();
     }
   );
 }
@@ -207,7 +207,7 @@ busquedaAlumno(): void{
     )
   }
 }
-
+// Cancelar Busqueda
 cancelarbusqueda(): void {
   this.ocultarbusqueda_Alumno = true;
   this.getActaCompromiso();

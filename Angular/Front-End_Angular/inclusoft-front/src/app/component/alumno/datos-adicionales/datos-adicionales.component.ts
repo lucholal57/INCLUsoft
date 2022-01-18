@@ -7,31 +7,40 @@ import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-datos-adicionales',
   templateUrl: './datos-adicionales.component.html',
   styleUrls: ['./datos-adicionales.component.css'],
+  providers: [NgbModalConfig, NgbModal],
+
 })
 export class DatosAdicionalesComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array para el listado de datos adicionales
   listadoDatosAdicionales: DatosAdicionales[];
   // Array para el listado de alumnos
   listadoAlumnos: Alumno[];
+  //  variable para buscar por alumno
+  buscar_alumno= "";
 
   // Variables de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
-
+  public ocultarbusqueda_Alumno = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
     private servicioDatosAdicionales: DatosAdicionalesService,
     private servicioAlumno: AlumnoService,
     private formBuilder: FormBuilder,
-    private alertas: AlertService
+    private alertas: AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
   // Formulario reactivo para registrar los datos de la pagina
   formularioRegistro = this.formBuilder.group({
@@ -50,13 +59,25 @@ export class DatosAdicionalesComponent implements OnInit {
     telefono_padre: ['', [Validators.required]],
     alumno: ['', [Validators.required]],
   });
-  
+
   ngOnInit(): void {
     // Ejecutamos los dos metodos al iniciar la carga de la pagina web
     this.getDatosAdicionales();
     this.getAlumno();
     this.btnEditar = true;
-
+    this.ocultarbusqueda_Alumno = true;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
   // Obtener todos los alumnos para mostrar la lista de seleccion para el registro de datos adicionales
   getAlumno(): void {
@@ -88,8 +109,8 @@ export class DatosAdicionalesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.alertas.alertsuccess();
-          this.formularioRegistro.reset();
           this.getDatosAdicionales();
+          this.cerrarModal();
         },
         (error) => {
          this.alertas.alerterror();
@@ -98,10 +119,14 @@ export class DatosAdicionalesComponent implements OnInit {
     }else {
      this.alertas.alertcampos();
     }
-  
+
   }
   // Obtener datos adicionales por id para mostrar los campos en los input para su proxima edicion
-  DatosAdicionalesId(datos_adicionales: DatosAdicionales): void{
+  DatosAdicionalesId(datos_adicionales: DatosAdicionales, content : any): void{
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
     this.servicioDatosAdicionales.getDatosAdicionalesId(datos_adicionales).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -120,9 +145,6 @@ export class DatosAdicionalesComponent implements OnInit {
           telefono_padre: res[0].telefono_padre,
           alumno: res[0].alumno,
         })
-        this.btnEditar = false;
-        this.btnRegistrar = true;
-
       },
       (error) => {
         console.log(error);
@@ -138,7 +160,7 @@ export class DatosAdicionalesComponent implements OnInit {
       (res) => {
        this.alertas.alertedit();
         this.getDatosAdicionales();
-        this.cancelar();
+        this.cerrarModal();
       },
       (error) => {
         this.alertas.alerterror();
@@ -169,14 +191,42 @@ export class DatosAdicionalesComponent implements OnInit {
             this.alertas.alerterror();
           }
         );
-      }    
+      }
     });
-    
     }
+    // Busqueda de acompañantes por alumno
+busquedaAlumno(): void{
+  if (this.buscar_alumno == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioDatosAdicionales.busquedaAlumno(this.buscar_alumno).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Alumno = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Alumno = false;
+        }
+        this.listadoDatosAdicionales = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Alumno = true;
+  this.getDatosAdicionales();
+  this.buscar_alumno = "";
+}
   // Limpiar los campos
   cancelar(): void{
     this.formularioRegistro.reset();
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
     this.btnEditar = true;
 
   }

@@ -39,6 +39,7 @@ editarActaCompromisoId(formularioRegistro : any, id: number): Observable<ActaCom
 eliminarActaCompromiso(acta_compromiso: ActaCompromiso): Observable<ActaCompromiso[]>{
   return this.http.delete<ActaCompromiso[]>(this.url + 'acta_compromiso/' + acta_compromiso.id);
 }
+// Busqueda de alumno por asistencia
 busquedaAlumno(nombre:string): Observable<ActaCompromiso[]>{
   return  this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso/buscar/' + nombre)
 }

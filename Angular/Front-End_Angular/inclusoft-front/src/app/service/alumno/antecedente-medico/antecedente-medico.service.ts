@@ -39,4 +39,8 @@ editarAntecedenteMedicoId(formularioRegistro: any, id: number): Observable<Antec
 elimnarAntecedenteMedico(antecedente_medico: AntecedenteMedico): Observable<AntecedenteMedico[]>{
   return this.http.delete<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id);
 }
+// Busqueda de antecedente medico por alumno
+busquedaAlumno(nombre:string): Observable<AntecedenteMedico[]>{
+  return  this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico/buscar/' + nombre)
+}
 }

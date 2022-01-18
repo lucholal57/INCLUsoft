@@ -8,32 +8,41 @@ import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from 'src/app/service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-enfermeria',
   templateUrl: './enfermeria.component.html',
-  styleUrls: ['./enfermeria.component.css']
+  styleUrls: ['./enfermeria.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class EnfermeriaComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
 // Array de Enfemeria para mostrar en la tabla de
 listadoEnfermeria: Enfermeria[];
 // Array de alumnos para el select
 listadoAlumnos: Alumno[];
+//  variable para buscar por alumno
+buscar_alumno= "";
 
 // Variable de botones para deshabilitar
-public btnRegistrar = false;
+public btnGuardar = false;
 public btnEditar = false;
 public btnCancelar = false;
+public ocultarbusqueda_Alumno = false;
 
 // Injeccion de o los servicios a utilizar
   constructor(
     private servicioAlumno: AlumnoService,
     private servicioEnfermeria: EnfermeriaService,
     private formBuilder: FormBuilder,
-    private alertas: AlertService
+    private alertas: AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) { }
 
-// Formulario reactivo para el registro de datos 
+// Formulario reactivo para el registro de datos
 formularioRegistro = this.formBuilder.group({
   id: [''],
   observaciones: ['',[Validators.required]],
@@ -45,9 +54,24 @@ formularioRegistro = this.formBuilder.group({
     this.getAlumnos();
     this.getEnfermeria();
     this.btnEditar = true;
+    this.ocultarbusqueda_Alumno = true;
   }
 
-  // Obtener todos los alumnos para mostrar la lista de seleccion para registrar una enfermeria
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
+  }
+
+  // Obtener todos los alumnos para mostrar la lista de seleccion para Guardar una enfermeria
   getAlumnos(): void{
     this.servicioAlumno.getAlumnos().subscribe(
       (res) => {
@@ -72,15 +96,15 @@ formularioRegistro = this.formBuilder.group({
     );
   }
 
-  // Registrar enfermeria
+  // Guardar enfermeria
   registrarEnfermeria(): void{
     if (this.formularioRegistro.valid)
     {
     this.servicioEnfermeria.registrarEnfermeria(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
-        this.formularioRegistro.reset();
         this.getEnfermeria();
+        this.cerrarModal();
       },
       (error) => {
         this.alertas.alerterror();
@@ -91,7 +115,11 @@ formularioRegistro = this.formBuilder.group({
     }
   }
   // Obtener enfermeria por id para mostrarn en los campos de los input para su procima edicion.
-  EnfermeriaId(enfermeria: Enfermeria): void{
+  EnfermeriaId(enfermeria: Enfermeria, content : any): void{
+    this.modalService.open(content,{size:'lg'});
+    this.btnCancelar = true;
+    this.btnEditar = false;
+    this.btnGuardar = true;
     this.servicioEnfermeria.getEnfermeriaId(enfermeria).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -100,8 +128,6 @@ formularioRegistro = this.formBuilder.group({
           fecha_observacion: res[0].fecha_observacion,
           alumno : res[0].alumno,
         })
-        this.btnEditar = false;
-        this.btnRegistrar = true;
       },
       (error) => {
         this.alertas.alerterror();
@@ -117,7 +143,7 @@ formularioRegistro = this.formBuilder.group({
         console.log(res);
         this.alertas.alertedit();
         this.getEnfermeria();
-        this.cancelar();
+        this.cerrarModal();
       },
       (error) => {
         console.log(error);
@@ -148,15 +174,42 @@ formularioRegistro = this.formBuilder.group({
         );
         Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
       }
-      
+
     });
-   
-  
   }
+  // Busqueda de acompañantes por alumno
+busquedaAlumno(): void{
+  if (this.buscar_alumno == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioEnfermeria.busquedaAlumno(this.buscar_alumno).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Alumno = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Alumno = false;
+        }
+        this.listadoEnfermeria = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Alumno = true;
+  this.getEnfermeria();
+  this.buscar_alumno = "";
+}
   // Limpiar los campos
   cancelar(): void{
     this.formularioRegistro.reset();
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
     this.btnEditar = true;
   }
 }
