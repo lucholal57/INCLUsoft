@@ -7,29 +7,38 @@ import { PersonalService } from '../../../service/personal/personal/personal.ser
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from 'src/app/service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-entrega-proyecto',
   templateUrl: './entrega-proyecto.component.html',
-  styleUrls: ['./entrega-proyecto.component.css']
+  styleUrls: ['./entrega-proyecto.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class EntregaProyectoComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array de entrega proyectos para mostrar en la tabla
   listadoEntregaProyecto : EntregaProyecto[];
   // Array de personal para el select
   listadoPersonal : Personal[];
+  //  variable para buscar por personalo
+  buscar_personal= "";
 
   // Variable de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Personal = false;
 
 // Injeccion de o los servicios a utilizar
   constructor(
     private servicioPersonal : PersonalService,
     private servicioEntregaProyecto : EntregaProyectoService,
     private formBuilder : FormBuilder,
-    private alertas : AlertService
+    private alertas : AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) { }
 
   // Formulario reactivo para el registro de datos
@@ -45,6 +54,19 @@ export class EntregaProyectoComponent implements OnInit {
     this.getPersonal();
     this.getEntregaProyecto();
     this.btnEditar = true;
+    this.ocultarbusqueda_Personal = true;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
   //Obtenemos todo el personal para mostrar la lista de seleccion para registrar una entrega proyecto
   getPersonal(): void {
@@ -75,8 +97,8 @@ export class EntregaProyectoComponent implements OnInit {
       this.servicioEntregaProyecto.registrarEntregaProyecto(this.formularioRegistro.value).subscribe(
         (res) => {
           this.alertas.alertsuccess();
-          this.formularioRegistro.reset();
           this.getEntregaProyecto();
+          this.cerrarModal();
         },
         (error) => {
           console.log(error)
@@ -88,18 +110,20 @@ export class EntregaProyectoComponent implements OnInit {
     }
   }
   // Obtener entregasd de proyectos por id para mostrar en los campos de los input para su proxima edicion
-  EntregaProyectoId( entregaproyecto : EntregaProyecto) : void {
+  EntregaProyectoId( entregaproyecto : EntregaProyecto, content : any) : void {
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
     this.servicioEntregaProyecto.getEntregaProyectoId(entregaproyecto).subscribe(
       (res) => {
-        this.formularioRegistro.patchValue({ 
+        this.formularioRegistro.patchValue({
           id : res[0].id,
           fecha_entrega : res[0].fecha_entrega,
           area : res[0].area,
           observacion : res[0].observacion,
           personal : res[0].personal,
         });
-        this.btnEditar = false;
-        this.btnRegistrar = true;
       },
       (error) =>{
         this.alertas.alerterror();
@@ -117,7 +141,7 @@ export class EntregaProyectoComponent implements OnInit {
           console.log(res);
           this.alertas.alertedit();
           this.getEntregaProyecto();
-          this.cancelar();
+          this.cerrarModal();
         },
         (error) => {
           console.log(error);
@@ -127,7 +151,7 @@ export class EntregaProyectoComponent implements OnInit {
     } else {
       this.alertas.alertcampos();
     }
-   
+
   }
 // Eliminar entrega de proyecto
 eliminarEntregaProyecto( entregaproyecto : EntregaProyecto): void {
@@ -152,14 +176,43 @@ eliminarEntregaProyecto( entregaproyecto : EntregaProyecto): void {
       );
       Swal.fire('Eliminado!', 'Se eleccion ha sido eliminada.', 'success');
     }
-    
+
   });
 }
+// Busqueda de entrega proyecto por personal
+busquedaPersonal(): void{
+  if (this.buscar_personal == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioEntregaProyecto.busquedaPersonal(this.buscar_personal).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Personal = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Personal = false;
+        }
+        this.listadoEntregaProyecto = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Personal = true;
+  this.getEntregaProyecto()
+  this.buscar_personal = "";
+}
 
-   // Linpiar los campos
-   cancelar(): void{
+// Linpiar los campos
+cancelar(): void{
     this.formularioRegistro.reset();
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
     this.btnEditar = true;
   }
 

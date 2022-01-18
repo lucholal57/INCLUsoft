@@ -13,115 +13,108 @@
       <div>
         <img
           src="../../../../assets/img/caad.jpg"
-          align="left"
+          align="right"
           alt=""
           alt=""
           width="10%"
         />
       </div>
 
-      <div class="container" id="contenedorRegistro">
-        <legend>Formulario Permisos de Salida</legend>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="personal">Personal</label>
-          <div class="col-sm-6">
-            <select class="form-control" formControlName="personal" required>
-              <option value="">Seleccione un Personal</option>
-              <option
-                *ngFor="let personal of listadoPersonal"
-                [ngValue]="personal.id" >
-                {{ personal.nombre_personal }} {{ personal.apellido_personal }}
-              </option>
-            </select>
-          </div>
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Formulario de Permiso Salida</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      
+        <div class="modal-body">
 
-      <hr />
-
-      <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Fecha</label>
-          <div class="col-sm-4">
-              <input type="date"
-              class="form-control" 
-              formControlName="fecha_permiso"
-              id="fechaPermisoSalida"
-              required
-              >
+          <div class="form-group">
+            <label style="color:black" for="alumno">Personal</label>
+              <select class="form-control" formControlName="personal" required>
+                <option value="">Seleccione un Personal</option>
+                <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+                  {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+                </option>
+              </select>
           </div>
-      </div>
-      
 
-     <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Horario Salida</label>
-          <div class="col-sm-4">
-              <input type="time"
-              class="form-control" 
-              formControlName="horario_salida"
-              id="horariosalidaPermisoSalida"
-              required
-              >
-          </div>
-      </div>
-
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Horario Regreso</label>
-        <div class="col-sm-4">
-            <input type="time"
-            class="form-control" 
-            formControlName="horario_regreso"
-            id="horarioregresoPermisoSalida"
-            required
-            >
+          <div class="form-group">
+            <label style="color:black">Fecha</label>
+                <input type="date"
+                class="form-control"
+                formControlName="fecha_permiso"
+                id="fechaPermisoSalida"
+                required
+                >
         </div>
-    </div>
 
-     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Motivo</label>
-        <div class="col-sm-6">
-            <input type="text"
-            class="form-control" 
-            formControlName="motivo"
-            id="motivoPermisoSalida"
-            required
-            >
+
+       <div class="form-group">
+            <label style="color:black">Horario Salida</label>
+                <input type="time"
+                class="form-control"
+                formControlName="horario_salida"
+                id="horariosalidaPermisoSalida"
+                required
+                >
         </div>
-    </div>
 
-    </div>
-    
-    <hr>
-
-    <div class="container" id="contenedorbotones">
         <div class="form-group">
-            <button
-            class="btn btn-primary"
-            [disabled]="btnRegistrar"
-            >
-            Registrar
-            </button>
-            <button
-            class="btn btn-warning"
-            type="button"
-            [disabled]="btnEditar"
-            (click)="editarPermisoSalidaId()"
-            >
-            Editar
-            </button>
-            <button
-            class="btn btn-danger"
-            type="reset"
-            [disabled]="btnCancelar"
-            >
-            Cancelar
-            </button>
+          <label style="color:black">Horario Regreso</label>
+              <input type="time"
+              class="form-control"
+              formControlName="horario_regreso"
+              id="horarioregresoPermisoSalida"
+              required
+              >
+      </div>
+
+       <div class="form-group">
+          <label style="color:black">Motivo</label>
+              <input type="text"
+              class="form-control"
+              formControlName="motivo"
+              id="motivoPermisoSalida"
+              required
+              >
+      </div>
+
+  </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="registrarPermisoSalida()" [disabled]="btnGuardar">Guardar</button>
+          <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarPermisoSalidaId()">Editar</button>
+          <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
         </div>
-    </div>
+      </ng-template>
 
     </form>
 
+    <div class="container" id="contenedorBusqueda">
+
+      <div class="form-row">
+        <div class="form-group col-sm-4">
+        <legend>Busquedas por Personal</legend>
+        <input type="text" name="nombre_personal" placeholder="Buscar personal"
+        class="form-control" [(ngModel)]="buscar_personal" required>
+        <hr>
+        <button class="btn btn-primary" (click)="busquedaPersonal()" >Buscar</button>
+        <button class="btn btn-danger" [hidden]="ocultarbusqueda_Personal" (click)="cancelarbusqueda()">Cancelar</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-1">
+        <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+      </div>
+    </div>
+
+    </div>
+
     <div class="container-fluid" id="contenedorTabla">
-        <legend>Listado Permisos Salidas</legend>
+        <legend align="center">Listado Permisos Salidas</legend>
         <table class="table table-bordered table-hover table-dark">
             <thead>
                 <tr>
@@ -135,11 +128,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let permisospersonal of listadoPermisoSalida">
+                <tr *ngFor="let permisospersonal of listadoPermisoSalida | paginate: { itemsPerPage: 5, currentPage: p }">
                     <th scope="row">{{ permisospersonal.id }}</th>
                     <td scope="row">
-                       {{ permisospersonal.personal.nombre_personal}}
-                       {{ permisospersonal.personal.apellido_personal}}
+                      {{ permisospersonal.personal.nombre_personal}}
+                      {{ permisospersonal.personal.apellido_personal}}
                     </td>
                     <td scope="row">{{ permisospersonal.fecha_permiso }}</td>
                     <td scope="row"> {{ permisospersonal.horario_salida }}</td>
@@ -147,7 +140,7 @@
                     <td scope="row">{{ permisospersonal.motivo }}</td>
                     <td scope="row">
                         <button class="btn btn-warning"
-                        (click)="PermisoSalidaId(permisospersonal)"
+                        (click)="PermisoSalidaId(permisospersonal,content)"
                         >
                         Editar
                         </button>
@@ -160,6 +153,9 @@
                 </tr>
             </tbody>
         </table>
+
+        <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
     </div>
   </body>
 </html>

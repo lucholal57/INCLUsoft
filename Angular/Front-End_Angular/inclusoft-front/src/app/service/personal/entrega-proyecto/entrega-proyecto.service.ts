@@ -38,4 +38,8 @@ export class EntregaProyectoService {
   eliminarEntregaProyecto( entregaproyecto: EntregaProyecto ): Observable<EntregaProyecto[]>{
     return this.http.delete<EntregaProyecto[]>(this.url + 'entrega_proyecto/' + entregaproyecto.id)
   }
+    // Busqueda de personal por entrega Proyecto
+busquedaPersonal(nombre:string): Observable<EntregaProyecto[]>{
+  return  this.http.get<EntregaProyecto[]>(this.url + 'entrega_proyecto/buscar/' + nombre)
+}
 }

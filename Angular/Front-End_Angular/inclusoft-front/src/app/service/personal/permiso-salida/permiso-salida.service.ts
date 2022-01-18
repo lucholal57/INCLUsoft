@@ -39,4 +39,8 @@ export class PermisoSalidaService {
   eliminarPermisoSalida( permisosalida : PermisoSalida): Observable<PermisoSalida[]> {
     return this.http.delete<PermisoSalida[]>(this.url + 'permiso_salida/' + permisosalida.id);
   }
+    // Busqueda de personal por permiso de salida
+busquedaPersonal(nombre:string): Observable<PermisoSalida[]>{
+  return  this.http.get<PermisoSalida[]>(this.url + 'permiso_salida/buscar/' + nombre)
+}
 }

@@ -27,22 +27,26 @@ export class EvaluacionLaboralService {
   }
 
  // Registras Evaluacion Laboral
- registrarEvaluacionLaboral(formularioRegistro: any): Observable<EvaluacionLaboral[]> {
+registrarEvaluacionLaboral(formularioRegistro: any): Observable<EvaluacionLaboral[]> {
    return this.http.post<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral', formularioRegistro, httpOption);
  }
 
  // Obtener Evaluaciones laborales pasando el ID
- getEvaluacionesLaboralesId(evaluacioneslaborales: EvaluacionLaboral): Observable<EvaluacionLaboral[]> {
+getEvaluacionesLaboralesId(evaluacioneslaborales: EvaluacionLaboral): Observable<EvaluacionLaboral[]> {
    return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' +  evaluacioneslaborales.id)
  }
 
  // Editar evaluaciones laborales pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
- editarEvaluacionLaboralId(formularioRegistro: any, id: number): Observable<EvaluacionLaboral[]> {
+editarEvaluacionLaboralId(formularioRegistro: any, id: number): Observable<EvaluacionLaboral[]> {
    return this.http.put<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + id, formularioRegistro);
  }
 
  // Eliminar evaluaciones laborales
- elimarEvaluacionLaboral( evaluacionlaboral : EvaluacionLaboral): Observable<EvaluacionLaboral[]>{
+elimarEvaluacionLaboral( evaluacionlaboral : EvaluacionLaboral): Observable<EvaluacionLaboral[]>{
    return this.http.delete<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + evaluacionlaboral.id);
  }
+  // Busqueda de personal por asistencia
+  busquedaPersonal(nombre:string): Observable<EvaluacionLaboral[]>{
+  return  this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/buscar/' + nombre)
+}
 }
