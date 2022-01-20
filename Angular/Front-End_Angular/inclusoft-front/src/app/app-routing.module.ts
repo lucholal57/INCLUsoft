@@ -17,8 +17,8 @@ import { PermisoSalidaComponent} from './component/personal/permiso-salida/permi
 import { EvaluacionLabolarComponent } from './component/personal/evaluacion-labolar/evaluacion-labolar.component';
 import { EntregaProyectoComponent } from './component/personal/entrega-proyecto/entrega-proyecto.component';
 import { TallerComponent } from './component/taller/taller/taller.component';
-import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales/informes-cuatrimestrales.component';
-import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller/materiales-taller.component';
+
+import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller.component';
 import { VentasTallerComponent } from './component/taller/ventas-taller/ventas-taller/ventas-taller.component';
 import { ProduccionTallerComponent } from './component/taller/produccion-taller/produccion-taller.component';
 import { CompraTallerComponent } from './component/taller/compra-taller/compra-taller.component';
@@ -26,8 +26,7 @@ import { InventarioTallerComponent } from './component/taller/inventario-taller/
 import { AcompananteComponent } from './component/acompanante/acompanante.component';
 import { ViajeComponent } from './component/viaje/viaje.component';
 import { EstadisticaComponent} from './component/estadistica/estadistica.component';
-
-
+import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales.component';
 
 
 
@@ -50,7 +49,7 @@ const routes: Routes = [
   {path:'personal/entrega_proyecto', component: EntregaProyectoComponent},
   //Rutas Talleres
   {path:'taller', component: TallerComponent},
-  {path:'taller/informes_cuatrimestrales', component: InformesCuatrimestralesComponent},
+  {path:'taller/informes_cuatrimestrales', component : InformesCuatrimestralesComponent},
   {path:'taller/materiales_taller', component: MaterialesTallerComponent},
   {path:'taller/ventas_taller', component: VentasTallerComponent},
   {path:'taller/produccion_taller', component: ProduccionTallerComponent},

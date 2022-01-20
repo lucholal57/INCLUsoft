@@ -8,28 +8,37 @@ import { TallerService } from '../../../service/taller/taller/taller.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-compra-taller',
   templateUrl: './compra-taller.component.html',
   styleUrls: ['./compra-taller.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class CompraTallerComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array de compras de taller
   listadoComprasTaller: CompraTaller[];
   // Array de talleres
   listadoTalleres: Taller[];
+  //  variable para buscar por personalo
+  buscar_taller= "";
   // Variable de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Taller = false;
 
   // Injenccion de o los servicios a utilizar
   constructor(
     private servicioTaller: TallerService,
     private servicioCompraTaller: CompraTallerService,
     private formBuilder: FormBuilder,
-    private alertas: AlertService
+    private alertas: AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
 
   // Formulario reactivo para el registro de datos
@@ -44,6 +53,19 @@ export class CompraTallerComponent implements OnInit {
     this.getTalleres();
     this.getComprasTaller();
     this.btnEditar = false;
+    this.ocultarbusqueda_Taller = false;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
   // Obtenemos los talleres para mostar en la lista de seleccion al registrar una compra para taller
@@ -62,10 +84,8 @@ export class CompraTallerComponent implements OnInit {
     this.servicioCompraTaller.getCompraTaller().subscribe(
       (res) => {
         this.listadoComprasTaller = res;
-        console.log(res);
       },
       (error) => {
-        console.log(error);
         this.alertas.alerterror();
       }
     );
@@ -78,8 +98,8 @@ export class CompraTallerComponent implements OnInit {
         .subscribe(
           (res) => {
             this.alertas.alertsuccess();
-            this.formularioRegistro.reset();
             this.getComprasTaller();
+            this.cerrarModal();
           },
           (error) => {
             this.alertas.alerterror();
@@ -90,7 +110,11 @@ export class CompraTallerComponent implements OnInit {
     }
   }
   // Obetener compras de taller por id para mostrar en el formulario y poder editar
-  ComprasTallerId(compra: CompraTaller): void {
+  ComprasTallerId(compra: CompraTaller, content : any): void {
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
     this.servicioCompraTaller.getCompraTallerId(compra).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -99,8 +123,6 @@ export class CompraTallerComponent implements OnInit {
           observaciones_compra: res[0].observaciones_compra,
           taller: res[0].taller,
         });
-        this.btnEditar = false;
-        this.btnRegistrar = true;
       },
       (error) => {
         console.log(error);
@@ -119,7 +141,7 @@ export class CompraTallerComponent implements OnInit {
           console.log(res);
           this.alertas.alertedit();
           this.getComprasTaller();
-          this.cancelar();
+          this.cerrarModal();
         },
         (error) => {
           console.log(error);
@@ -153,10 +175,39 @@ export class CompraTallerComponent implements OnInit {
       }
     });
   }
+   // Busqueda de de taller por nombre
+busquedaTaller(): void{
+  if (this.buscar_taller == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioCompraTaller.busquedaTaller(this.buscar_taller).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Taller = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Taller = false;
+        }
+        this.listadoComprasTaller = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Taller = true;
+  this.getComprasTaller();
+  this.buscar_taller = "";
+}
   // Limpiar los campos
   cancelar(): void {
     this.formularioRegistro.reset();
-    this.btnRegistrar = false;
+    this.btnGuardar = false;
     this.btnEditar = true;
   }
 }

@@ -12,29 +12,32 @@
 <form [formGroup]="formularioRegistro" (submit)="registrarComprasTaller()">
 
   <div>
-    <img src="../../../../assets/img/caad.jpg" align="left" alt=""  alt="" width="10%">
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
   </div>
 
-  <div class="container" id="contedorRegistro">
-    <legend>Formulario Compras Taller</legend>
-    <hr>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label" for="taller">Taller</label>
-      <div class="col-sm-6">
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario de Compras Taller</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+     <div class="form-group">
+      <label style="color:black"  for="taller">Taller</label>
         <select class="form-control" formControlName="taller" required>
           <option value="">Seleccione un Taller</option>
           <option *ngFor="let taller of listadoTalleres" [ngValue]="taller.id">
             {{ taller.nombre_taller}}
           </option>
         </select>
-      </div>
     </div>
 
     <hr>
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Insumos</label>
-      <div class="col-sm-4">
+    <div class="form-group">
+      <label style="color:black" >Insumos</label>
         <input
           type="text"
           class="form-control"
@@ -43,11 +46,10 @@
           formControlName="insumos"
           required
         />
-      </div>
     </div>
 
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Observaciones</label>
+    <div class="form-group">
+      <label style="color:black" >Observaciones</label>
       <div class="col-sm-4">
         <textarea
           name="observacionCompra"
@@ -61,42 +63,41 @@
       </div>
     </div>
 
-  </div>
-
-  <hr>
-
-
-  <div class="container" id="contenedorBotones">
-    <div class="form-group" >
-      <button
-        class="btn btn-primary"
-        [disabled]="btnRegistrar"
-      >
-        Registrar
-      </button>
-      <button
-        class="btn btn-warning"
-        [disabled]="btnEditar"
-        type="button"
-        (click)="editarComprasTallerId()"
-      >
-        Editar
-      </button>
-      <button
-        class="btn btn-danger"
-        [disabled]="btnCancelar"
-        type="reset"
-        (click)="cancelar()"
-      >
-        Cancelar
-      </button>
+</div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="registrarComprasTaller()" [disabled]="btnGuardar">Guardar</button>
+      <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarComprasTallerId()">Editar</button>
+      <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
     </div>
-  </div>
+  </ng-template>
 
 </form>
 
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Taller</legend>
+    <input type="text" name="nombre_taller" placeholder="Buscar taller"
+    class="form-control" [(ngModel)]="buscar_taller" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaTaller()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Taller" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
 <div class="container-fluid" id="contenedorTabla">
-  <legend>Listado Compras Taller</legend>
+  <legend align="center">Listado Compras Taller</legend>
   <table class="table table-bordered table-dark table-responsive-lg">
     <thead>
       <tr>
@@ -108,7 +109,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let compra of listadoComprasTaller">
+      <tr *ngFor="let compra of listadoComprasTaller | paginate: { itemsPerPage: 2, currentPage: p }">
         <th scope="row">{{ compra.id }}</th>
         <td scope="row">
           {{ compra.taller.nombre_taller }}
@@ -116,14 +117,15 @@
         <td scope="row">{{ compra.insumos }}</td>
         <td scope="row">{{ compra.observaciones_compra }}</td>
         <td colspan="2">
-          <button class="btn btn-warning" (click)="ComprasTallerId(compra)"> Editar </button>
+          <button class="btn btn-warning" (click)="ComprasTallerId(compra,content)"> Editar </button>
           <button class="btn btn-danger" (click)="eliminarComprasTaller(compra)"> Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
 </div>
-
-
 </body>
 </html>

@@ -9,24 +9,31 @@ import { Alumno } from 'src/app/entidades/alumno/alumno/alumno';
 import { Personal } from 'src/app/entidades/personal/personal/personal';
 import { AlumnoService } from 'src/app/service/alumno/alumno/alumno.service';
 import { PersonalService } from 'src/app/service/personal/personal/personal.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-taller',
   templateUrl: './taller.component.html',
   styleUrls: ['./taller.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class TallerComponent implements OnInit {
-  // Utilizamos el array solo para poder guardar el resultado de la peticion para mostrar en la tabla
+  // Variable P para el conteo del paginado
+  p: number = 1;
+  // Array de tallerres
   listadoTalleres: Taller[] = [];
+  // Array de alumnos
   listadoAlumno: Alumno [] = [];
+  // Array de personal
   listadoPersonal: Personal[] = [];
-
-
+  //  variable para buscar por personalo
+  buscar_taller= "";
 
   // Variables Botones
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Taller = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
@@ -34,7 +41,9 @@ export class TallerComponent implements OnInit {
     private formBuilder: FormBuilder,
     private alertas: AlertService,
     private servicioAlumno: AlumnoService,
-    private servicioPersonal: PersonalService
+    private servicioPersonal: PersonalService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
 
   // Formulario reactivo para el registro de datos de la pagina
@@ -52,8 +61,21 @@ export class TallerComponent implements OnInit {
     // Ejecutamos los dos metodos al iniciar la carga de la pagina web
     this.getTalleres();
     this.btnEditar = true;
+    this.ocultarbusqueda_Taller = false;
     this.getAlumno();
     this.getPersonal();
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
   //Recibimos alumnos
   getAlumno(): void{
@@ -77,11 +99,10 @@ getPersonal() : void {
     }
   )
 }
-
+// Obtenemos todos los talleres
   getTalleres(): void {
     this.servicioTaller.getTalleres().subscribe(
       (res) => {
-        console.log('hola', res);
         this.listadoTalleres = res;
       },
       (error) => {
@@ -91,36 +112,14 @@ getPersonal() : void {
   }
   // Registrar Taller
   registrarTaller(): void {
-/*
-    let auxa = new Array();
-    let auxp = new Array();
-
-    for (let x of this.formularioRegistro.value.alumno_id){
-          auxa.push(new Object({id: x}));
-
-    }
-    for (let y of this.formularioRegistro.value.personal_id){
-      auxp.push(new Object({id: y}));
-
-    }
-
-    console.log('datos formulario envio',(auxa));
-    console.log('datos formulario envio',(auxp));
-
-    this.formularioRegistro.value.alumno_id = auxa;
-    this.formularioRegistro.value.personal_id = auxp
-*/
-console.log('nuevo formulario',this.formularioRegistro.value)
-
     if (this.formularioRegistro.valid) {
       this.servicioTaller
         .registrarTaller(this.formularioRegistro.value)
         .subscribe(
           (res) => {
-            console.log('resultado obtenido',res);
             this.alertas.alertsuccess();
             this.getTalleres();
-            this.formularioRegistro.reset();
+            this.cerrarModal();
           },
           (error) => {
             console.log(error);
@@ -133,7 +132,11 @@ console.log('nuevo formulario',this.formularioRegistro.value)
   }
 
   // Obtener taller por id para mostrar los campos en los input para su proxima edicion
-  TallerId(taller: Taller): void {
+  TallerId(taller: Taller, content : any): void {
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
     this.servicioTaller.getTallerId(taller).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -145,8 +148,6 @@ console.log('nuevo formulario',this.formularioRegistro.value)
           alumno_id : res[0].alumno_id,
           personal_id : res[0].personal_id
         });
-        this.btnEditar = false;
-        this.btnRegistrar = true;
       },
       (error) => {
         this.alertas.alerterror();
@@ -165,10 +166,9 @@ console.log('nuevo formulario',this.formularioRegistro.value)
           console.log(res);
           this.alertas.alertedit();
           this.getTalleres();
-          this.cancelar();
+          this.cerrarModal();
         },
         (error) => {
-          console.log(error);
           this.alertas.alerterror();
         }
       );
@@ -193,10 +193,40 @@ console.log('nuevo formulario',this.formularioRegistro.value)
       }
     });
   }
-  // Limpiar los campos
-  cancelar(): void {
-    this.formularioRegistro.reset();
-    this.btnEditar = true;
-    this.btnRegistrar = false;
+  // Busqueda de de taller por nombre
+busquedaTaller(): void{
+  if (this.buscar_taller == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioTaller.busquedaTaller(this.buscar_taller).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Taller = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Taller = false;
+        }
+        this.listadoTalleres = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
   }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Taller = true;
+  this.getTalleres();
+  this.buscar_taller = "";
+}
+ // Limpiar los campos
+cancelar(): void{
+  this.formularioRegistro.reset();
+  this.btnGuardar = false;
+  this.btnEditar = true;
+}
+
 }

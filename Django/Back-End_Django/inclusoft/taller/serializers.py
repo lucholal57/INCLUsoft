@@ -30,6 +30,14 @@ class TallerPostPutSerializer(serializers.ModelSerializer):
         model = Taller
         fields = '__all__'
         depth = 2
+        
+class TallerObtenerEdicionSerializer(serializers.ModelSerializer):
+    """
+        Serializador de Taller sin depth solo para obtener datos para la edicion
+    """
+    class Meta:
+        model = Taller
+        fields = '__all__'
 
 
 class Informe_CuatrimestralSerializer(serializers.ModelSerializer):

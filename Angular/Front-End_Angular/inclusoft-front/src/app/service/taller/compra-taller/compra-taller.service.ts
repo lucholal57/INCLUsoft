@@ -39,4 +39,8 @@ export class CompraTallerService {
   eliminarCompraTaller(compra : CompraTaller): Observable<CompraTaller[]> {
     return this.http.delete<CompraTaller[]>(this.url + 'compras_taller/' + compra.id)
   }
+  // Buscar taller por nombre
+  busquedaTaller(nombre: string): Observable<CompraTaller[]>{
+    return this.http.get<CompraTaller[]>(this.url + 'compras_taller/buscar/' + nombre)
+  }
 }

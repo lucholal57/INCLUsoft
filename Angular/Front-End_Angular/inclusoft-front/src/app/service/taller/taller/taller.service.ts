@@ -39,4 +39,9 @@ export class TallerService {
   eliminarTaller(id: number): Observable<Taller[]>{
     return this.http.delete<Taller[]>(this.url + 'taller/' + id);
   }
+
+  // Buscar taller por nombre
+  busquedaTaller(nombre: string): Observable<Taller[]>{
+    return this.http.get<Taller[]>(this.url + 'taller/buscar/' + nombre)
+  }
 }

@@ -7,7 +7,7 @@ from taller.models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
  Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
 
 from taller.serializers import (Compras_TallerSerializer, Compras_TallerPostPutSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralPostPutSerializer,                    Inventario_TallerSerializer, Inventario_TallerPostPutSerializer, Materiales_TallerSerializer,
-Materiales_TallerPostPutSerializer, Produccion_TallerSerializer, Produccion_TallerPostPutSerializer, TallerPostPutSerializer, TallerSerializer, Ventas_TallerSerializer, Ventas_TallerPostPutSerializer, )
+Materiales_TallerPostPutSerializer, Produccion_TallerSerializer, Produccion_TallerPostPutSerializer, TallerPostPutSerializer, TallerSerializer, Ventas_TallerSerializer, Ventas_TallerPostPutSerializer, TallerObtenerEdicionSerializer )
 
 
 # Create your views here.
@@ -46,7 +46,7 @@ def TallerBuscarPorId(request, pk=None):
     if taller:
         #Queryset
         if request.method == 'GET':
-            serializer = TallerPostPutSerializer(taller, many=True)
+            serializer = TallerObtenerEdicionSerializer(taller, many=True)
             return Response(serializer.data, status = status.HTTP_200_OK)
         
         #Update

@@ -9,83 +9,28 @@
   <body>
     <app-menu></app-menu>
     <form [formGroup]="formularioRegistro" (submit)="registrarTaller()">
+
       <div>
         <img
           src="../../../../assets/img/caad.jpg"
-          align="left"
+          align="right"
           alt=""
           alt=""
           width="10%"
         />
       </div>
 
-      <div class="container" id="contenedorRegistro">
-        <legend>Formulario Talleres</legend>
-
-        <hr />
-
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Nombre</label>
-          <div class="col-sm-4">
-            <input
-              type="text"
-              class="form-control"
-              id="nombre"
-              placeholder="Ingrese nombre"
-              formControlName="nombre_taller"
-              required
-            />
-          </div>
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Formulario de Taller</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <hr />
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">DIAS</label>
-          <div class="col-sm-4">
-            <input
-              type="text"
-              class="form-control"
-              id="dias"
-              placeholder="SEPARAR POR COMA"
-              formControlName="dias"
-              required
-            />
-          </div>
-        </div>
-        <hr />
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Horarios</label>
-          <div class="col-sm-4">
-            <input
-              type="time"
-              class="form-control"
-              id="horario"
-              formControlName="horarios"
-              required
-            />
-          </div>
-        </div>
+        <div class="modal-body">
 
-        <hr />
-
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Observaciones</label>
-          <div class="col-sm-4">
-            <textarea
-              name="observacionTaller"
-              id="observacionTaller"
-              cols="65"
-              rows="5"
-              formControlName="observaciones"
-              required
-            >
-            </textarea>
-          </div>
-        </div>
-
-        <hr />
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="alumno">Alumno</label>
-          <div class="col-sm-3">
+        <div class="form-group">
+          <label style="color:black" for="alumno">Alumno</label>
             <select
               multiple
               class="form-control"
@@ -99,57 +44,106 @@
                 {{ alumno.nombre_alumno }} {{ alumno.apellido_alumno }}
               </option>
             </select>
-            <button class="btn btn-primary" routerLink="/alumno">Registrar Alumno</button>
+        </div>
+
+
+          <div class="form-group">
+            <label style="color:black" for="personal">Personal</label>
+              <select multiple class="form-control" formControlName="personal_id" required>
+                <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+                  {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+                </option>
+              </select>
           </div>
 
-          <label for="personal" class="col-sm-2 col-form-label">Personal</label>
-          <div class="col-sm-3">
-            <select
-              multiple
+
+        <div class="form-group">
+          <label  style="color:black" >Nombre</label>
+            <input
+              type="text"
               class="form-control"
-              formControlName="personal_id"
+              id="nombre"
+              placeholder="Ingrese nombre"
+              formControlName="nombre_taller"
+              required
+            />
+        </div>
+
+        <div class="form-group">
+          <label  style="color:black" >DIAS</label>
+
+            <input
+              type="text"
+              class="form-control"
+              id="dias"
+              placeholder="SEPARAR POR COMA"
+              formControlName="dias"
+              required
+            />
+        </div>
+
+        <div class="form-group">
+          <label  style="color:black" >Horarios</label>
+            <input
+              type="time"
+              class="form-control"
+              id="horario"
+              formControlName="horarios"
+              required
+            />
+        </div>
+
+        <div class="form-group">
+          <label  style="color:black" >Observaciones</label>
+          <div class="col-sm-4">
+            <textarea
+              name="observacionTaller"
+              id="observacionTaller"
+              cols="65"
+              rows="5"
+              formControlName="observaciones"
               required
             >
-              <option
-                *ngFor="let personal of listadoPersonal"
-                [ngValue]="personal.id"
-              >
-                {{ personal.nombre_personal }} {{ personal.apellido_personal }}
-              </option>
-            </select>
-            <button class="btn btn-primary" routerLink="/personal">Registrar Personal</button>
+            </textarea>
           </div>
         </div>
-        <hr />
-      </div>
-      <hr />
-      <div class="container" id="contenedorBotones">
-        <div class="form-group">
-          <button class="btn btn-primary" [disabled]="btnRegistrar">
-            Registrar
-          </button>
-          <button
-            class="btn btn-warning"
-            [disabled]="btnEditar"
-            type="button"
-            (click)="editarTallerId()"
-          >
-            Editar
-          </button>
-          <button
-            class="btn btn-danger"
-            [disabled]="btnCancelar"
-            type="reset"
-            (click)="cancelar()"
-          >
-            Cancelar
-          </button>
+
+  </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="registrarTaller()" [disabled]="btnGuardar">Guardar</button>
+          <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarTallerId()">Editar</button>
+          <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
         </div>
-      </div>
+      </ng-template>
+
     </form>
 
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Busquedas por Taller</legend>
+    <input type="text" name="nombre_taller" placeholder="Buscar taller"
+    class="form-control" [(ngModel)]="buscar_taller" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaTaller()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Taller" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
+
     <div class="container-fluid" id="contenedorTabla">
-      <legend>Listado Talleres</legend>
+      <legend align="center">Listado Talleres</legend>
       <table class="table table-bordered table-dark table-responsive-lg">
         <thead>
           <tr>
@@ -164,7 +158,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let taller of listadoTalleres">
+          <tr *ngFor="let taller of listadoTalleres | paginate: { itemsPerPage: 2, currentPage: p }">
             <th scope="row">{{ taller.id }}</th>
             <td scope="row">{{ taller.nombre_taller }}</td>
             <td scope="row">{{ taller.dias }}</td>
@@ -181,7 +175,7 @@
               </ul>
             </td>
             <td colspan="2">
-              <button class="btn btn-warning" (click)="TallerId(taller)">
+              <button class="btn btn-warning" (click)="TallerId(taller, content)">
                 Editar
               </button>
               <button class="btn btn-danger" (click)="eliminarTaller(taller)">
@@ -191,6 +185,9 @@
           </tr>
         </tbody>
       </table>
+
+      <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
     </div>
   </body>
 </html>

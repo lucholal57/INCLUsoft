@@ -22,10 +22,7 @@ import { EvaluacionLabolarComponent } from './component/personal/evaluacion-labo
 import { AsistenciaPersonalComponent } from './component/personal/asistencia-personal/asistencia-personal.component';
 import { EntregaProyectoComponent } from './component/personal/entrega-proyecto/entrega-proyecto.component';
 import { LoginComponent } from './component/login/login.component';
-
-import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales/informes-cuatrimestrales.component';
 import { TallerComponent } from './component/taller/taller/taller.component';
-import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller/materiales-taller.component';
 import { VentasTallerComponent } from './component/taller/ventas-taller/ventas-taller/ventas-taller.component';
 import { ProduccionTallerComponent } from './component/taller/produccion-taller/produccion-taller.component';
 import { CompraTallerComponent } from './component/taller/compra-taller/compra-taller.component';
@@ -36,10 +33,8 @@ import { ViajeComponent } from './component/viaje/viaje.component'
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { EstadisticaComponent } from './component/estadistica/estadistica.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
-
-
+import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller.component';
+import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales.component';
 
 @NgModule({
   declarations: [

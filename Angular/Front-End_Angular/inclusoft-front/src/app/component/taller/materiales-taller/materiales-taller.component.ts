@@ -1,13 +1,13 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 // Importamos las clases de entidades necesarias y servicios
-import { MaterialesTaller } from '../../../../entidades/taller/materiales-taller/materiales-taller';
-import { MaterialesTallerService } from '../../../../service/taller/materiales-taller/materiales-taller.service';
+import { MaterialesTaller } from '../../../entidades/taller/materiales-taller/materiales-taller';
+import { MaterialesTallerService } from '../../../service/taller/materiales-taller/materiales-taller.service';
 
-import { Taller } from '../../../../entidades/taller/taller/taller';
-import { TallerService } from '../../../../service/taller/taller/taller.service';
+import { Taller } from '../../../entidades/taller/taller/taller';
+import { TallerService } from '../../../service/taller/taller/taller.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { AlertService } from '../../../../service/alert/alert.service';
+import { AlertService } from '../../../service/alert/alert.service';
 
 @Component({
   selector: 'app-materiales-taller',

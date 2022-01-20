@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <app-menu></app-menu>
+    <form
+      [formGroup]="formularioRegistro"
+      (submit)="registrarInformesCuatrimestrales()"
+    >
+      <div>
+        <img
+          src="../../../../assets/img/caad.jpg"
+          align="right"
+          alt=""
+          alt=""
+          width="10%"
+        />
+      </div>
+
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Formulario de Informe Cuatrimestral</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label style="color:black" for="taller">Taller</label>
+              <select class="form-control" formControlName="taller" required>
+                <option value="">Seleccione un Taller</option>
+                <option
+                  *ngFor="let taller of listadoTalleres"
+                  [ngValue]="taller.id"
+                >
+                  {{ taller.nombre_taller }}
+                </option>
+              </select>
+          </div>
+
+
+          <div class="form-group">
+            <label style="color:black">Observaciones</label>
+            <div class="col-sm-4">
+              <textarea
+                name="observacionTaller"
+                id="observacionTaller"
+                cols="65"
+                rows="5"
+                formControlName="observaciones_cuatrimestrales"
+                required
+              >
+              </textarea>
+            </div>
+          </div>
+
+  </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="registrarInformesCuatrimestrales()" [disabled]="btnGuardar">Guardar</button>
+          <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarInformesCuatrimestralesId()">Editar</button>
+          <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+        </div>
+      </ng-template>
+
+    </form>
+
+    <div class="container" id="contenedorBusqueda">
+
+      <div class="form-row">
+        <div class="form-group col-sm-4">
+        <legend>Busquedas por Taller</legend>
+        <input type="text" name="nombre_taller" placeholder="Buscar taller"
+        class="form-control" [(ngModel)]="buscar_taller" required>
+        <hr>
+        <button class="btn btn-primary" (click)="busquedaTaller()" >Buscar</button>
+        <button class="btn btn-danger" [hidden]="ocultarbusqueda_Taller" (click)="cancelarbusqueda()">Cancelar</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-1">
+        <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+      </div>
+    </div>
+
+    </div>
+
+
+    <div class="container-fluid" id="contenedorTabla">
+      <legend align="center">Listado Informes Cuatrimestrales</legend>
+      <table class="table table-bordered table-dark table-responsive-lg">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Taller</th>
+            <th scope="col">Observaciones</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let informes of listadoInformesCuatrimestrales | paginate: { itemsPerPage: 2, currentPage: p }">
+            <th scope="row">{{ informes.id }}</th>
+            <td scope="row">
+              {{ informes.taller.nombre_taller }}
+            </td>
+            <td scope="row">{{ informes.observaciones_cuatrimestrales }}</td>
+            <td colspan="2">
+              <button class="btn btn-warning" (click)="InformesCuatrimestralesId(informes, content)">Editar</button>
+              <button class="btn btn-danger" (click)="eliminarInformesCuatrimestrales(informes)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+    </div>
+  </body>
+</html>

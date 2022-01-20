@@ -22,3 +22,10 @@ class ViajePostPutSerializer(serializers.ModelSerializer):
         model = Viaje
         fields = '__all__'
         depth = 2
+        
+class ViajeObtenerEdicionSerializer(serializers.ModelSerializer):
+    """ Serializador de viajes solo para obtener datos para la edicion sin Depth"""
+    
+    class Meta:
+        model = Viaje
+        fields = '__all__'

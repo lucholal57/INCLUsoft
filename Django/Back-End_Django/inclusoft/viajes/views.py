@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.serializers import Serializer
 from viajes.models import Viaje
-from viajes.serializers import ViajeSerializer, ViajePostPutSerializer
+from viajes.serializers import ViajeSerializer, ViajePostPutSerializer, ViajeObtenerEdicionSerializer
 from alumno.models import Alumno
 from personal.models import Personal
 
@@ -43,7 +43,7 @@ def ViajeBuscarPorId(request, pk=None):
         
         #Queryset
         if request.method == 'GET':
-            serializer  = ViajePostPutSerializer(viaje, many=True)
+            serializer  = ViajeObtenerEdicionSerializer(viaje, many=True)
             return Response(serializer.data, status = status.HTTP_200_OK)
         
         #Update
