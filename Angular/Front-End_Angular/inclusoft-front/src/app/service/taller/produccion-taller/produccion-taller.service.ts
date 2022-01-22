@@ -38,4 +38,9 @@ export class ProduccionTallerService {
   eliminarProduccionTaller(produccion : ProduccionTaller): Observable<ProduccionTaller[]> {
     return this.http.delete<ProduccionTaller[]>(this.url + 'produccion_taller/' + produccion.id)
   }
+  // Buscar taller por nombre
+  busquedaTaller(nombre: string): Observable<ProduccionTaller[]>{
+    return this.http.get<ProduccionTaller[]>(this.url + 'produccion_taller/buscar/' + nombre)
+  }
+
 }

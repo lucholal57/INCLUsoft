@@ -43,7 +43,6 @@ export class InformesCuatrimestralesService {
   eliminarInformesCuatrimestrales(informe_cuatrimestral: InformesCuatrimestrales): Observable<InformesCuatrimestrales[]> {
     return this.http.delete<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + informe_cuatrimestral.id)
   }
-
   // Buscar taller por nombre
   busquedaTaller(nombre: string): Observable<InformesCuatrimestrales[]>{
     return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/buscar/' + nombre)

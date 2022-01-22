@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'alumno',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'personal',
     'taller',
     'acompañantes',
     'viajes',
+    'user_app',
     
 ]
 
@@ -139,5 +141,13 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#TOKEN PARA AUTENTICACION
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
 
 

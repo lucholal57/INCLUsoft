@@ -39,4 +39,8 @@ export class VentasTallerService {
   eliminarVentasTaller(ventas : VentasTaller): Observable<VentasTaller[]> {
     return this.http.delete<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id)
   }
+    // Buscar taller por nombre
+    busquedaTaller(nombre: string): Observable<VentasTaller[]>{
+      return this.http.get<VentasTaller[]>(this.url + 'ventas_taller/buscar/' + nombre)
+    }
 }

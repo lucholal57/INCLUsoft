@@ -28,12 +28,12 @@ urlpatterns = [
     #Rutas para ventas de taller
     path('ventas_taller', VentasTallerListado),
     path('ventas_taller/<int:pk>', VentasTallerBuscarPorId),
-    path('ventas_taller/busqueda/<str:nombre_taller>', BusquedaVentasTaller),
+    path('ventas_taller/buscar/<str:nombre_taller>', BusquedaVentasTaller),
 
     #Rutas para produccion de taller
     path('produccion_taller', ProduccionTallerListado),
     path('produccion_taller/<int:pk>', ProduccionTallerBuscarPorId),
-    path('produccion_taller/', BusquedaProduccionTaller),
+    path('produccion_taller/buscar/<str:nombre_taller>',BusquedaProduccionTaller),
     
     #Rutas para Compras Taller
     path('compras_taller', ComprasTallerListado),

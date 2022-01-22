@@ -22,6 +22,7 @@ urlpatterns = [
     path('', include('personal.urls')),
     path('', include('taller.urls')),
     path('', include('acompañantes.urls')),
-    path('', include('viajes.urls'))
+    path('', include('viajes.urls')),
+    path('account/', include('user_app.urls')),
     
 ]

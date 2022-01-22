@@ -39,5 +39,10 @@ export class MaterialesTallerService {
   eliminarMaterialesTaller(materiales : MaterialesTaller): Observable<MaterialesTaller[]> {
     return this.http.delete<MaterialesTaller[]>(this.url + 'materiales_taller/' + materiales.id)
   }
+   // Buscar taller por nombre
+   busquedaTaller(nombre: string): Observable<MaterialesTaller[]>{
+    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller/buscar/' + nombre)
+  }
+
 
 }

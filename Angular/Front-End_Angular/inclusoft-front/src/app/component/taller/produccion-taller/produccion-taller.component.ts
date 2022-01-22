@@ -8,27 +8,37 @@ import { TallerService } from '../../../service/taller/taller/taller.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-produccion-taller',
   templateUrl: './produccion-taller.component.html',
   styleUrls: ['./produccion-taller.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class ProduccionTallerComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array de produccion de taller
   listadoProduccionTaller: ProduccionTaller[];
   // Array de talleres para el select
   listadoTalleres: Taller[];
+  // variable para buscar por personalo
+  buscar_taller= "";
   // Variable de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Taller = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
     private servicioTaller: TallerService,
     private servicioProduccionTaller: ProduccionTallerService,
     private formBuilder: FormBuilder,
-    private alertas: AlertService
+    private alertas: AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {}
 
   // Formulario reactivo para el registro de datos
@@ -45,6 +55,19 @@ export class ProduccionTallerComponent implements OnInit {
     this.getTalleres();
     this.getProduccionTaller();
     this.btnEditar = true;
+    this.ocultarbusqueda_Taller = false;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
   // Obtenmemos los talleres para mostrar en la lista de seleccion al registrar una produccion
@@ -73,13 +96,12 @@ export class ProduccionTallerComponent implements OnInit {
   }
   // Registrar produccion de taller
   registrarProduccionTaller(): void {
-    console.log('produccion taller valores', this.formularioRegistro.value)
     if (this.formularioRegistro.valid){
       this.servicioProduccionTaller.registrarProduccionTaller(this.formularioRegistro.value).subscribe(
         (res) => {
           this.alertas.alertsuccess();
-          this.formularioRegistro.reset();
           this.getProduccionTaller();
+          this.cerrarModal();
         },
         (error) => {
           this.alertas.alerterror();
@@ -90,7 +112,11 @@ export class ProduccionTallerComponent implements OnInit {
     }
   }
   // Obtener produccion de taller por id para mostrar en el formulario y poder editar
-  ProduccionTallerId(produccion : ProduccionTaller): void {
+  ProduccionTallerId(produccion : ProduccionTaller, content : any): void {
+    this.modalService.open(content,{size:'lg'});
+    this.btnCancelar = true;
+    this.btnEditar = false;
+    this.btnGuardar = true;
     this.servicioProduccionTaller.getProduccionTallerId(produccion).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -101,8 +127,6 @@ export class ProduccionTallerComponent implements OnInit {
           costo_venta: res[0].costo_venta,
           taller: res[0].taller,
         });
-        this.btnEditar = false;
-        this.btnRegistrar = true;
       },
       (error) => { this.alertas.alerterror()}
     );
@@ -116,7 +140,7 @@ export class ProduccionTallerComponent implements OnInit {
         console.log(res);
         this.alertas.alertedit();
         this.getProduccionTaller();
-        this.cancelar();
+        this.cerrarModal();
       },
       (error) => {
         console.log(error);
@@ -151,10 +175,39 @@ eliminarProduccionTaller(produccion: ProduccionTaller ): void{
     }
   });
 }
+// Busqueda de de taller por nombre
+busquedaTaller(): void{
+  if (this.buscar_taller == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioProduccionTaller.busquedaTaller(this.buscar_taller).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Taller = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Taller = false;
+        }
+        this.listadoProduccionTaller = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Taller = true;
+  this.getProduccionTaller();
+  this.buscar_taller = "";
+}
 // Limpiar los campos
 cancelar(): void{
   this.formularioRegistro.reset();
-  this.btnRegistrar = false;
+  this.btnGuardar = false;
   this.btnEditar = true;
 }
 }

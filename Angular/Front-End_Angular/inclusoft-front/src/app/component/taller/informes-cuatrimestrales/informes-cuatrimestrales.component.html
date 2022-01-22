@@ -106,7 +106,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let informes of listadoInformesCuatrimestrales | paginate: { itemsPerPage: 2, currentPage: p }">
+          <tr *ngFor="let informes of listadoInformesCuatrimestrales | paginate: { itemsPerPage: 8, currentPage: p }">
             <th scope="row">{{ informes.id }}</th>
             <td scope="row">
               {{ informes.taller.nombre_taller }}

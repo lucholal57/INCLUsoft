@@ -15,117 +15,117 @@
       <div>
         <img
           src="../../../../assets/img/caad.jpg"
-          align="left"
+          align="right"
           alt=""
           alt=""
           width="10%"
         />
       </div>
 
-      <div class="container" id="contenedorRegistro">
-        <legend>Formulario Produccion Taller</legend>
-        <hr />
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="taller">Taller</label>
-          <div class="col-sm-6">
-            <select class="form-control" formControlName="taller" required>
-              <option value="">Seleccione un Taller</option>
-              <option
-                *ngFor="let taller of listadoTalleres"
-                [ngValue]="taller.id"
-              >
-                {{ taller.nombre_taller }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <hr />
-
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Nombre Produccion</label>
-          <div class="col-sm-4">
-            <input
-              type="text"
-              class="form-control"
-              id="nombre_produccion"
-              placeholder="Ingrese Nombre de Produccion"
-              formControlName="nombre_produccion"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Fecha de Produccion</label>
-          <div class="col-sm-4">
-            <input
-              type="date"
-              class="form-control"
-              id="fecha_produccion"
-              formControlName="fecha_produccion"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Materiales</label>
-          <div class="col-sm-4">
-            <input
-              type="text"
-              class="form-control"
-              id="materiales_produccion"
-              placeholder="Ingrese Materiales"
-              formControlName="materiales"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Costo de Venta</label>
-          <div class="col-sm-4">
-            <input
-              type="text"
-              class="form-control"
-              id="costo_venta"
-              placeholder="Ingrese Costo de Venta"
-              formControlName="costo_venta"
-              required
-            />
-          </div>
-        </div>
-      </div>
-      <hr />
-
-      <div class="container" id="contenedorBotones">
-        <div class="form-group">
-          <button class="btn btn-primary" [disabled]="btnRegistrar">
-            Registrar
-          </button>
-          <button
-            class="btn btn-warning"
-            [disabled]="btnEditar"
-            type="button"
-            (click)="editarProduccionTallerId()"
-          >
-            Editar
-          </button>
-          <button
-            class="btn btn-danger"
-            [disabled]="btnCancelar"
-            type="reset"
-            (click)="cancelar()"
-          >
-            Cancelar
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Formulario de Produccion Taller</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
-      </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label style="color:black" for="taller">Taller</label>
+              <select class="form-control" formControlName="taller" required>
+                <option value="">Seleccione un Taller</option>
+                <option
+                  *ngFor="let taller of listadoTalleres"
+                  [ngValue]="taller.id"
+                >
+                  {{ taller.nombre_taller }}
+                </option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label style="color:black">Nombre Produccion</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nombre_produccion"
+                placeholder="Ingrese Nombre de Produccion"
+                formControlName="nombre_produccion"
+                required
+              />
+          </div>
+
+          <div class="form-group">
+            <label style="color:black">Fecha de Produccion</label>
+              <input
+                type="date"
+                class="form-control"
+                id="fecha_produccion"
+                formControlName="fecha_produccion"
+                required
+              />
+          </div>
+
+          <div class="form-group">
+            <label style="color:black">Materiales</label>
+              <input
+                type="text"
+                class="form-control"
+                id="materiales_produccion"
+                placeholder="Ingrese Materiales"
+                formControlName="materiales"
+                required
+              />
+          </div>
+
+          <div class="form-group">
+            <label style="color:black">Costo de Venta</label>
+              <input
+                type="text"
+                class="form-control"
+                id="costo_venta"
+                placeholder="Ingrese Costo de Venta"
+                formControlName="costo_venta"
+                required
+              />
+          </div>
+
+  </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="registrarProduccionTaller()" [disabled]="btnGuardar">Guardar</button>
+          <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarProduccionTallerId()">Editar</button>
+          <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+        </div>
+      </ng-template>
+
     </form>
 
+    <div class="container" id="contenedorBusqueda">
+
+      <div class="form-row">
+        <div class="form-group col-sm-4">
+        <legend>Busquedas por Taller</legend>
+        <input type="text" name="nombre_taller" placeholder="Buscar taller"
+        class="form-control" [(ngModel)]="buscar_taller" required>
+        <hr>
+        <button class="btn btn-primary" (click)="busquedaTaller()" >Buscar</button>
+        <button class="btn btn-danger" [hidden]="ocultarbusqueda_Taller" (click)="cancelarbusqueda()">Cancelar</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-1">
+        <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+      </div>
+    </div>
+
+    </div>
+
     <div class="container-fluid" id="contenedorTabla">
-      <legend>Listado Produccion Taller</legend>
+      <legend align="center">Listado Produccion Taller</legend>
       <table class="table table-bordered table-dark table-responsive-lg">
         <thead>
           <tr>
@@ -139,7 +139,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let produccion of listadoProduccionTaller">
+          <tr *ngFor="let produccion of listadoProduccionTaller | paginate: { itemsPerPage: 8, currentPage: p }">
             <th scope="row">{{ produccion.id }}</th>
             <td scope="row">
               {{ produccion.taller.nombre_taller }}
@@ -149,12 +149,15 @@
             <td scope="row">{{ produccion.materiales }}</td>
             <td scope="row">{{ produccion.costo_venta}}</td>
             <td colspan="2">
-              <button class="btn btn-warning" (click)="ProduccionTallerId(produccion)"> Editar </button>
+              <button class="btn btn-warning" (click)="ProduccionTallerId(produccion, content)"> Editar </button>
               <button class="btn btn-danger" (click)="eliminarProduccionTaller(produccion)"> Eliminar</button>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
     </div>
   </body>
 </html>

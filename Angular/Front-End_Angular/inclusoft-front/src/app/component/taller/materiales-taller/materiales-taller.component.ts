@@ -8,21 +8,28 @@ import { TallerService } from '../../../service/taller/taller/taller.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-materiales-taller',
   templateUrl: './materiales-taller.component.html',
-  styleUrls: ['./materiales-taller.component.css']
+  styleUrls: ['./materiales-taller.component.css'],
+  providers: [NgbModalConfig, NgbModal],
 })
 export class MaterialesTallerComponent implements OnInit {
+  // Variable P para el conteo del paginado
+  p: number = 1;
   // Array de materiales de taller
   listadoMaterialesTaller : MaterialesTaller[];
   // Array de talleres para el select
   listadoTalleres : Taller[];
+   //  variable para buscar por personalo
+  buscar_taller= "";
   // Variable de Botones para deshabilitar
-  public btnRegistrar = false;
+  public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
+  public ocultarbusqueda_Taller = false;
 
   // Injeccion de o los servicios a utilizar
   constructor(
@@ -30,6 +37,8 @@ export class MaterialesTallerComponent implements OnInit {
     private servicioMaterialesTaller : MaterialesTallerService,
     private formBuilder: FormBuilder,
     private alertas : AlertService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) { }
 
   // Formulario reactivo para el registro de datos
@@ -43,6 +52,19 @@ export class MaterialesTallerComponent implements OnInit {
     this.getTalleres();
     this.getMaterialesTaller();
     this.btnEditar = true;
+    this.ocultarbusqueda_Taller = false;
+  }
+  // Open funcion para abrir ventana modal
+  open(content:any) {
+    this.modalService.open(content,{size:'lg'});
+    this.btnEditar = true;
+    this.btnGuardar = false;
+    this.btnCancelar = false;
+  }
+  // Funcion para cerrar ventana modal
+  cerrarModal(): void{
+    this.modalService.dismissAll();
+    this.formularioRegistro.reset();
   }
 
   // Obtenmemos los talleres para mostrar en la lista de seleccion al registrar un material
@@ -75,8 +97,8 @@ registrarMaterialesTaller(): void {
     this.servicioMaterialesTaller.registrarMaterialesTaller(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
-        this.formularioRegistro.reset();
         this.getMaterialesTaller();
+        this.cerrarModal();
       },
       (error) => {
         this.alertas.alerterror();
@@ -87,7 +109,11 @@ registrarMaterialesTaller(): void {
   }
 }
 // Obtener materiales taller por id para mostrar en el formulario y poder editar
-MaterialesTallerId(materiales: MaterialesTaller): void {
+MaterialesTallerId(materiales: MaterialesTaller, content : any): void {
+  this.modalService.open(content,{size:'lg'});
+  this.btnCancelar = true;
+  this.btnEditar = false;
+  this.btnGuardar = true;
 this.servicioMaterialesTaller.getMaterialesTallerId(materiales).subscribe(
   (res) => {
     this.formularioRegistro.patchValue({
@@ -95,8 +121,6 @@ this.servicioMaterialesTaller.getMaterialesTallerId(materiales).subscribe(
       insumos_disponibles: res[0].insumos_disponibles,
       taller: res[0].taller,
     });
-    this.btnEditar = false;
-    this.btnRegistrar = true;
   },
   (error) => {
     this.alertas.alerterror();
@@ -112,7 +136,7 @@ editarMaterialesTallerId(): void {
       console.log(res)
       this.alertas.alertedit();
       this.getMaterialesTaller();
-      this.cancelar();
+      this.cerrarModal();
     },
     (error) => {
       console.log(error)
@@ -148,11 +172,40 @@ eliminarMaterialesTaller(materiales: MaterialesTaller ): void{
 
   });
 }
+ // Busqueda de de taller por nombre
+ busquedaTaller(): void{
+  if (this.buscar_taller == ""){
+    this.alertas.alertcampos();
+  }else{
+    this.servicioMaterialesTaller.busquedaTaller(this.buscar_taller).subscribe(
+      (res) => {
+        console.log(res)
+        if (res.length != 0){
+          this.alertas.alertLoading();
+          this.ocultarbusqueda_Taller = false;
+        }else{
+          this.alertas.alertLoadingError();
+          this.ocultarbusqueda_Taller = false;
+        }
+        this.listadoMaterialesTaller = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    )
+  }
+}
+// Cancelar Busqueda
+cancelarbusqueda(): void {
+  this.ocultarbusqueda_Taller = true;
+  this.getMaterialesTaller();
+  this.buscar_taller = "";
+}
 
 // Limpiar los campos
 cancelar(): void{
   this.formularioRegistro.reset();
-  this.btnRegistrar = false;
+  this.btnGuardar = false;
   this.btnEditar = true;
 }
 

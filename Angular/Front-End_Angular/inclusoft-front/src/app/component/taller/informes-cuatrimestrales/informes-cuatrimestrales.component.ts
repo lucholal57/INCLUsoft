@@ -23,7 +23,7 @@ export class InformesCuatrimestralesComponent implements OnInit {
   listadoInformesCuatrimestrales : InformesCuatrimestrales[];
   // Array de talleres para el select
   listadoTalleres: Taller[];
-  //  variable para buscar por personalo
+  // variable para buscar por personalo
   buscar_taller= "";
   // Variable de Botones para deshabilitar
   public btnGuardar = false;
@@ -168,7 +168,7 @@ eliminarInformesCuatrimestrales(informe_cuatrimestral: InformesCuatrimestrales )
   });
 }
  // Busqueda de de taller por nombre
- busquedaTaller(): void{
+busquedaTaller(): void{
   if (this.buscar_taller == ""){
     this.alertas.alertcampos();
   }else{
