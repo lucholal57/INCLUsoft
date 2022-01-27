@@ -6,8 +6,10 @@ import { VentasTaller } from '../../../entidades/taller/ventas-taller/ventas-tal
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class VentasTallerService {
 
   // obtener ventas de taller
   getVentasTaller(): Observable<VentasTaller[]> {
-    return this.http.get<VentasTaller[]>(this.url + 'ventas_taller');
+    return this.http.get<VentasTaller[]>(this.url + 'ventas_taller',httpOption);
   }
   // Registrar ventas del taller
   registrarVentasTaller(formularioRegistro: any): Observable<VentasTaller[]> {
@@ -29,18 +31,18 @@ export class VentasTallerService {
   }
   // Obtener material de taller pasando el ID
   getVentasTallerId(ventas : VentasTaller): Observable<VentasTaller[]> {
-    return this.http.get<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id)
+    return this.http.get<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id,httpOption)
   }
   // Editar ventas taller pasando el ID, el tipo de objetoy la constante de cabecera HttpHeaders
   editarVentasTallerId(formularioRegistro: any, id: number): Observable<VentasTaller[]> {
-    return this.http.put<VentasTaller[]>(this.url + 'ventas_taller/' + id, formularioRegistro);
+    return this.http.put<VentasTaller[]>(this.url + 'ventas_taller/' + id, formularioRegistro,httpOption);
   }
   // Eliminar ventas del taller
   eliminarVentasTaller(ventas : VentasTaller): Observable<VentasTaller[]> {
-    return this.http.delete<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id)
+    return this.http.delete<VentasTaller[]>(this.url + 'ventas_taller/' + ventas.id,httpOption)
   }
     // Buscar taller por nombre
     busquedaTaller(nombre: string): Observable<VentasTaller[]>{
-      return this.http.get<VentasTaller[]>(this.url + 'ventas_taller/buscar/' + nombre)
+      return this.http.get<VentasTaller[]>(this.url + 'ventas_taller/buscar/' + nombre,httpOption)
     }
 }

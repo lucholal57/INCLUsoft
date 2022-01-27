@@ -6,8 +6,10 @@ import { MaterialesTaller } from '../../../entidades/taller/materiales-taller/ma
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class MaterialesTallerService {
 
   // obtener materiales de taller
   getMaterialesTaller(): Observable<MaterialesTaller[]> {
-    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller');
+    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller',httpOption);
   }
   // Registrar materiales del taller
   registrarMaterialesTaller(formularioRegistro: any): Observable<MaterialesTaller[]> {
@@ -29,19 +31,19 @@ export class MaterialesTallerService {
   }
   // Obtener material de taller pasando el ID
   getMaterialesTallerId(materiales : MaterialesTaller): Observable<MaterialesTaller[]> {
-    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller/' + materiales.id)
+    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller/' + materiales.id,httpOption)
   }
   // Editar materiales taller pasando el ID, el tipo de objetoy la constante de cabecera HttpHeaders
   editarMaterialesTallerId(formularioRegistro: any, id: number): Observable<MaterialesTaller[]> {
-    return this.http.put<MaterialesTaller[]>(this.url + 'materiales_taller/' + id, formularioRegistro);
+    return this.http.put<MaterialesTaller[]>(this.url + 'materiales_taller/' + id, formularioRegistro,httpOption);
   }
   // Eliminar materiales del taller
   eliminarMaterialesTaller(materiales : MaterialesTaller): Observable<MaterialesTaller[]> {
-    return this.http.delete<MaterialesTaller[]>(this.url + 'materiales_taller/' + materiales.id)
+    return this.http.delete<MaterialesTaller[]>(this.url + 'materiales_taller/' + materiales.id,httpOption)
   }
    // Buscar taller por nombre
    busquedaTaller(nombre: string): Observable<MaterialesTaller[]>{
-    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller/buscar/' + nombre)
+    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller/buscar/' + nombre,httpOption)
   }
 
 

@@ -6,8 +6,10 @@ import { Viaje } from '../../entidades/viaje/viaje';
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ export class ViajeService {
 
   // Obtenemos los viajes
   getViaje(): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.url + 'viajes');
+    return this.http.get<Viaje[]>(this.url + 'viajes',httpOption);
   }
   // Regristrar Viaje
   registrarViaje(formularioregistro: any) : Observable<Viaje[]>{
@@ -28,19 +30,19 @@ export class ViajeService {
   }
   // Obtener viaje en formulario reactivo y ventana modal para poder editar
   getViajeId(viaje : Viaje) : Observable<Viaje[]>{
-    return this.http.get<Viaje[]>(this.url + 'viajes/' + viaje.id);
+    return this.http.get<Viaje[]>(this.url + 'viajes/' + viaje.id,httpOption);
   }
   // Editar viaje
   editarViajeId(formularioregistro : any, id: number) : Observable<Viaje[]> {
-    return this.http.put<Viaje[]>(this.url + 'viajes/' + id , formularioregistro);
+    return this.http.put<Viaje[]>(this.url + 'viajes/' + id , formularioregistro,httpOption);
   }
   // Eliminar viaje
   eliminarViaje(viaje : Viaje) : Observable<Viaje[]> {
-    return this.http.delete<Viaje[]>(this.url + 'viajes/' + viaje.id);
+    return this.http.delete<Viaje[]>(this.url + 'viajes/' + viaje.id,httpOption);
   }
    // Buscar viaje por destino
    busquedaDestino(destino : string): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.url + 'viajes/buscar/destino/' + destino);
+    return this.http.get<Viaje[]>(this.url + 'viajes/buscar/destino/' + destino,httpOption);
   }
 
 }

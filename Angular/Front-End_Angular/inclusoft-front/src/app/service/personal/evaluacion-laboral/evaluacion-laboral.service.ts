@@ -7,8 +7,9 @@ import { EvaluacionLaboral } from 'src/app/entidades/personal/evaluacion-laboral
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 
 @Injectable({
@@ -23,7 +24,7 @@ export class EvaluacionLaboralService {
 
   // Obtener Evaluaciones Laborales
   getEvaluacionLaboral(): Observable<EvaluacionLaboral[]>{
-    return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral');
+    return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral',httpOption);
   }
 
  // Registras Evaluacion Laboral
@@ -33,20 +34,20 @@ registrarEvaluacionLaboral(formularioRegistro: any): Observable<EvaluacionLabora
 
  // Obtener Evaluaciones laborales pasando el ID
 getEvaluacionesLaboralesId(evaluacioneslaborales: EvaluacionLaboral): Observable<EvaluacionLaboral[]> {
-   return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' +  evaluacioneslaborales.id)
+   return this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' +  evaluacioneslaborales.id,httpOption)
  }
 
  // Editar evaluaciones laborales pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
 editarEvaluacionLaboralId(formularioRegistro: any, id: number): Observable<EvaluacionLaboral[]> {
-   return this.http.put<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + id, formularioRegistro);
+   return this.http.put<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + id, formularioRegistro,httpOption);
  }
 
  // Eliminar evaluaciones laborales
 elimarEvaluacionLaboral( evaluacionlaboral : EvaluacionLaboral): Observable<EvaluacionLaboral[]>{
-   return this.http.delete<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + evaluacionlaboral.id);
+   return this.http.delete<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/' + evaluacionlaboral.id,httpOption);
  }
   // Busqueda de personal por asistencia
   busquedaPersonal(nombre:string): Observable<EvaluacionLaboral[]>{
-  return  this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/buscar/' + nombre)
+  return  this.http.get<EvaluacionLaboral[]>(this.url + 'evaluacion_laboral/buscar/' + nombre,httpOption)
 }
 }

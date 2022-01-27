@@ -129,7 +129,6 @@ export class InformesCuatrimestralesComponent implements OnInit {
     const id = this.formularioRegistro.value.id;
     this.servicioInformesCuatrimestrales.editarInformesCuatrimestralesId(this.formularioRegistro.value, id).subscribe(
       (res) => {
-        console.log(res)
         this.alertas.alertedit();
         this.getInformesCuatrimestrales();
         this.cerrarModal();

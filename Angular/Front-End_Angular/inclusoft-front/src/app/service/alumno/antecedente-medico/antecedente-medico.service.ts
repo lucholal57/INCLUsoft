@@ -4,10 +4,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AntecedenteMedico } from '../../../entidades/alumno/antecedente-medico/antecedente-medico';
 
-// Constante de los header para los encabezados
+// Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AntecedenteMedicoService {
 
 // Obtener Antecedentes medicos
 getAntecedenteMedico(): Observable<AntecedenteMedico[]>{
-  return this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico');
+  return this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico', httpOption);
 }
 // Registrar Antecedentes medicos
 registrarAntecedenteMedico(formularioRegistro: any): Observable<AntecedenteMedico[]>{
@@ -29,18 +30,18 @@ registrarAntecedenteMedico(formularioRegistro: any): Observable<AntecedenteMedic
 }
 // Obtener Antecedente Medico pasando el ID
 getAntecedenteMedicoId(antecedente_medico: AntecedenteMedico): Observable<AntecedenteMedico[]>{
-  return this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id);
+  return this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id,httpOption);
 }
 // Editar Antecedente Medico pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
 editarAntecedenteMedicoId(formularioRegistro: any, id: number): Observable<AntecedenteMedico[]>{
-  return this.http.put<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + id, formularioRegistro);
+  return this.http.put<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + id, formularioRegistro,httpOption);
 }
 // Eliminar Antecedente Medico pasando el ID
 elimnarAntecedenteMedico(antecedente_medico: AntecedenteMedico): Observable<AntecedenteMedico[]>{
-  return this.http.delete<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id);
+  return this.http.delete<AntecedenteMedico[]>(this.url + 'antecedente_medico/' + antecedente_medico.id,httpOption);
 }
 // Busqueda de antecedente medico por alumno
 busquedaAlumno(nombre:string): Observable<AntecedenteMedico[]>{
-  return  this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico/buscar/' + nombre)
+  return  this.http.get<AntecedenteMedico[]>(this.url + 'antecedente_medico/buscar/' + nombre,httpOption)
 }
 }

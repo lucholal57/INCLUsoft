@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 from .models import (Alumno, Acta_Compromiso, Antecedente_Medico,
 Asistencia_Alumno, Datos_Adicionales, Enfermeria, Patologia)
 from .serializers import (Acta_CompromisoPostPutSerializer, AlumnoSerializer, Antecedente_MedicoSerializer, AsistenciaSerializer, Datos_AdicionalesPostPutSerializer,  AsistenciaPostPutSerializer, Antecedente_MedicoPostPutSerializer, Datos_AdicionalesSerializer, EnfermeriaPostPutSerializer, PatologiaPostPutSerializer, PatologiaSerializer, Acta_CompromisoSerializer, EnfermeriaSerializer)
@@ -10,6 +12,7 @@ from .serializers import (Acta_CompromisoPostPutSerializer, AlumnoSerializer, An
 
 #VIEW DE ALUMNOS
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def AlumnoListado(request):
 
     #List
@@ -31,6 +34,7 @@ def AlumnoListado(request):
 
 # Busqueda por id para la edicion, edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def AlumnoBuscarPorId(request,pk=None):
     #Consulta para obtener el listado en el modal sin first
     alumno = Alumno.objects.filter(id=pk)
@@ -63,6 +67,7 @@ def AlumnoBuscarPorId(request,pk=None):
 
 #Busqueda de alumno en listado por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumno(request,nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains= nombre_alumno)
     serializer = AlumnoSerializer(alumno, many=True)
@@ -71,6 +76,7 @@ def BusquedaAlumno(request,nombre_alumno):
 #VIEW DE DATOS ADICIONALES
 #Listado y creacion
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def DatosAdicionalesListado(request):
     
     #List
@@ -93,6 +99,7 @@ def DatosAdicionalesListado(request):
 
 #Busqueda por id para la edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def DatosAdicionalesBuscarPorId(request, pk=None):
     #Consulta para obtener el listado en el modal sin first
     datos_adicionales = Datos_Adicionales.objects.filter(id=pk)
@@ -126,6 +133,7 @@ def DatosAdicionalesBuscarPorId(request, pk=None):
 
 #Busqueda de alumno en listado de datos adicionales por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoDatosAdicionales(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
     datos_adiconales = Datos_Adicionales.objects.filter(alumno__in = alumno)
@@ -135,6 +143,7 @@ def BusquedaAlumnoDatosAdicionales(request, nombre_alumno):
 #VIEW DE ASISTENCIAS
 #Listado y Creacion
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def AsistenciaListado(request):
     
     #List
@@ -156,6 +165,7 @@ def AsistenciaListado(request):
         
 #Busqueda por id para la edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def AsistenciaBuscarPorId(request, pk=None):
     #Consulta para obtener el listado en el modal sin first
     asistencia = Asistencia_Alumno.objects.filter(id=pk)
@@ -189,6 +199,7 @@ def AsistenciaBuscarPorId(request, pk=None):
 
 #Busqueda de alumno en listado de Asistencias por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoAsistencia(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
     asistencia = Asistencia_Alumno.objects.filter(alumno__in = alumno)
@@ -198,6 +209,7 @@ def BusquedaAlumnoAsistencia(request, nombre_alumno):
 #VIEW DE ANTECEDENTES MEDICOS
 #Listado y Creacion
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def AntecedenteMedicoListado(request):
     
     #List
@@ -220,6 +232,7 @@ def AntecedenteMedicoListado(request):
 
 # Busqueda por id para la edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def AntecedenteMedicoBuscarPorId(request, pk=None):
     #Consulta para obtener el listado en el modal sin First
     antecedente_medico = Antecedente_Medico.objects.filter(id=pk)
@@ -253,6 +266,7 @@ def AntecedenteMedicoBuscarPorId(request, pk=None):
 
 #Busqueda de alumno en listado de Antecedentes medicos por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoAntecedenteMedico(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
     antecedente_medico= Antecedente_Medico.objects.filter(alumno__in = alumno)
@@ -263,6 +277,7 @@ def BusquedaAlumnoAntecedenteMedico(request, nombre_alumno):
 #VIEW DE PATOLOGIAS
 #Listado y Creacion
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def PatologiaListado(request):
     
     #List
@@ -285,6 +300,7 @@ def PatologiaListado(request):
 
 # Busqueda por id para la edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def PatologiaBuscarPorId(request, pk=None):
     #Consulta para obtener el listado en el modal sin First
     patologia = Patologia.objects.filter(id=pk)
@@ -318,6 +334,7 @@ def PatologiaBuscarPorId(request, pk=None):
 
 #Busqueda de alumno en listado de Patologias por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoPatologia(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
     patologia= Patologia.objects.filter(alumno__in = alumno)
@@ -328,6 +345,7 @@ def BusquedaAlumnoPatologia(request, nombre_alumno):
 #VIEW DE ACTA COMPROMISO
 # Listado y Creacion
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def ActaCompromisoListado(request):
     
     #list
@@ -350,6 +368,7 @@ def ActaCompromisoListado(request):
         
 # Busqueda por id para la edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def ActaCompromisoBuscarPorId(request, pk=None):
     #Consulta para obtener el listado en el modal sin First
     acta_compromiso = Acta_Compromiso.objects.filter(id=pk)
@@ -378,11 +397,12 @@ def ActaCompromisoBuscarPorId(request, pk=None):
             acta_compromiso.delete()
             return Response({'message':'Acta compromiso eliminada correctamente!'}, status=status.HTTP_200_OK)
         
- # Validacion no se encontro   
+# Validacion no se encontro   
     return Response({'message':'No se ha encontrado un acta compromiso con estos datos'},status=status.HTTP_400_BAD_REQUEST)
 
 #Busqueda de alumno en listado de Actas Compromiso  por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoActaCompromiso(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
     acta_compromiso= Acta_Compromiso.objects.filter(alumno__in = alumno)
@@ -393,6 +413,7 @@ def BusquedaAlumnoActaCompromiso(request, nombre_alumno):
 #VIEW DE  ENFERMERIA
 #Listado y Creacion
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated, ))
 def EnfermeriaListado(request):
     
     #List
@@ -415,6 +436,7 @@ def EnfermeriaListado(request):
         
 # Busqueda por id para la edicion y eliminacion
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated, ))
 def EnfermeriaBuscarPorId(request, pk=None):
     #Consulta para obtener el listado en el modal sin First
     enfermeria = Enfermeria.objects.filter(id=pk)
@@ -448,6 +470,7 @@ def EnfermeriaBuscarPorId(request, pk=None):
 
 #Busqueda de alumno en listado de Actas Compromiso  por nombre
 @api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoEnfermeria(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
     enfermeria= Enfermeria.objects.filter(alumno__in = alumno)

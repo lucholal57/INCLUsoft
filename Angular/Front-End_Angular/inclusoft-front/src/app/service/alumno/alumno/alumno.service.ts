@@ -3,7 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Alumno } from '../../../entidades/alumno/alumno/alumno';
 
-const httpOption = {headers: new HttpHeaders ({'content-type': ' application/json'})};
+
+// Constante de los headers para los encabezados
+const httpOption = {
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +20,16 @@ export class AlumnoService {
   constructor(private http: HttpClient) { }
 
   getAlumnos(): Observable<Alumno[]>{
-    return this.http.get<Alumno[]>(this.url + 'alumno');
+    return this.http.get<Alumno[]>(this.url + 'alumno', httpOption);
   }
 
   registrarAlumno(formularioregistro: any): Observable<Alumno[]>{
-    return this.http.post<Alumno[]>(this.url + 'alumno' , formularioregistro);
+    return this.http.post<Alumno[]>(this.url + 'alumno' , formularioregistro, httpOption);
   }
 
 
   getAlumnoId(busqueda_alumno: Alumno): Observable<Alumno[]>{
-    return this.http.get<Alumno[]>(this.url + 'alumno/' + busqueda_alumno.id);
+    return this.http.get<Alumno[]>(this.url + 'alumno/' + busqueda_alumno.id,httpOption );
   }
 
   editarAlumno(formularioregistro: any, id: number): Observable<Alumno[]>{
@@ -33,10 +38,12 @@ export class AlumnoService {
   }
 
   eliminarAlumno(id: number): Observable<Alumno[]>{
-    return this.http.delete<Alumno[]>(this.url + 'alumno/' + id);
+    return this.http.delete<Alumno[]>(this.url + 'alumno/' + id, httpOption );
   }
 
   busquedaAlumno(nombre:string): Observable<Alumno[]>{
-    return  this.http.get<Alumno[]>(this.url + 'alumno/buscar/' + nombre)
+    return  this.http.get<Alumno[]>(this.url + 'alumno/buscar/' + nombre, httpOption )
   }
+
+
 }

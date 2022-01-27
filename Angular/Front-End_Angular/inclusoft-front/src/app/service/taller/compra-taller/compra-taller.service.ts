@@ -6,8 +6,9 @@ import { CompraTaller } from '../../../entidades/taller/compra-taller/compra-tal
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' + localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class CompraTallerService {
 
   // obtener Compra de taller
   getCompraTaller(): Observable<CompraTaller[]> {
-    return this.http.get<CompraTaller[]>(this.url + 'compras_taller');
+    return this.http.get<CompraTaller[]>(this.url + 'compras_taller',httpOption);
   }
   // Registrar Compra del taller
   registrarCompraTaller(formularioRegistro: any): Observable<CompraTaller[]> {
@@ -29,18 +30,18 @@ export class CompraTallerService {
   }
   // Obtener material de taller pasando el ID
   getCompraTallerId(compra : CompraTaller): Observable<CompraTaller[]> {
-    return this.http.get<CompraTaller[]>(this.url + 'compras_taller/' +  compra.id)
+    return this.http.get<CompraTaller[]>(this.url + 'compras_taller/' +  compra.id,httpOption)
   }
   // Editar Compra taller pasando el ID, el tipo de objetoy la constante de cabecera HttpHeaders
   editarCompraTallerId(formularioRegistro: any, id: number): Observable<CompraTaller[]> {
-    return this.http.put<CompraTaller[]>(this.url + 'compras_taller/' + id, formularioRegistro);
+    return this.http.put<CompraTaller[]>(this.url + 'compras_taller/' + id, formularioRegistro,httpOption);
   }
   // Eliminar Compra del taller
   eliminarCompraTaller(compra : CompraTaller): Observable<CompraTaller[]> {
-    return this.http.delete<CompraTaller[]>(this.url + 'compras_taller/' + compra.id)
+    return this.http.delete<CompraTaller[]>(this.url + 'compras_taller/' + compra.id,httpOption)
   }
   // Buscar taller por nombre
   busquedaTaller(nombre: string): Observable<CompraTaller[]>{
-    return this.http.get<CompraTaller[]>(this.url + 'compras_taller/buscar/' + nombre)
+    return this.http.get<CompraTaller[]>(this.url + 'compras_taller/buscar/' + nombre,httpOption)
   }
 }

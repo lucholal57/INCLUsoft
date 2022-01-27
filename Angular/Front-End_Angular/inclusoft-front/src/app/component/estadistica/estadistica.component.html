@@ -1,51 +1,87 @@
-<!--
-<ng-template #content let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Formulario de Asignaciones</h4>
-    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
 
-    <div class="form-group">
-      <label style="color:black" for="alumno">Alumno</label>
-        <select class="form-control" formControlName="alumno" required>
-          <option value="">Seleccione un Alumno</option>
-          <option *ngFor="let alumnos of listadoAlumnos" [ngValue]="alumnos.id">
-            {{ alumnos.nombre_alumno }} {{ alumnos.apellido_alumno }}
-          </option>
-        </select>
+<app-menu></app-menu>
+
+<div>
+  <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
+</div>
+
+<div class="container">
+  <div class="row">
+    <legend align="center">Total de personas entre Alumnos-Personal</legend>
+
+    <div class="col-sm">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="total"
+      [gradient]="gradient"
+      (select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)"
+      >
+    </ngx-charts-advanced-pie-chart>
     </div>
 
-    <div class="form-group">
-      <label style="color:black" for="alumno">Personal</label>
-        <select class="form-control" formControlName="personal" required>
-          <option value="">Seleccione un Personal</option>
-          <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
-            {{ personal.nombre_personal }} {{ personal.apellido_personal }}
-          </option>
-        </select>
-    </div>
-
-    <div class="form-group">
-      <label style="color:black">Observaciones</label>
-      <div class="col-sm-15">
-        <input
-          type="text"
-          class="form-control"
-          id="observaciones"
-          formControlName="observaciones_acompanante"
-          required
-        />
-      </div>
+    <div class="col-sm">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="total"
+      [gradient]="gradient"
+      (select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)"
+      >
+    </ngx-charts-advanced-pie-chart>
     </div>
 
   </div>
-  <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" (click)="registrarAcompanante()" [disabled]="btnGuardar">Guardar</button>
-    <button type="button"  class="btn btn-outline-dark" [disabled]="btnEditar" (click)="editarAcompananteId()">Editar</button>
-    <button type="reset"  class="btn btn-outline-dark" [disabled]="btnCancelar" (click)="cancelar()">Limpiar</button>
+</div>
+
+<div class="container">
+  <div class="row">
+    <legend align="center">Total de personas entre Alumnos-Personal</legend>
+
+    <div class="col-sm">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="total"
+      [gradient]="gradient"
+      (select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+
+    <div class="col-sm">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="total"
+      [gradient]="gradient"
+      (select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+
   </div>
-</ng-template>
--->
+</div>
+
+
+
+</body>
+</html>
+

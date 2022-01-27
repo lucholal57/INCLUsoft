@@ -6,8 +6,9 @@ import { Asistencia } from '../../../entidades/alumno/asistencia/asistencia';
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,28 +22,28 @@ export class AsistenciaService {
 
 // Obtener Asistencias
   getAsistencias(): Observable<Asistencia[]> {
-    return this.http.get<Asistencia[]>(this.url + 'asistencia');
+    return this.http.get<Asistencia[]>(this.url + 'asistencia',httpOption);
   }
 // Registrar Asisitencias
   registrarAsistencias(formularioRegistro: any): Observable<Asistencia[]> {
     return this.http.post<Asistencia[]>(
-      this.url + 'asistencia', formularioRegistro
+      this.url + 'asistencia', formularioRegistro,httpOption
     );
   }
 // Obtener asistencias pasando el ID
   getAsistenciasId(asistencia: Asistencia): Observable<Asistencia[]> {
-    return this.http.get<Asistencia[]>(this.url + 'asistencia/' + asistencia.id);
+    return this.http.get<Asistencia[]>(this.url + 'asistencia/' + asistencia.id,httpOption);
   }
 // Editar asistencias pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
 editarAsistenciasId(formularioRegistro: any, id: number): Observable<Asistencia[]> {
-  return this.http.put<Asistencia[]>(this.url + 'asistencia/' + id, formularioRegistro);
+  return this.http.put<Asistencia[]>(this.url + 'asistencia/' + id, formularioRegistro,httpOption);
 }
 // Eliminar asistencia pasando el ID
 eliminarAsistencia(asistencia: Asistencia): Observable<Asistencia[]> {
-  return this.http.delete<Asistencia[]>(this.url + 'asistencia/' + asistencia.id);
+  return this.http.delete<Asistencia[]>(this.url + 'asistencia/' + asistencia.id,httpOption);
 }
 // Busqueda de alumno por asistencia
 busquedaAlumno(nombre:string): Observable<Asistencia[]>{
-  return  this.http.get<Asistencia[]>(this.url + 'asistencia/buscar/' + nombre)
+  return  this.http.get<Asistencia[]>(this.url + 'asistencia/buscar/' + nombre,httpOption)
 }
 }

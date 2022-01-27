@@ -6,8 +6,9 @@ import { AsistenciaPersonal } from '../../../entidades/personal/asistencia-perso
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AsistenciaPersonalService {
 
   // Obtener Asistencias Personal
   getAsistenciaPersonal(): Observable<AsistenciaPersonal[]> {
-    return this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal');
+    return this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal',httpOption);
   }
 
   // Registrar asistencias personal
@@ -32,20 +33,20 @@ export class AsistenciaPersonalService {
 
   // Obtener Asistencia pasando ID
   getAsistenciaPersonalId( asistenciapersonal: AsistenciaPersonal): Observable<AsistenciaPersonal[]>{
-    return this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' + asistenciapersonal.id);
+    return this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' + asistenciapersonal.id,httpOption);
   }
 
   // Editar asistencia del personal pasando el ID y el tipo de objeto, y constande de cabecera HttpHeaders
   editarAsistenciaPersonalId(formularioRegistro : any, id : number): Observable<AsistenciaPersonal[]>{
-    return this.http.put<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' +id , formularioRegistro);
+    return this.http.put<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' +id , formularioRegistro,httpOption);
   }
 
   // Eliminar asistencia personal
   eliminarAsistenciaPersonal( asistenciapersonal: AsistenciaPersonal):Observable<AsistenciaPersonal[]> {
-    return this.http.delete<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' + asistenciapersonal.id);
+    return this.http.delete<AsistenciaPersonal[]>(this.url + 'asistencia_personal/' + asistenciapersonal.id,httpOption);
   }
   // Busqueda de personal por asistencia
 busquedaPersonal(nombre:string): Observable<AsistenciaPersonal[]>{
-  return  this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/buscar/' + nombre)
+  return  this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/buscar/' + nombre,httpOption)
 }
 }

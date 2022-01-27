@@ -6,8 +6,9 @@ import { EntregaProyecto } from '../../../entidades/personal/entrega-proyecto/en
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class EntregaProyectoService {
 
   // Obtener entrega proyecto
   getEntregaProyecto(): Observable<EntregaProyecto[]>{
-    return this.http.get<EntregaProyecto[]>(this.url+ 'entrega_proyecto');
+    return this.http.get<EntregaProyecto[]>(this.url+ 'entrega_proyecto', httpOption);
   }
   // Registrar entregas de proyecto
   registrarEntregaProyecto(formularioRegistro: any): Observable<EntregaProyecto[]>{
@@ -28,7 +29,7 @@ export class EntregaProyectoService {
   }
   // Obtener entregas proyectos pasando ID
   getEntregaProyectoId( entregaproyecto: EntregaProyecto): Observable<EntregaProyecto[]>{
-    return this.http.get<EntregaProyecto[]>(this.url + 'entrega_proyecto/' +  entregaproyecto.id);
+    return this.http.get<EntregaProyecto[]>(this.url + 'entrega_proyecto/' +  entregaproyecto.id, httpOption);
   }
   // Editar asistencias pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
   editarEntregaProyectoId(formularioRegistro: any, id: number): Observable<EntregaProyecto[]>{
@@ -36,10 +37,10 @@ export class EntregaProyectoService {
   }
   //Eliminar Entrega proyecto
   eliminarEntregaProyecto( entregaproyecto: EntregaProyecto ): Observable<EntregaProyecto[]>{
-    return this.http.delete<EntregaProyecto[]>(this.url + 'entrega_proyecto/' + entregaproyecto.id)
+    return this.http.delete<EntregaProyecto[]>(this.url + 'entrega_proyecto/' + entregaproyecto.id, httpOption)
   }
     // Busqueda de personal por entrega Proyecto
 busquedaPersonal(nombre:string): Observable<EntregaProyecto[]>{
-  return  this.http.get<EntregaProyecto[]>(this.url + 'entrega_proyecto/buscar/' + nombre)
+  return  this.http.get<EntregaProyecto[]>(this.url + 'entrega_proyecto/buscar/' + nombre, httpOption)
 }
 }

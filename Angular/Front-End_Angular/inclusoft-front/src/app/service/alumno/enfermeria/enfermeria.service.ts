@@ -6,8 +6,9 @@ import { Enfermeria } from '../../../entidades/alumno/enfermeria/enfermeria';
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'})
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ constructor(private http: HttpClient) { }
 
 // Obtener Enfermeria
 getEnfermeria(): Observable<Enfermeria[]> {
-  return this.http.get<Enfermeria[]>(this.url + 'enfermeria');
+  return this.http.get<Enfermeria[]>(this.url + 'enfermeria',httpOption);
 }
 // Registrar Enfermeria
 registrarEnfermeria(formularioRegistro: any): Observable<Enfermeria[]> {
@@ -29,18 +30,18 @@ registrarEnfermeria(formularioRegistro: any): Observable<Enfermeria[]> {
 }
 // Obtener Enfermeria pasando el ID
 getEnfermeriaId( enfermeria: Enfermeria): Observable<Enfermeria[]> {
-  return this.http.get<Enfermeria[]>(this.url + 'enfermeria/' +  enfermeria.id);
+  return this.http.get<Enfermeria[]>(this.url + 'enfermeria/' +  enfermeria.id,httpOption);
 }
 // Editar enfermeria pasando el ID y el tipo de objeto y la constante de acbecera HttpHeaders
 editarEnfermeriaId(enfermeria: Enfermeria, id : number): Observable<Enfermeria[]> {
-  return this.http.put<Enfermeria[]>(this.url + 'enfermeria/' + id , enfermeria);
+  return this.http.put<Enfermeria[]>(this.url + 'enfermeria/' + id , enfermeria,httpOption);
 }
 // Eliminar Enfermeria pasando el ID
 eliminarEnfermeria(enfermeria: Enfermeria): Observable<Enfermeria[]> {
-  return this.http.delete<Enfermeria[]>(this.url + 'enfermeria/' + enfermeria.id);
+  return this.http.delete<Enfermeria[]>(this.url + 'enfermeria/' + enfermeria.id,httpOption);
 }
 // Busqueda de alumno por asistencia
 busquedaAlumno(nombre:string): Observable<Enfermeria[]>{
-  return  this.http.get<Enfermeria[]>(this.url + 'enfermeria/buscar/' + nombre)
+  return  this.http.get<Enfermeria[]>(this.url + 'enfermeria/buscar/' + nombre,httpOption)
 }
 }

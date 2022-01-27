@@ -14,6 +14,12 @@ label{
     color:aliceblue
 }
 .carousel-inner{
-margin: auto;
+  margin: auto;
+  width: 100%;
+  height: 950px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #000;
+
 }
 

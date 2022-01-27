@@ -57,6 +57,14 @@ export class AlertService {
     })
   }
 
+  alerteLogin(){
+    Swal.fire(
+      'Es un usuario valido?',
+      'Verifique Usuario y Contraseña',
+      'question'
+    )
+  }
+
   /* Alert eliminar el
 
     Swal.fire({

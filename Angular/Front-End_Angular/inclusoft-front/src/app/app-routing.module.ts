@@ -31,7 +31,7 @@ import { InformesCuatrimestralesComponent } from './component/taller/informes-cu
 
 
 const routes: Routes = [
-  {path:'', component: LoginComponent},
+  {path:'login', component: LoginComponent},
   {path:'inicio', component: InicioComponent},
   //Rutas Alumnos
   {path:'alumno', component: AlumnoComponent},

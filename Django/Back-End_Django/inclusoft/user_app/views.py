@@ -14,7 +14,9 @@ from user_app import models
 @api_view(['POST'])
 def LogoutView(request):
     if request.method == 'POST':
-        request.user.auth_token.delete()
+        data = request.data
+        print(data)
+        data.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
 @api_view(['POST'])

@@ -3,10 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DatosAdicionales } from '../../../entidades/alumno/datos_adicionales/datos-adicionales';
 
-// Constante para utilizar en los metodos PUT
+
+// Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +22,7 @@ export class DatosAdicionalesService {
 
   // Obtener datos adicionales
   getDatosAdicionales(): Observable<DatosAdicionales[]> {
-    return this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales');
+    return this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales',httpOption);
   }
   // Registrar datos adicionales
   registrarDatosAdicionales(
@@ -35,7 +37,7 @@ export class DatosAdicionalesService {
   getDatosAdicionalesId(
     datos_adicionales: DatosAdicionales
   ): Observable<DatosAdicionales[]> {
-    return this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales/' + datos_adicionales.id);
+    return this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales/' + datos_adicionales.id,httpOption);
   }
   // Editar datos adicionales pasando el ID y el tipo de objeto y la constante de la cabecera headers
   editarDatosAdicionales(formularioRegistro: any, id: number): Observable<DatosAdicionales[]>{
@@ -43,11 +45,11 @@ export class DatosAdicionalesService {
   }
   // Eliminar datos adicionales
   eliminarDatosAdicionales(datos_adicionales: DatosAdicionales): Observable<DatosAdicionales[]> {
-    return this.http.delete<DatosAdicionales[]>(this.url + 'datos_adicionales/' + datos_adicionales.id);
+    return this.http.delete<DatosAdicionales[]>(this.url + 'datos_adicionales/' + datos_adicionales.id,httpOption);
   }
   // Busqueda de alumno por asistencia
 busquedaAlumno(nombre:string): Observable<DatosAdicionales[]>{
-  return  this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales/buscar/' + nombre)
+  return  this.http.get<DatosAdicionales[]>(this.url + 'datos_adicionales/buscar/' + nombre,httpOption)
 }
 
 }

@@ -72,7 +72,6 @@ export class AlumnoComponent implements OnInit {
   getAlumnos(): void {
     this.servicioAlumno.getAlumnos().subscribe(
       (res) => {
-         console.log(res)
         this.listadoAlumnos = res;
       },
       (error) => {

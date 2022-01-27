@@ -6,8 +6,9 @@ import { InformesCuatrimestrales} from '../../../entidades/taller/informes-cuatr
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class InformesCuatrimestralesService {
 
   //Obtenemos informes cuatrimestrales
   getInformesCuatrimestrales(): Observable<InformesCuatrimestrales[]> {
-    return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales');
+    return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales',httpOption);
   }
 
   // Registrar informes cuatrimestrales
@@ -31,21 +32,21 @@ export class InformesCuatrimestralesService {
 
   // Obtener informes cuatrimestrales pasando el ID
   getInformesCuatrimestralesId(informe_cuatrimestral: InformesCuatrimestrales): Observable<InformesCuatrimestrales[]> {
-    return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + informe_cuatrimestral.id);
+    return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + informe_cuatrimestral.id,httpOption);
   }
 
   // Editar informes cuatrimestrales pasando el ID, el tipo de objeto y la constante de cabecera HttpHeaders
   editarInformesCuatrimestralesId(formularioRegistro: any , id: number): Observable<InformesCuatrimestrales[]> {
-    return this.http.put<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + id, formularioRegistro)
+    return this.http.put<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + id, formularioRegistro,httpOption)
   }
 
   // Eliminar informes cuatrimestrales
   eliminarInformesCuatrimestrales(informe_cuatrimestral: InformesCuatrimestrales): Observable<InformesCuatrimestrales[]> {
-    return this.http.delete<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + informe_cuatrimestral.id)
+    return this.http.delete<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/' + informe_cuatrimestral.id,httpOption)
   }
   // Buscar taller por nombre
   busquedaTaller(nombre: string): Observable<InformesCuatrimestrales[]>{
-    return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/buscar/' + nombre)
+    return this.http.get<InformesCuatrimestrales[]>(this.url + 'informes_cuatrimestrales/buscar/' + nombre,httpOption)
   }
 
 

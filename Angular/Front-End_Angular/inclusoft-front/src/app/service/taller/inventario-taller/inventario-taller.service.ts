@@ -6,9 +6,9 @@ import { InventarioTaller } from '../../../entidades/taller/inventario-taller/in
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
-
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class InventarioTallerService {
   constructor( private http: HttpClient) { }
  // obtener Inventario de taller
  getInventarioTaller(): Observable<InventarioTaller[]> {
-  return this.http.get<InventarioTaller[]>(this.url + 'inventario_taller');
+  return this.http.get<InventarioTaller[]>(this.url + 'inventario_taller',httpOption);
 }
 // Registrar Inventario del taller
 registrarInventarioTaller(formularioRegistro: any): Observable<InventarioTaller[]> {
@@ -30,17 +30,20 @@ registrarInventarioTaller(formularioRegistro: any): Observable<InventarioTaller[
 }
 // Obtener material de taller pasando el ID
 getInventarioTallerId(Inventario : InventarioTaller): Observable<InventarioTaller[]> {
-  return this.http.get<InventarioTaller[]>(this.url + 'inventario_taller/'+  Inventario.id)
+  return this.http.get<InventarioTaller[]>(this.url + 'inventario_taller/'+  Inventario.id,httpOption)
 }
 // Editar Inventario taller pasando el ID, el tipo de objetoy la constante de cabecera HttpHeaders
 editarInventarioTallerId(formularioRegistro: any, id: number): Observable<InventarioTaller[]> {
-  return this.http.put<InventarioTaller[]>(this.url + 'inventario_taller/' + id, formularioRegistro);
+  return this.http.put<InventarioTaller[]>(this.url + 'inventario_taller/' + id, formularioRegistro,httpOption);
 }
 // Eliminar Inventario del taller
 eliminarInventarioTaller(Inventario : InventarioTaller): Observable<InventarioTaller[]> {
-  return this.http.delete<InventarioTaller[]>(this.url + 'inventario_taller/' + Inventario.id)
+  return this.http.delete<InventarioTaller[]>(this.url + 'inventario_taller/' + Inventario.id,httpOption)
 }
-
+// Buscar taller por nombre
+busquedaTaller(nombre: string): Observable<InventarioTaller[]>{
+  return this.http.get<InventarioTaller[]>(this.url + 'inventario_taller/buscar/' + nombre,httpOption)
+}
 
 
 }

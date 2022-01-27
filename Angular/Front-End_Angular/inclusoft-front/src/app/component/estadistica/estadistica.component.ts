@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Alumno } from'../../entidades/alumno/alumno/alumno';
 import { AlumnoService } from '../../service/alumno/alumno/alumno.service';
+import { Personal } from'../../entidades/personal/personal/personal';
+import { PersonalService } from '../../service/personal/personal/personal.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-estadistica',
@@ -12,16 +14,17 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 export class EstadisticaComponent implements OnInit {
 
   listadoAlumnos: Alumno[];
+  listadoPersonal: Personal[];
+  total = new Array();
 
-  view: [number,number] = [700, 400];
-
+  view: [number,number] = [500, 400];
 
   colorScheme = {
-    domain: ['red', 'pink']
+    name: 'vivid',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#FFFF06' , '#FF0606']
   };
-
-
-
   // options
   gradient: boolean = true;
   showLegend: boolean = true;
@@ -31,14 +34,38 @@ export class EstadisticaComponent implements OnInit {
 
   constructor(
     private servicioAlumno: AlumnoService,
+    private servicioPersonal: PersonalService,
+
   ) {}
 
+  ngOnInit(): void {
+    this.servicioPersonal.getPersonal().subscribe(
+      (res) => {
+        this.listadoPersonal= res;
+        this.total.push(new Object({name : "Personal", value: this.listadoPersonal.length}))
+        console.log(this.total,"length personal")
+        //Formula para poder guardar los datos de los graficos
+        this.total = [...this.total];
+      }
+    );
+    this.servicioAlumno.getAlumnos().subscribe(
+      (res) => {
+          this.listadoAlumnos= res
+          this.total.push(new Object({name : "Alumno", value: this.listadoAlumnos.length}))
+          console.log(this.total,"length alumno")
+          //Formula para poder guardar los datos de los graficos
+          this.total = [...this.total];
+      }
+    );
 
-  onSelect(data: Alumno): void {
+  }
+
+
+  onSelect(data: any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
-  onActivate(data:any): void {
+  onActivate(data: any): void {
     console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
@@ -46,18 +73,25 @@ export class EstadisticaComponent implements OnInit {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
-  ngOnInit(): void {
-  }
-    // Obtener todo los alumnos para listar
-getAlumno(): void{
-  this.servicioAlumno.getAlumnos().subscribe(
-    (res) => {
-      this.listadoAlumnos = res;
+  dato = [
+    {
+        "name": "Personal",
+        "value": 6
     },
-    (error) => {
+    {
+        "name": "Alumno",
+        "value": 5
     }
-  );
+]
+
+
+gettotales() {
+
+
 }
 
-
+verdatos(): void {
+  console.log(this.total,"length")
+  console.log(this.dato)
+}
 }

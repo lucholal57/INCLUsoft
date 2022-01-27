@@ -35,6 +35,7 @@ import { EstadisticaComponent } from './component/estadistica/estadistica.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller.component';
 import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,7 @@ import { InformesCuatrimestralesComponent } from './component/taller/informes-cu
     BrowserAnimationsModule
 
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

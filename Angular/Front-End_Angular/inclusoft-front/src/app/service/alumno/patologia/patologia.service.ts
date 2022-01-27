@@ -6,7 +6,8 @@ import { Patologia } from '../../../entidades/alumno/patologia/patologia';
 
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
 };
 
 @Injectable({
@@ -21,7 +22,7 @@ private url = 'http://127.0.0.1:8000/';
 
 // Obtener Patologias
 getPatologias(): Observable<Patologia[]> {
-  return this.http.get<Patologia[]> (this.url + 'patologia');
+  return this.http.get<Patologia[]> (this.url + 'patologia',httpOption);
 }
 // Registrar patologias
 registrarPatologia(formularioRegistro: any): Observable<Patologia[]> {
@@ -30,7 +31,7 @@ registrarPatologia(formularioRegistro: any): Observable<Patologia[]> {
 }
 // Obtener patologias pasando el ID
 getPatologiasId(patologia: Patologia): Observable<Patologia[]>{
-  return this.http.get<Patologia[]> (this.url + 'patologia/' + patologia.id);
+  return this.http.get<Patologia[]> (this.url + 'patologia/' + patologia.id,httpOption);
 }
 // Editar patologias pasando el ID y el tipo de objeto y la constante de cabecera HttpHeaders
 editarPtologiasId(patologia: Patologia, id: number): Observable<Patologia[]>{
@@ -38,10 +39,10 @@ editarPtologiasId(patologia: Patologia, id: number): Observable<Patologia[]>{
 }
 // Eliminar Patologia pasando el ID
 eliminarPatologia(patologia: Patologia): Observable<Patologia[]>{
-  return this.http.delete<Patologia[]>(this.url + 'patologia/' + patologia.id);
+  return this.http.delete<Patologia[]>(this.url + 'patologia/' + patologia.id,httpOption);
 }
 // Busqueda de alumno por asistencia
 busquedaAlumno(nombre:string): Observable<Patologia[]>{
-  return  this.http.get<Patologia[]>(this.url + 'patologia/buscar/' + nombre)
+  return  this.http.get<Patologia[]>(this.url + 'patologia/buscar/' + nombre,httpOption)
 }
 }

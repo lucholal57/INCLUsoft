@@ -223,8 +223,6 @@
 
 <div class="container-fluid" id="contenedorTabla">
   <legend align="center">Listado de Datos Adicionales</legend>
-
-  <div class="row justify-content-center">
     <table class="table table-bordered table-hover table-dark">
       <thead>
         <tr>
@@ -246,7 +244,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let datos_adicionales of listadoDatosAdicionales">
+        <tr *ngFor="let datos_adicionales of listadoDatosAdicionales | paginate: { itemsPerPage: 8, currentPage: p }">
           <th scope="row">{{ datos_adicionales.id }}</th>
           <td scope="row">
             {{ datos_adicionales.alumno.nombre_alumno }}
@@ -285,7 +283,9 @@
         </tr>
       </tbody>
     </table>
-  </div>
+
+    <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
 </div>
 </body>
 </html>

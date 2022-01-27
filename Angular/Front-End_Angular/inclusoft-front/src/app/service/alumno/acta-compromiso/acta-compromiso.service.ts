@@ -4,10 +4,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ActaCompromiso } from '../../../entidades/alumno/acta-compromiso/acta-compromiso';
 
+
 // Constante de los headers para los encabezados
 const httpOption = {
-  headers: new HttpHeaders({ 'content-type' : 'application/json'}),
-};
+  headers: new HttpHeaders({ 'content-type' : 'application/json',
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class ActaCompromisoService {
 
   // Obtener actas compromiso
   getActaCompromiso(): Observable<ActaCompromiso[]>{
-   return this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso');
+   return this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso',httpOption );
   }
   // Registrar Acta Compromiso
   registrarActaCompromiso(formularioRegistro: any): Observable<ActaCompromiso[]> {
@@ -29,7 +31,7 @@ export class ActaCompromisoService {
   }
   // Obtener Acta Compromiso pasando el ID
   getActaCompromisoId(acta_compromiso: ActaCompromiso): Observable<ActaCompromiso[]> {
-    return this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso/' + acta_compromiso.id);
+    return this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso/' + acta_compromiso.id, httpOption );
   }
   // Editar Acta Compromiso pasando el ID , el tipo de objeto y la constante de cabecera HttpHeaders
 editarActaCompromisoId(formularioRegistro : any, id: number): Observable<ActaCompromiso[]>{
@@ -37,11 +39,11 @@ editarActaCompromisoId(formularioRegistro : any, id: number): Observable<ActaCom
 }
   // Eliminar Acta Compromiso pasando el ID
 eliminarActaCompromiso(acta_compromiso: ActaCompromiso): Observable<ActaCompromiso[]>{
-  return this.http.delete<ActaCompromiso[]>(this.url + 'acta_compromiso/' + acta_compromiso.id);
+  return this.http.delete<ActaCompromiso[]>(this.url + 'acta_compromiso/' + acta_compromiso.id,httpOption );
 }
 // Busqueda de alumno por asistencia
 busquedaAlumno(nombre:string): Observable<ActaCompromiso[]>{
-  return  this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso/buscar/' + nombre)
+  return  this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso/buscar/' + nombre,httpOption )
 }
 
 }
