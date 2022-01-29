@@ -1,7 +1,7 @@
 from django.db import models
 from alumno.models import Alumno
 from personal.models import Personal
-from taller.models import Taller
+
 
 # Create your models here.
 class Acompañante(models.Model):

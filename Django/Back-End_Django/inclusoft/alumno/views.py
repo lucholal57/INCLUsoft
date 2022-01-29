@@ -49,6 +49,7 @@ def AlumnoBuscarPorId(request,pk=None):
         
         #update
         elif request.method == 'PUT':
+            #Consulta para obtener el listado en el modal con first
             alumno_edicion = Alumno.objects.filter(id=pk).first()
             serializer = AlumnoSerializer(alumno_edicion, data=request.data)
             if serializer.is_valid():
@@ -114,7 +115,7 @@ def DatosAdicionalesBuscarPorId(request, pk=None):
         
         #Update
         elif request.method == 'PUT':
-            #Consulta para editar el contenido del modal con filter
+            #Consulta para editar el contenido del modal con first
             datos_adicionales_edicion = Datos_Adicionales.objects.filter(id=pk).first()
             serializer = Datos_AdicionalesPostPutSerializer(datos_adicionales_edicion, data = request.data)
             if serializer.is_valid():
