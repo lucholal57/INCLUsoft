@@ -52,7 +52,7 @@ export class MaterialesTallerComponent implements OnInit {
     this.getTalleres();
     this.getMaterialesTaller();
     this.btnEditar = true;
-    this.ocultarbusqueda_Taller = false;
+    this.ocultarbusqueda_Taller = true;
   }
   // Open funcion para abrir ventana modal
   open(content:any) {

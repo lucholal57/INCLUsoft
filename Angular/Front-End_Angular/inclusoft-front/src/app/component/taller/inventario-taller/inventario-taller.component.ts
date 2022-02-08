@@ -51,7 +51,7 @@ export class InventarioTallerComponent implements OnInit {
   this.getInventarioTaller();
     this.getTalleres();
     this.btnEditar = true;
-    this.ocultarbusqueda_Taller = false;
+    this.ocultarbusqueda_Taller = true;
   }
   // Open funcion para abrir ventana modal
   open(content:any) {

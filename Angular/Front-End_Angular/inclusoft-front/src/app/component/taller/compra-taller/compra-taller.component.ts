@@ -53,7 +53,7 @@ export class CompraTallerComponent implements OnInit {
     this.getTalleres();
     this.getComprasTaller();
     this.btnEditar = false;
-    this.ocultarbusqueda_Taller = false;
+    this.ocultarbusqueda_Taller = true;
   }
   // Open funcion para abrir ventana modal
   open(content:any) {

@@ -61,7 +61,7 @@ export class TallerComponent implements OnInit {
     // Ejecutamos los dos metodos al iniciar la carga de la pagina web
     this.getTalleres();
     this.btnEditar = true;
-    this.ocultarbusqueda_Taller = false;
+    this.ocultarbusqueda_Taller = true;
     this.getAlumno();
     this.getPersonal();
   }

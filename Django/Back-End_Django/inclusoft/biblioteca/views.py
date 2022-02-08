@@ -24,7 +24,7 @@ def SocioListado(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     # Create
     elif request.method == 'POST':
-        serializer = SocioSerializer(data=request.data)
+        serializer = SocioPostPutSerializer(data=request.data)
         # Validacion
         if serializer.is_valid():
             serializer.save()
@@ -50,7 +50,7 @@ def SocioBuscarPorId(request, pk=None):
         elif request.method == 'PUT':
             # Consulta para editar el contenido del modal con First
             socio_edicion = Socio.objects.filter(id=pk).first()
-            serializer = SocioPostPutSerializer(socio, data=request.data)
+            serializer = SocioPostPutSerializer(socio_edicion, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)

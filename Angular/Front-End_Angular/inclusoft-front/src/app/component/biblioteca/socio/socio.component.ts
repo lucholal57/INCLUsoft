@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// Importamos las clases de entidades necesarias y servicios
-import { ActaCompromiso } from '../../../entidades/alumno/acta-compromiso/acta-compromiso';
-import { ActaCompromisoService } from '../../../service/alumno/acta-compromiso/acta-compromiso.service';
+//Importamos las clases de entidades necesarias y servicios
+import { Socio } from '../../../entidades/biblioteca/socio/socio';
+import { SocioService } from 'src/app/service/biblioteca/socio/socio.service';
 
 import { Alumno } from '../../../entidades/alumno/alumno/alumno';
 import { AlumnoService } from '../../../service/alumno/alumno/alumno.service';
@@ -9,22 +9,23 @@ import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
-  selector: 'app-acta-compromiso',
-  templateUrl: './acta-compromiso.component.html',
-  styleUrls: ['./acta-compromiso.component.css'],
+  selector: 'app-socio',
+  templateUrl: './socio.component.html',
+  styleUrls: ['./socio.component.css'],
   providers: [NgbModalConfig, NgbModal],
 })
-export class ActaCompromisoComponent implements OnInit {
+export class SocioComponent implements OnInit {
   // Variable P para el conteo del paginado
-  p: number = 1;
-  // Array de actas compromiso para mostrar en la tabla
-  listadoActaCompromiso: ActaCompromiso[];
-  // Array de alumnos para el select
-  listadoAlumnos: Alumno[];
-  //  variable para buscar por alumno
-  buscar_alumno= "";
-    // Variable de Botones para deshabilitar
+  p: number = 1
+  // Array de socios para mostrar en la tabla
+  listadoSocio : Socio[];
+  // Array de Alumnos para el select
+  listadoAlumnos : Alumno[];
+  // Variable para buscar socio  por alumno
+  buscar_alumno = "";
+  // Variables de botones para deshabilitar
   public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
@@ -33,7 +34,7 @@ export class ActaCompromisoComponent implements OnInit {
   // Injeccion de o los servicios a utilizar
   constructor(
     private servicioAlumno: AlumnoService,
-    private servicioActaCompromiso: ActaCompromisoService,
+    private servicioSocio: SocioService,
     private formBuilder: FormBuilder,
     private alertas : AlertService,
     config: NgbModalConfig,
@@ -42,23 +43,18 @@ export class ActaCompromisoComponent implements OnInit {
 
   // Formulario reactivo para el registro de datos
   formularioRegistro = this.formBuilder.group({
-    id: [''],
-    dias: ['', [Validators.required]],
-    ingreso: ['', [Validators.required]],
-    salida: ['', [Validators.required]],
-    traslado: ['', [Validators.required]],
-    personas_autorizadas_retiro: ['', [Validators.required]],
-    dni_persona_autorizada: ['', [Validators.required]],
+    id:[''],
+    fecha_de_inscripcion: ['', [Validators.required]],
     alumno: ['', [Validators.required]],
-
   })
+
   ngOnInit(): void {
-    // Ejecutamnos los metodos al iniciar la carga de la pagina
     this.getAlumno();
-    this.getActaCompromiso();
+    this.getSocio();
     this.btnEditar = true;
     this.ocultarbusqueda_Alumno = true;
   }
+
   // Open funcion para abrir ventana modal
   open(content:any) {
     this.modalService.open(content,{size:'lg'});
@@ -72,7 +68,7 @@ export class ActaCompromisoComponent implements OnInit {
     this.formularioRegistro.reset();
   }
 
-  // Obtener todos los alumnos para mostrar la lista de seleccion para registrar un acta compromiso
+  // Obtener todos los alumnos para mostrar la lista de seleccion para registrar un socio
 getAlumno(): void{
   this.servicioAlumno.getAlumnos().subscribe(
     (res) => {
@@ -83,79 +79,69 @@ getAlumno(): void{
     }
   );
 }
-// Obtener todas las actas compromiso
-getActaCompromiso(): void{
-  this.servicioActaCompromiso.getActaCompromiso().subscribe(
+// obtenemos todos los socios para mostrar en tabla
+getSocio(): void{
+  this.servicioSocio.getSocio().subscribe(
     (res) => {
-      this.listadoActaCompromiso = res;
-      console.log(res);
+      this.listadoSocio = res;
+      console.log(this.listadoSocio)
     },
     (error) => {
-      console.log(error);
       this.alertas.alerterror();
     }
   );
 }
-// Registrar Acta Compromiso
-registrarActaCompromiso(): void{
-  if(this.formularioRegistro.valid) {
-    this.servicioActaCompromiso.registrarActaCompromiso(this.formularioRegistro.value).subscribe(
+// Registrar Socio
+registrarSocio(): void{
+  if (this.formularioRegistro.valid){
+    this.servicioSocio.registrarSocio(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
-        this.getActaCompromiso();
+        this.getSocio();
         this.cerrarModal();
       },
       (error) => {
-      this.alertas.alerterror();
+        this.alertas.alerterror();
       }
     );
   } else {
     this.alertas.alertcampos();
   }
 }
-// Obtener Acta Compromiso por id para mostrar en los campos de los input en su proxima edicion
-ActaCompromisoId(acta_compromiso: ActaCompromiso, content : any): void{
+// Obtener socio por id para mostrar en ventana modal para su edicion
+SocioId(socio: Socio, content : any): void {
   this.modalService.open(content,{size:'lg'});
   this.btnCancelar = true;
   this.btnEditar = false;
   this.btnGuardar = true;
-  this.servicioActaCompromiso.getActaCompromisoId(acta_compromiso). subscribe(
+  this.servicioSocio.getSocioId(socio).subscribe(
     (res) => {
       this.formularioRegistro.patchValue({
         id: res[0].id,
-        dias: res[0].dias,
-        ingreso: res[0].ingreso,
-        salida: res[0].salida,
-        traslado: res[0].traslado,
-        personas_autorizadas_retiro: res[0].personas_autorizadas_retiro,
-        dni_persona_autorizada: res[0].dni_persona_autorizada,
+        fecha_de_inscripcion: res[0].fecha_de_inscripcion,
         alumno: res[0].alumno,
-      });
+      })
     },
-    (error) => {
+    (error)=> {
       this.alertas.alerterror();
     }
-  );
+  )
 }
-// Editar Acta Compromiso
-editarActaCompromisoId(): void{
-  // Obtenemos el id para pasarlo por parametro
-  const id = this.formularioRegistro.value.id;
-  this.servicioActaCompromiso.editarActaCompromisoId(this.formularioRegistro.value, id).subscribe(
+//Editar un Socio
+editarSocioId(): void{
+  this.servicioSocio.editarSocioId(this.formularioRegistro.value, this.formularioRegistro.value.id).subscribe(
     (res) => {
-      console.log(res);
       this.alertas.alertedit();
-      this.getActaCompromiso();
+      this.getSocio();
       this.cerrarModal();
     },
     (error) => {
-      console.log(error);
       this.alertas.alerterror();
     }
   );
 }
-// Eliminar Acta Compromiso
-eliminarActaCompromiso(acta_compromiso: ActaCompromiso ): void{
+//Eliminar Socio
+eliminarSocio(socio : Socio): void{
   Swal.fire({
     title: 'Esta seguro de eliminar??',
     text: 'No podra revertir el cambio!',
@@ -167,10 +153,10 @@ eliminarActaCompromiso(acta_compromiso: ActaCompromiso ): void{
   }).then((result) => {
     if (result.isConfirmed) {
 
-    this.servicioActaCompromiso.eliminarActaCompromiso(acta_compromiso).subscribe(
+    this.servicioSocio.eliminarSocio(socio).subscribe(
       (res) => {
         console.log(res);
-        this.getActaCompromiso();
+        this.getSocio();
       },
       (error) => {
         console.log(error);
@@ -188,7 +174,7 @@ busquedaAlumno(): void{
   if (this.buscar_alumno == ""){
     this.alertas.alertcampos();
   }else{
-    this.servicioActaCompromiso.busquedaAlumno(this.buscar_alumno).subscribe(
+    this.servicioSocio.busquedaAlumno(this.buscar_alumno).subscribe(
       (res) => {
         console.log(res)
         if (res.length != 0){
@@ -198,7 +184,7 @@ busquedaAlumno(): void{
           this.alertas.alertLoadingError();
           this.ocultarbusqueda_Alumno = false;
         }
-        this.listadoActaCompromiso = res;
+        this.listadoSocio = res;
       },
       (error) => {
         this.alertas.alerterror();
@@ -209,7 +195,7 @@ busquedaAlumno(): void{
 // Cancelar Busqueda
 cancelarbusqueda(): void {
   this.ocultarbusqueda_Alumno = true;
-  this.getActaCompromiso();
+  this.getSocio();
   this.buscar_alumno = "";
 }
 
@@ -220,8 +206,4 @@ cancelar(): void{
   this.btnEditar = true;
 }
 
-
-
-
 }
-

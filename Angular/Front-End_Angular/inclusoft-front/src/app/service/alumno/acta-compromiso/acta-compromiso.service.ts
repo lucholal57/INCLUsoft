@@ -8,7 +8,7 @@ import { ActaCompromiso } from '../../../entidades/alumno/acta-compromiso/acta-c
 // Constante de los headers para los encabezados
 const httpOption = {
   headers: new HttpHeaders({ 'content-type' : 'application/json',
-                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')}),
+                              'Authorization' : 'Token' +" "+ localStorage.getItem('token')})
 }
 
 @Injectable({
@@ -23,7 +23,7 @@ export class ActaCompromisoService {
 
   // Obtener actas compromiso
   getActaCompromiso(): Observable<ActaCompromiso[]>{
-   return this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso',httpOption );
+    return this.http.get<ActaCompromiso[]>(this.url + 'acta_compromiso',httpOption );
   }
   // Registrar Acta Compromiso
   registrarActaCompromiso(formularioRegistro: any): Observable<ActaCompromiso[]> {

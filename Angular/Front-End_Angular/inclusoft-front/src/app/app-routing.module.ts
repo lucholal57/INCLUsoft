@@ -27,6 +27,10 @@ import { AcompananteComponent } from './component/acompanante/acompanante.compon
 import { ViajeComponent } from './component/viaje/viaje.component';
 import { EstadisticaComponent} from './component/estadistica/estadistica.component';
 import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales.component';
+import { SocioComponent } from './component/biblioteca/socio/socio.component';
+import { LibroComponent } from './component/biblioteca/libro/libro.component';
+import { DevolucionComponent } from './component/biblioteca/devolucion/devolucion.component';
+import { PrestamoComponent } from './component/biblioteca/prestamo/prestamo.component';
 
 
 
@@ -61,6 +65,12 @@ const routes: Routes = [
   {path:'viajes', component: ViajeComponent},
   //Rutas estadisticas
   {path:'estadisticas', component: EstadisticaComponent},
+  //Rutas Bilbioteca
+  {path:'socio', component: SocioComponent },
+  {path:'libro', component: LibroComponent},
+  {path:'devolucion', component: DevolucionComponent},
+  {path:'prestamo', component: PrestamoComponent},
+
 
 
 ];

@@ -36,6 +36,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialesTallerComponent } from './component/taller/materiales-taller/materiales-taller.component';
 import { InformesCuatrimestralesComponent } from './component/taller/informes-cuatrimestrales/informes-cuatrimestrales.component';
 import { CookieService } from 'ngx-cookie-service';
+import { SocioComponent } from './component/biblioteca/socio/socio.component';
+import { LibroComponent } from './component/biblioteca/libro/libro.component';
+import { PrestamoComponent } from './component/biblioteca/prestamo/prestamo.component';
+import { DevolucionComponent } from './component/biblioteca/devolucion/devolucion.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +69,10 @@ import { CookieService } from 'ngx-cookie-service';
     AcompananteComponent,
     ViajeComponent,
     EstadisticaComponent,
+    SocioComponent,
+    LibroComponent,
+    PrestamoComponent,
+    DevolucionComponent,
 
   ],
   imports: [
