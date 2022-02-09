@@ -21,7 +21,7 @@ class SocioPostPutSerializer(serializers.ModelSerializer):
 class LibroSerializer(serializers.ModelSerializer):
     """ Serializador de Libros"""
     class Meta:
-        model : Libro
+        model = Libro
         fields = '__all__'
         
 class PrestamoLibroSerializer(serializers.ModelSerializer):

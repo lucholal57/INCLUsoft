@@ -85,7 +85,7 @@ def LibroListado(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     # Create
     elif request.method == 'POST':
-        serializer = Libro(data=request.data)
+        serializer = LibroSerializer(data=request.data)
         # Validacion
         if serializer.is_valid():
             serializer.save()
@@ -125,12 +125,10 @@ def LibroBuscarPorId(request, pk=None):
     return Response({'message': 'No se ha encontrado un alumno con estos datos'}, status=status.HTTP_400_BAD_REQUEST)
 
 # Busqueda de Libro por nombre
-
-
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
-def BusquedaLibro(request, titulo):
-    libro = Libro.objects.filter(titulo__icontains=titulo)
+def BusquedaLibro(request, nombre_libro):
+    libro = Libro.objects.filter(titulo__icontains=nombre_libro)
     serializer = LibroSerializer(libro, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -1,1 +1,126 @@
-<p>libro works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+<app-menu></app-menu>
+
+<form [formGroup] = "formularioRegistro" (submit)="registrarLibro()">
+
+  <div>
+    <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Formulario Libros</h4>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label style="color:black">Titulo</label>
+          <input
+            type="text"
+            class="form-control"
+            id="titulo"
+            formControlName="titulo"
+            required
+          />
+      </div>
+
+
+      <div class="form-group">
+        <label style="color:black">Edades</label>
+          <input
+            type="number"
+            class="form-control"
+            id="edades"
+            formControlName="edades"
+            required
+          />
+      </div>
+
+      <div class="form-group">
+        <label style="color:black">Estado</label>
+          <input
+            type="text"
+            class="form-control"
+            id="estado"
+            formControlName="estado"
+            required
+          />
+      </div>
+
+    </div>
+    <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="registrarLibro()" [disabled]="btnGuardar">Guardar</button>
+    <button type="button"  class="btn btn-outline-dark" (click)="editarLibroId()" [disabled]="btnEditar">Editar</button>
+    <button type="reset"  class="btn btn-outline-dark" (click)="cancelar()" [disabled]="btnCancelar">Limpiar</button>
+    </div>
+  </ng-template>
+
+</form>
+
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+    <legend>Buscar Libro</legend>
+    <input type="text" name="nombre_libro" placeholder="Buscar Titulo"
+    class="form-control" [(ngModel)]="buscar_libro" required>
+    <hr>
+    <button class="btn btn-primary" (click)="busquedaLibro()" >Buscar</button>
+    <button class="btn btn-danger" [hidden]="ocultarbusqueda_Libro" (click)="cancelarbusqueda()">Cancelar</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-sm-1">
+    <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+  </div>
+</div>
+
+</div>
+
+<div class="container-fluid" id="contenedorTabla">
+  <legend align="center">Listado Libros</legend>
+  <table class="table table-bordered table-dark table-responsive-lg">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Titulo</th>
+        <th scope="col">Edades</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let libro of listadoLibro | paginate: { itemsPerPage: 5, currentPage: p }">
+        <th scope="row">{{ libro.id }}</th>
+        <td scope="row"> {{ libro.titulo }}</td>
+        <td scope="row">{{ libro.edades }}</td>
+        <td scope="row">{{ libro.estado }}</td>
+        <td colspan="2">
+          <button class="btn btn-warning" (click)="LibroId(libro,content )"> Editar </button>
+          <button class="btn btn-danger"  (click)="eliminarLibro(libro)"> Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+</div>
+
+</body>
+</html>
