@@ -193,8 +193,8 @@ def PrestamoBuscarPorId(request, pk=None):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def BusquedaSocioPrestamo(request, nombre_alumno):
-    alumno = Alumno.objects.filter(nombre_alumno__icontains=nombre_alumno)
-    prestamo = PrestamoLibro.objects.filter(alumno__in=alumno)
+    socio = Socio.objects.filter(alumno__nombre_alumno__icontains=nombre_alumno)
+    prestamo = PrestamoLibro.objects.filter(socio__in=socio)
     serializer = PrestamoLibroSerializer(prestamo, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

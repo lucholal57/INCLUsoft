@@ -1,1 +1,161 @@
-<p>prestamo works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <app-menu></app-menu>
+
+  <form [formGroup]="formularioRegistro" (submit)="registrarPrestamo()">
+
+    <div>
+      <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
+    </div>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Formulario Prestamo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label style="color:black" for="alumno">Socios</label>
+            <select class="form-control" formControlName="socio" required>
+              <option *ngFor="let socio of listadoSocio" [ngValue]="socio.id">
+                {{ socio.alumno.nombre_alumno }} {{ socio.alumno.apellido_alumno }}
+              </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label style="color:black" for="alumno">Libros</label>
+            <select multiple class="form-control" formControlName="libro" required>
+              <option *ngFor="let libro of listadoLibro" [ngValue]="libro.id">
+                {{ libro.titulo }}
+              </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label style="color:black" >Estado</label>
+          <div class="col">
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="estadoRadio" value="activo" formControlName="estado" required>
+            <label class="form-check-label" for="estadoRadio" style="color:black" >Activo</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="estadoRadio2" value="inactivo" formControlName="estado" required>
+            <label class="form-check-label" for="estadoRadio2" style="color:black" >Inacttivo</label>
+          </div>
+
+        </div>
+        </div>
+
+        <div class="form-group">
+          <label style="color:black">Fecha Prestamo</label>
+            <input
+              type="date"
+              class="form-control"
+              id="fecha_de_prestamo"
+              formControlName="fecha_de_prestamo"
+              required
+            />
+        </div>
+
+        <div class="form-group">
+          <label style="color:black">Fecha Devolucion</label>
+            <input
+              type="date"
+              class="form-control"
+              id="fecha_de_prestamo"
+              formControlName="fecha_de_devolucion"
+              required
+            />
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="registrarPrestamo()" [disabled]="btnGuardar">Guardar</button>
+      <button type="button"  class="btn btn-outline-dark" (click)="editarPrestamoId()" [disabled]="btnEditar">Editar</button>
+      <button type="reset"  class="btn btn-outline-dark" (click)="cancelar()" [disabled]="btnCancelar">Limpiar</button>
+      </div>
+    </ng-template>
+
+  </form>
+
+  <div class="container" id="contenedorBusqueda">
+
+    <div class="form-row">
+      <div class="form-group col-sm-4">
+      <legend>Busquedas por Socio</legend>
+      <input type="text" name="nombre_alumno" placeholder="Buscar socio"
+      class="form-control" [(ngModel)]="buscar_socio" required>
+      <hr>
+      <button class="btn btn-primary" (click)="busquedaSocio()" >Buscar</button>
+      <button class="btn btn-danger" [hidden]="ocultarbusqueda_Socio" (click)="cancelarbusqueda()">Cancelar</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-1">
+      <button class="btn btn-primary" (click)="open(content)">Registrar</button>
+    </div>
+  </div>
+
+  </div>
+
+
+  <div class="container-fluid" id="contenedorTabla">
+    <legend align="center">Listado Prestamos</legend>
+    <table class="table table-bordered table-dark table-responsive-lg">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Socio</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Fecha de Prestamo</th>
+          <th scope="col">Fecha de Devolucion</th>
+          <th scope="col">Libros</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prestamo of listadoPrestamo | paginate: { itemsPerPage: 5, currentPage: p }">
+          <th scope="row">{{ prestamo.id }}</th>
+          <td scope="row">
+            {{ prestamo.socio.alumno.nombre_alumno }} {{ prestamo.socio.alumno.apellido_alumno }}
+          </td>
+          <td scope="row"> {{prestamo.estado}}</td>
+          <td scope="row">{{ prestamo.fecha_de_prestamo }}</td>
+          <td scope="row">{{ prestamo.fecha_de_devolucion }}</td>
+          <td scope="row">
+            <ul *ngFor="let l of prestamo.libro">
+              <li> {{ l.titulo }}</li>
+            </ul>
+          </td>
+          <td colspan="2">
+            <button class="btn btn-warning" (click)="PrestamoId(prestamo,content )"> Editar </button>
+            <button class="btn btn-danger"  (click)="eliminarPrestamo(prestamo)"> Eliminar</button>
+            <button class="btn btn-success"  (click)="Devolucion(prestamo,content)"> Devolucion</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls>
+
+  </div>
+
+</body>
+</html>

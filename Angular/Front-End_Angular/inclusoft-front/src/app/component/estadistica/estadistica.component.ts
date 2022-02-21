@@ -3,6 +3,8 @@ import { Alumno } from'../../entidades/alumno/alumno/alumno';
 import { AlumnoService } from '../../service/alumno/alumno/alumno.service';
 import { Personal } from'../../entidades/personal/personal/personal';
 import { PersonalService } from '../../service/personal/personal/personal.service';
+import {Prestamo} from'../../entidades/biblioteca/prestamo/prestamo';
+import { PrestamoService } from '../../service/biblioteca/prestamo/prestamo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 
@@ -15,7 +17,9 @@ export class EstadisticaComponent implements OnInit {
 
   listadoAlumnos: Alumno[];
   listadoPersonal: Personal[];
+  listadoPrestamo : Prestamo[];
   total = new Array();
+  totalprestamo = new Array();
 
   view: [number,number] = [500, 400];
 
@@ -35,6 +39,7 @@ export class EstadisticaComponent implements OnInit {
   constructor(
     private servicioAlumno: AlumnoService,
     private servicioPersonal: PersonalService,
+    private servicioPrestamo: PrestamoService
 
   ) {}
 

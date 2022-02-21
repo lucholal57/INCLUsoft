@@ -54,7 +54,6 @@ export class AlumnoComponent implements OnInit {
     this.btnCancelar = false;
     this.ocultarbusquedaAlumno = true;
   }
-
   // Open funcion para abrir ventana modal
   open(content:any) {
     this.modalService.open(content,{size:'lg'});

@@ -36,6 +36,7 @@ import { PrestamoComponent } from './component/biblioteca/prestamo/prestamo.comp
 
 const routes: Routes = [
   {path:'', component: LoginComponent},
+  {path:'login', component: LoginComponent},
   {path:'inicio', component: InicioComponent},
   //Rutas Alumnos
   {path:'alumno', component: AlumnoComponent},

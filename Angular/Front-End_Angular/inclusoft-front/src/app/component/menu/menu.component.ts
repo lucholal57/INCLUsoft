@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
- 
+
   constructor(
     private servicioUsuario : UsuarioService,
     private router : Router
