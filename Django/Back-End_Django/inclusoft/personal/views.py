@@ -129,7 +129,22 @@ def BusquedaAsistenciaPersonal(request, nombre_personal):
     asistencia = Asistencia_Personal.objects.filter(personal__in = personal)
     serializer = AsistenciaSerializer(asistencia, many=True)
     return Response(serializer.data,  status=status.HTTP_200_OK) 
-        
+
+# Busqueda de personal en listado de asistencias por id para estadistica
+@api_view(['GET'])
+def BusquedaAsistenciaPersonalEstadistica(request,pk=None):
+    personal = Personal.objects.filter(id=pk)
+    asistencia = Asistencia_Personal.objects.filter(personal__in = personal)
+    serializer = AsistenciaSerializer(asistencia, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
+
+# Busqueda de personal en listado de asistencias por id para validar permiso de salida
+@api_view(['GET'])
+def BusquedaAsistenciaPersonalPermisoSalida(request,pk=None):
+    personal = Personal.objects.filter(id=pk)
+    asistencia = Asistencia_Personal.objects.filter(personal__in = personal).filter(estado__icontains="Presente")
+    serializer = AsistenciaSerializer(asistencia, many=True)
+    return Response(serializer.data,  status=status.HTTP_200_OK) 
 
 # VIEW DE PERMISOS SALIDAS PERSONAL
 #Listado y Creacion

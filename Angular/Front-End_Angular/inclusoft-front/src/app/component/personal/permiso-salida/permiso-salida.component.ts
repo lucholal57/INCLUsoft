@@ -8,6 +8,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
+import { AsistenciaPersonalService } from 'src/app/service/personal/asistencia-personal/asistencia-personal.service';
+import { AsistenciaPersonal } from 'src/app/entidades/personal/asistencia-personal/asistencia-personal';
 
 
 @Component({
@@ -23,8 +26,12 @@ export class PermisoSalidaComponent implements OnInit {
   listadoPermisoSalida: PermisoSalida[];
   // Array de personal para el select
   listadoPersonal: Personal[];
+  //Listado asistencia personal
+  listadoAsistenciaPersonal : AsistenciaPersonal[];
   //  variable para buscar por personalo
   buscar_personal= "";
+
+
 
   // Variablde de Botones para deshabilitar
   public btnGuardar = false;
@@ -37,6 +44,7 @@ export class PermisoSalidaComponent implements OnInit {
     private servicioPermisoSalida: PermisoSalidaService,
     private formBuilder : FormBuilder,
     private alertas : AlertService,
+    private servicioAsistenciaPersonal : AsistenciaPersonalService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) { }
@@ -92,23 +100,47 @@ formularioRegistro = this.formBuilder.group({
       }
     )
   }
+
   // Registrar permisos de salida
   registrarPermisoSalida(): void {
-    if(this.formularioRegistro.valid)
-    {
-      this.servicioPermisoSalida.registrarPermisoSalida(this.formularioRegistro.value).subscribe(
-        (res)=> {
-          this.alertas.alertsuccess();
-          this.getPermisosSalida();
-          this.cerrarModal();
-        },
-        (error) => {
-          this.alertas.alerterror();
+    this.servicioAsistenciaPersonal.busquedaPersonalPermisoSalida(this.formularioRegistro.value.personal).subscribe(
+      (res)=> {
+        this.listadoAsistenciaPersonal = res;
+        console.log("Resultado presente", this.listadoAsistenciaPersonal)
+        for(let a of this.listadoAsistenciaPersonal)
+        {
+          if (moment(this.formularioRegistro.value.fecha_permiso).isSame(a.fecha_asistencia_personal))
+          {
+            if (this.formularioRegistro.valid)
+            {
+              this.servicioPermisoSalida.registrarPermisoSalida(this.formularioRegistro.value).subscribe(
+                (res)=> {
+                  this.alertas.alertsuccess();
+                  this.getPermisosSalida();
+                  this.cerrarModal();
+                },
+                (error) => {
+                  this.alertas.alerterror();
+                }
+              );
+            }else{
+              this.alertas.alertcampos();
+          }
+          break;
+          }
+          else{
+              this.alertas.alertausente();
+              break;
+          }
         }
+      },
+      (error) => {
+        console.log(error);
+      }
       );
-    }else{
-      this.alertas.alertcampos();
-    }
+
+
+
   }
   // Obtener permisos de salida por id para mostrar en los campos de los input para su proxima edicion
   PermisoSalidaId( permisosalida : PermisoSalida, content : any): void {
@@ -116,6 +148,7 @@ formularioRegistro = this.formBuilder.group({
   this.btnCancelar = true;
   this.btnEditar = false;
   this.btnGuardar = true;
+  this.formularioRegistro.controls["fecha_permiso"].disable()
     this.servicioPermisoSalida.getPermisoSalidaId( permisosalida ).subscribe(
       (res) => {
         console.log('resultado verificacion modal', res)

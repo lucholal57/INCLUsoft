@@ -73,6 +73,13 @@ def BusquedaAlumno(request,nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains= nombre_alumno)
     serializer = AlumnoSerializer(alumno, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)  
+#Busqueda de patologias alumnos
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def BusquedaPatologia(request,patologia):
+    alumno = Patologia.objects.filter(nombre_patologia__icontains = patologia)
+    serializer = PatologiaSerializer(alumno, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 #VIEW DE DATOS ADICIONALES
 #Listado y creacion
@@ -203,7 +210,16 @@ def AsistenciaBuscarPorId(request, pk=None):
 @permission_classes((IsAuthenticated, ))
 def BusquedaAlumnoAsistencia(request, nombre_alumno):
     alumno = Alumno.objects.filter(nombre_alumno__icontains = nombre_alumno)
-    asistencia = Asistencia_Alumno.objects.filter(alumno__in = alumno)
+    asistencia = Asistencia_Alumno.objects.filter(alumno__in = alumno )
+    serializer = AsistenciaSerializer(asistencia, many=True)
+    return Response (serializer.data, status= status.HTTP_200_OK)
+
+#Busqueda de alumno en listado de Asistencias id para estadistica
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def BusquedaAlumnoAsistenciaEstadistica(request, pk=None):
+    alumno = Alumno.objects.filter(id=pk)
+    asistencia = Asistencia_Alumno.objects.filter(alumno__in = alumno )
     serializer = AsistenciaSerializer(asistencia, many=True)
     return Response (serializer.data, status= status.HTTP_200_OK)
 

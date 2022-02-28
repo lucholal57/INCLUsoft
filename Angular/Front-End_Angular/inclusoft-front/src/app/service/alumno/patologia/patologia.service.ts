@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Patologia } from '../../../entidades/alumno/patologia/patologia';
+import { Asistencia } from 'src/app/entidades/alumno/asistencia/asistencia';
 
 // Constante de los headers para los encabezados
 const httpOption = {
@@ -45,4 +46,8 @@ eliminarPatologia(patologia: Patologia): Observable<Patologia[]>{
 busquedaAlumno(nombre:string): Observable<Patologia[]>{
   return  this.http.get<Patologia[]>(this.url + 'patologia/buscar/' + nombre,httpOption)
 }
+busquedaPatologia(nombre_patologia:string): Observable<Patologia[]>{
+  return this.http.get<Patologia[]>(this.url + 'alumno/buscar/patologia/'+ nombre_patologia, httpOption );
+}
+
 }

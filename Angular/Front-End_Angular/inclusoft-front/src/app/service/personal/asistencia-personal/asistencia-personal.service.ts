@@ -49,4 +49,11 @@ export class AsistenciaPersonalService {
 busquedaPersonal(nombre:string): Observable<AsistenciaPersonal[]>{
   return  this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/buscar/' + nombre,httpOption)
 }
+  // Busqueda de personal por asistencia
+busquedaPersonalEstadistica(id:number): Observable<AsistenciaPersonal[]>{
+  return  this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/buscar/filtro/' + id,httpOption)
+  }
+  busquedaPersonalPermisoSalida(id:number): Observable<AsistenciaPersonal[]>{
+    return  this.http.get<AsistenciaPersonal[]>(this.url + 'asistencia_personal/buscar/validacion/' + id,httpOption)
+    }
 }

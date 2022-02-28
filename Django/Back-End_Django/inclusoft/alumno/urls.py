@@ -1,11 +1,12 @@
 from django.urls import path
-from alumno.views import ( AlumnoListado,AlumnoBuscarPorId,BusquedaAlumno,DatosAdicionalesListado,DatosAdicionalesBuscarPorId,BusquedaAlumnoDatosAdicionales,AsistenciaListado,AsistenciaBuscarPorId, BusquedaAlumnoAsistencia,AntecedenteMedicoListado,AntecedenteMedicoBuscarPorId,BusquedaAlumnoAntecedenteMedico,PatologiaListado, PatologiaBuscarPorId,BusquedaAlumnoPatologia, ActaCompromisoListado,ActaCompromisoBuscarPorId,BusquedaAlumnoActaCompromiso,EnfermeriaListado,EnfermeriaBuscarPorId,BusquedaAlumnoEnfermeria)
+from alumno.views import ( AlumnoListado,AlumnoBuscarPorId,BusquedaAlumno,DatosAdicionalesListado,DatosAdicionalesBuscarPorId,BusquedaAlumnoDatosAdicionales,AsistenciaListado,AsistenciaBuscarPorId, BusquedaAlumnoAsistencia,AntecedenteMedicoListado,AntecedenteMedicoBuscarPorId,BusquedaAlumnoAntecedenteMedico,PatologiaListado, PatologiaBuscarPorId,BusquedaAlumnoPatologia, ActaCompromisoListado,ActaCompromisoBuscarPorId,BusquedaAlumnoActaCompromiso,EnfermeriaListado,EnfermeriaBuscarPorId,BusquedaAlumnoEnfermeria, BusquedaPatologia,BusquedaAlumnoAsistenciaEstadistica)
 
 urlpatterns = [
     #Rutas para los alumnos
     path('alumno', AlumnoListado ),
     path('alumno/<int:pk>', AlumnoBuscarPorId),
     path('alumno/buscar/<str:nombre_alumno>', BusquedaAlumno),
+    path('alumno/buscar/patologia/<str:patologia>', BusquedaPatologia),
     
     #Rutas para los datos adicionales
     path('datos_adicionales',DatosAdicionalesListado ),
@@ -16,6 +17,7 @@ urlpatterns = [
     path('asistencia', AsistenciaListado),
     path('asistencia/<int:pk>' , AsistenciaBuscarPorId),
     path('asistencia/buscar/<str:nombre_alumno>', BusquedaAlumnoAsistencia),
+    path('asistencia/buscar/filtro/<int:pk>', BusquedaAlumnoAsistenciaEstadistica),
     
     
     #Rutas para los antecedentes medicos
@@ -38,5 +40,4 @@ urlpatterns = [
     path('enfermeria', EnfermeriaListado),
     path('enfermeria/<int:pk>', EnfermeriaBuscarPorId),
     path('enfermeria/buscar/<str:nombre_alumno>', BusquedaAlumnoEnfermeria),
-     
 ]

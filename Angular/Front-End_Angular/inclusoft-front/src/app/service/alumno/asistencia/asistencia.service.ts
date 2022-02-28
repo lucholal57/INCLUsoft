@@ -46,4 +46,8 @@ eliminarAsistencia(asistencia: Asistencia): Observable<Asistencia[]> {
 busquedaAlumno(nombre:string): Observable<Asistencia[]>{
   return  this.http.get<Asistencia[]>(this.url + 'asistencia/buscar/' + nombre,httpOption)
 }
+// Busqueda de alumno por asistencia
+busquedaAlumnoEstadistica(id:number): Observable<Asistencia[]>{
+  return  this.http.get<Asistencia[]>(this.url + 'asistencia/buscar/filtro/' + id,httpOption)
+}
 }

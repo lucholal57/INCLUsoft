@@ -42,8 +42,7 @@ export class AlumnoService {
   }
 
   busquedaAlumno(nombre:string): Observable<Alumno[]>{
-    return  this.http.get<Alumno[]>(this.url + 'alumno/buscar/' + nombre, httpOption )
+    return  this.http.get<Alumno[]>(this.url + 'alumno/buscar/' + nombre, httpOption );
   }
-
 
 }

@@ -3,7 +3,7 @@ from personal.views import (PersonalListado,PersonalBuscarPorId,BusquedaPersonal
                             AsistenciaListado, AsistenciaBuscarPorId, BusquedaAsistenciaPersonal,
                             PermisoSalidaListado, PermisoSalidaBuscarPorId,BusquedaPermisoSalidaPersonal,
                             EvaluacionLaboralListado,EvaluacionLaboralBuscarPorId,BusquedaEvaluacionLaboralPersonal,
-                            EntregaProyectoListado,EntregaProyectoBuscarPorId,BusquedaEntregaProyectoPersonal)
+                            EntregaProyectoListado,EntregaProyectoBuscarPorId,BusquedaEntregaProyectoPersonal,BusquedaAsistenciaPersonalEstadistica,BusquedaAsistenciaPersonalPermisoSalida)
 
 urlpatterns = [
     #Rutas para el Personal
@@ -15,6 +15,8 @@ urlpatterns = [
     path('asistencia_personal', AsistenciaListado),
     path('asistencia_personal/<int:pk>', AsistenciaBuscarPorId),
     path('asistencia_personal/buscar/<str:nombre_personal>', BusquedaAsistenciaPersonal),
+    path('asistencia_personal/buscar/filtro/<int:pk>', BusquedaAsistenciaPersonalEstadistica),
+    path('asistencia_personal/buscar/validacion/<int:pk>',BusquedaAsistenciaPersonalPermisoSalida ),
     
     #Rutas para permisos de salida personal
     path('permiso_salida', PermisoSalidaListado),

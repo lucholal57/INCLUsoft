@@ -35,25 +35,16 @@
           </div>
 
 
-    <div class="form-group">
-      <label style="color:black">Hora Ingreso</label>
-          <input type="time"
-          class="form-control"
-          id="horaIngresoPersonal"
-          formControlName="hora_ingreso"
-          required
-          />
-  </div>
-
-  <div class="form-group">
-      <label style="color:black">Hora Salida</label>
-          <input type="time"
-          class="form-control"
-          id="horaSalidaPersonal"
-          formControlName="hora_salida"
-          required
-          />
-  </div>
+          <div class="form-group">
+            <label style="color:black" >Fecha</label>
+              <input
+                type="date"
+                class="form-control"
+                id="fechaAsistencia"
+                formControlName="fecha_asistencia_personal"
+                required
+              />
+          </div>
 
   <div class="form-group">
 
@@ -118,8 +109,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Personal</th>
-                <th scope="col">Hora Ingreso</th>
-                <th scope="col">Hora Salida</th>
+                <th scope="col">Fecha</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Acciones</th>
             </tr>
@@ -128,8 +118,7 @@
             <tr *ngFor="let asistenciapersonal of listadoAsistenciaPersonal | paginate: { itemsPerPage: 5, currentPage: p }">
                 <th scope="row">{{ asistenciapersonal.id }}</th>
                 <td scope="row">{{ asistenciapersonal.personal.nombre_personal }} {{ asistenciapersonal.personal.apellido_personal}} </td>
-                <td scope="row">{{ asistenciapersonal.hora_ingreso }}</td>
-                <td scope="row">{{ asistenciapersonal.hora_salida}}</td>
+                <td scope="row">{{ asistenciapersonal.fecha_asistencia_personal}}</td>
                 <td scope="row">{{ asistenciapersonal.estado }}</td>
                 <!-- Falta colocar las funciones de los botones al haer (click) -->
                 <td scope="row">

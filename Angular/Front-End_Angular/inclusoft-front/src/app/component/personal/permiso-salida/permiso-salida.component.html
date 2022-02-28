@@ -30,8 +30,8 @@
         <div class="modal-body">
 
           <div class="form-group">
-            <label style="color:black" for="alumno">Personal</label>
-              <select class="form-control" formControlName="personal" required>
+            <label style="color:black" for="personal">Personal</label>
+              <select class="form-control" formControlName="personal"  required>
                 <option value="">Seleccione un Personal</option>
                 <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
                   {{ personal.nombre_personal }} {{ personal.apellido_personal }}

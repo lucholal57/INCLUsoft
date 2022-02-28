@@ -43,8 +43,7 @@ export class AsistenciaPersonalComponent implements OnInit {
 // Formulario reactivo para el registro de datos de la pagina
 formularioRegistro = this.formBuilder.group({
   id: [''],
-  hora_ingreso: ['',[Validators.required]],
-  hora_salida: ['',[Validators.required]],
+  fecha_asistencia_personal: ['', [Validators.required]],
   estado: ['',[Validators.required]],
   personal: ['',[Validators.required]],
 })
@@ -119,8 +118,7 @@ AsistenciaPersonalId( asistenciapersonal: AsistenciaPersonal, content : any): vo
     (res) => {
       this.formularioRegistro.patchValue({
         id: res[0].id,
-        hora_ingreso: res[0].hora_ingreso,
-        hora_salida: res[0].hora_salida,
+        fecha_asistencia_personal: res[0].fecha_asistencia_personal,
         estado: res[0].estado,
         personal: res[0].personal,
       });

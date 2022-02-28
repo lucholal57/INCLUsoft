@@ -13,6 +13,10 @@ export class AlertService {
   alertsuccess() {
     Swal.fire('Excelente', 'Se registro correctamente', 'success');
   }
+  // Alert asistencia
+  alertausente() {
+    Swal.fire('"El personal esta Ausente en la fecha indicada del Permiso de Salida"')
+  }
 
   // Alerta Edicion OK
   alertedit() {

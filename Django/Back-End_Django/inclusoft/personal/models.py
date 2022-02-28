@@ -34,14 +34,13 @@ class Evaluacion_Laboral(models.Model):
         return f'Evaluacion Laboral : {self.observaciones_laboral}'
     
 class Asistencia_Personal(models.Model):
-    hora_ingreso = models.TimeField()
-    hora_salida = models.TimeField()
+    fecha_asistencia_personal = models.DateField(null=True)
     estado = models.CharField(max_length=50)
     #ForeignKey
     personal = models.ForeignKey(Personal, on_delete= models.CASCADE)
     #METODO STR PARA MOSTRAR LOS STRING EN DJANGO ADMIN
     def __str__(self):
-        return f'Asistencia : {self.hora_ingreso} : {self.hora_salida} : {self.estado}'
+        return f'Asistencia : {self.fecha_asistencia_personal} : {self.estado}'
     
 class Entrega_Proyecto(models.Model):
     fecha_entrega = models.DateField()

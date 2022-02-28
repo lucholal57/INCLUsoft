@@ -10,77 +10,130 @@
 
 <app-menu></app-menu>
 
+<form>
+
 <div>
   <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
 </div>
 
+<div class="container" id="contenedorBusqueda">
+
+  <div class="form-row">
+    <div class="form-group col-sm-6">
+    <legend>Filtros Estadisticas Alumnos</legend>
+
+    <div class="form-group">
+      <select class="form-control" [(ngModel)]="alumno_filtro">
+        <option [ngValue]="2">Patologias</option>
+        <option [ngValue]="3">Presentismo</option>
+      </select>
+    </div>
+
+      <div class="form-group" *ngIf="alumno_filtro == 3" >
+        <label style="color:white" for="alumno">Alumno</label>
+          <select class="form-control" [(ngModel)]="busqueda_alumno">
+            <option value="">Seleccione un alumno</option>
+            <option *ngFor="let alumno of listadoAlumnos" [ngValue]="alumno.id">
+              {{ alumno.nombre_alumno }} {{ alumno.apellido_alumno }}
+            </option>
+          </select>
+          <hr>
+          <input class="form-control" type="date" [(ngModel)]="fecha_inicio_alumno">
+          <input class="form-control"  type="date" [(ngModel)]="fecha_fin_alumno">
+      </div>
+
+
+
+    <hr>
+    <button class="btn btn-primary" (click)="filtroAlumno()">Buscar</button>
+    <button class="btn btn-danger" (click)="LimpiarFiltroAlumno()">Limpiar</button>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <legend>Filtros Estadisticas Personal</legend>
+
+    <div class="form-group">
+      <select class="form-control" [(ngModel)]="personal_filtro">
+        <option [ngValue]="2">Profesion</option>
+        <option [ngValue]="3">Presentismo</option>
+      </select>
+    </div>
+
+
+    <div class="form-group"*ngIf="personal_filtro == 3" >
+      <label style="color:white" for="personal">Personal</label>
+        <select class="form-control" [(ngModel)]="busqueda_personal">
+          <option value="">Seleccione un Personal</option>
+          <option *ngFor="let personal of listadoPersonal" [ngValue]="personal.id">
+            {{ personal.nombre_personal }} {{ personal.apellido_personal }}
+          </option>
+        </select>
+        <hr>
+        <input class="form-control" type="date" [(ngModel)]="fecha_inicio_personal">
+        <input class="form-control"  type="date" [(ngModel)]="fecha_fin_personal">
+    </div>
+
+    <hr>
+    <button class="btn btn-primary" (click)="filtroPersonal()">Buscar</button>
+    <button class="btn btn-danger">Limpiar</button>
+  </div>
+
+
+</div>
+</div>
+
+</form>
+
 <div class="container">
   <div class="row">
-    <legend align="center">Total de personas entre Alumnos-Personal</legend>
-
-    <div class="col-sm">
+<hr>
+<div class="col">
+    <legend> RESULTADOS ALUMNOS</legend>
+    <div class="form-group"  *ngIf="asistenciashow">
       <ngx-charts-advanced-pie-chart
       [view]="view"
       [scheme]="colorScheme"
-      [results]="total"
+      [results]="totalAsistenciaAlumno"
       [gradient]="gradient"
-      (select)="onSelect($event)"
-      (activate)="onActivate($event)"
-      (deactivate)="onDeactivate($event)"
       >
     </ngx-charts-advanced-pie-chart>
     </div>
 
-    <div class="col-sm">
+    <div class="form-group" *ngIf="patologiashow">
       <ngx-charts-advanced-pie-chart
       [view]="view"
       [scheme]="colorScheme"
-      [results]="total"
+      [results]="totalPatologia"
       [gradient]="gradient"
-      (select)="onSelect($event)"
-      (activate)="onActivate($event)"
-      (deactivate)="onDeactivate($event)"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+  </div>
+<div class="col">
+    <legend> RESULTADOS PERSONAL</legend>
+    <div class="form-group" *ngIf="profesionshow">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="totalProfesion"
+      [gradient]="gradient"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+
+    <div class="col-sm" *ngIf="asistenciapersonalshow">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="totalAsistenciaPersonal"
+      [gradient]="gradient"
       >
     </ngx-charts-advanced-pie-chart>
     </div>
 
   </div>
 </div>
-
-<div class="container">
-  <div class="row">
-    <legend align="center">Total de personas entre Alumnos-Personal</legend>
-
-    <div class="col-sm">
-      <ngx-charts-advanced-pie-chart
-      [view]="view"
-      [scheme]="colorScheme"
-      [results]="total"
-      [gradient]="gradient"
-      (select)="onSelect($event)"
-      (activate)="onActivate($event)"
-      (deactivate)="onDeactivate($event)"
-      >
-    </ngx-charts-advanced-pie-chart>
-    </div>
-
-    <div class="col-sm">
-      <ngx-charts-advanced-pie-chart
-      [view]="view"
-      [scheme]="colorScheme"
-      [results]="total"
-      [gradient]="gradient"
-      (select)="onSelect($event)"
-      (activate)="onActivate($event)"
-      (deactivate)="onDeactivate($event)"
-      >
-    </ngx-charts-advanced-pie-chart>
-    </div>
-
-  </div>
 </div>
-
-
 
 </body>
 </html>
