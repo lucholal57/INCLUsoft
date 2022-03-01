@@ -40,6 +40,7 @@ import { SocioComponent } from './component/biblioteca/socio/socio.component';
 import { LibroComponent } from './component/biblioteca/libro/libro.component';
 import { PrestamoComponent } from './component/biblioteca/prestamo/prestamo.component';
 import { DevolucionComponent } from './component/biblioteca/devolucion/devolucion.component';
+import { CooperadoraComponent } from './component/cooperadora/cooperadora.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { DevolucionComponent } from './component/biblioteca/devolucion/devolucio
     LibroComponent,
     PrestamoComponent,
     DevolucionComponent,
+    CooperadoraComponent,
 
   ],
   imports: [

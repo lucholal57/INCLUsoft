@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'viajes',
     'user_app',
     'biblioteca',
+    'cooperadora',
     
 ]
 

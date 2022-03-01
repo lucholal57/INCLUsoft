@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 // Importamops las clases de entidades necesarias y servicios
 import { CompraTaller } from 'src/app/entidades/taller/compra-taller/compra-taller';
 import { CompraTallerService } from '../../../service/taller/compra-taller/compra-taller.service';
+import { Cooperadora } from '../../../entidades/cooperadora/cooperadora';
+import { CooperadoraService } from 'src/app/service/cooperadora/cooperadora.service';
 
 import { Taller } from '../../../entidades/taller/taller/taller';
 import { TallerService } from '../../../service/taller/taller/taller.service';
@@ -25,11 +27,19 @@ export class CompraTallerComponent implements OnInit {
   listadoTalleres: Taller[];
   //  variable para buscar por personalo
   buscar_taller= "";
+  // VAriable para comparar si la plata de caja chica alcanza para comprar el material
+  Cooperadora : Cooperadora[];
+  // Variable con el valor de caja chica
+  valor_caja_chica : number ;
+  caja_chica_objeto = new Object();
+  resultado_caja_chica_total: number;
+
   // Variable de Botones para deshabilitar
   public btnGuardar = false;
   public btnEditar = false;
   public btnCancelar = false;
   public ocultarbusqueda_Taller = false;
+
 
   // Injenccion de o los servicios a utilizar
   constructor(
@@ -37,6 +47,7 @@ export class CompraTallerComponent implements OnInit {
     private servicioCompraTaller: CompraTallerService,
     private formBuilder: FormBuilder,
     private alertas: AlertService,
+    private servicioCooperadora : CooperadoraService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) {}
@@ -45,7 +56,11 @@ export class CompraTallerComponent implements OnInit {
   formularioRegistro = this.formBuilder.group({
     id: [''],
     insumos: ['', [Validators.required]],
-    observaciones_compra: ['', [Validators.required]],
+    cantidad: ['', [Validators.required]],
+    fecha_compra: ['', [Validators.required]],
+    precio: ['', [Validators.required]],
+    observaciones_compra: ["",[Validators.required]],
+    total: ['', [Validators.required]],
     taller: ['', [Validators.required]],
   });
 
@@ -54,6 +69,22 @@ export class CompraTallerComponent implements OnInit {
     this.getComprasTaller();
     this.btnEditar = false;
     this.ocultarbusqueda_Taller = true;
+    // Iniciamos en 0 el valor de la caja chica
+    this.valor_caja_chica = 0;
+    this.resultado_caja_chica_total=0;
+
+    // Traer al recargar la pagina el valor de caja chica para poder hacer la comparacion a la hora de comprar materiales
+    this.servicioCooperadora.getCooperadora().subscribe(
+      (res) => {
+        this.Cooperadora= res;
+        this.Cooperadora.forEach(a => {
+          this.valor_caja_chica = a.caja_chica;
+        })
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+   );
   }
   // Open funcion para abrir ventana modal
   open(content:any) {
@@ -66,6 +97,13 @@ export class CompraTallerComponent implements OnInit {
   cerrarModal(): void{
     this.modalService.dismissAll();
     this.formularioRegistro.reset();
+  }
+  calcularTotal(): void {
+    this.formularioRegistro.controls["total"].setValue(this.formularioRegistro.value.total = this.formularioRegistro.value.cantidad * this.formularioRegistro.value.precio)
+
+  }
+  limpiarTotal(): void {
+    this.formularioRegistro.controls["total"].setValue("");
   }
 
   // Obtenemos los talleres para mostar en la lista de seleccion al registrar una compra para taller
@@ -90,24 +128,47 @@ export class CompraTallerComponent implements OnInit {
       }
     );
   }
-  // Registrar compras para el taller|
+  // Registrar compras para el taller validando que la compra no supere el monto de la caja chica
   registrarComprasTaller(): void {
-    if (this.formularioRegistro.valid) {
-      this.servicioCompraTaller
-        .registrarCompraTaller(this.formularioRegistro.value)
-        .subscribe(
-          (res) => {
-            this.alertas.alertsuccess();
-            this.getComprasTaller();
-            this.cerrarModal();
-          },
-          (error) => {
-            this.alertas.alerterror();
-          }
-        );
-    } else {
-      this.alertas.alertcampos();
+    //Variable para el resultado de la resta y se pone en 0 para que cada ves que entre aranque en 0
+    this.resultado_caja_chica_total=0
+    //Validacion de si el total de la compra es menos a lo que contiene la caja chica
+    if (this.formularioRegistro.value.total <= this.valor_caja_chica)
+    {
+      //Resta de total menos caja chica guardando el valor en variable para editar el valor de caja chica
+      this.resultado_caja_chica_total = this.valor_caja_chica - this.formularioRegistro.value.total
+      //Al objeto ya creado le pasamos los datos que va a enviar el servicio para editar la caja chica, tambien pasamos el numero 1 ya que sabemos que solo existe una caja chica con el id=1
+      this.caja_chica_objeto = {caja_chica: this.resultado_caja_chica_total}
+      //Validamos que el formulario sea valido y registramos la compra
+      if (this.formularioRegistro.valid) {
+        this.servicioCompraTaller
+          .registrarCompraTaller(this.formularioRegistro.value)
+          .subscribe(
+            (res) => {
+              this.getComprasTaller();
+              this.cerrarModal();
+              //LLamamos al servicio de cooperadora para editar la caja chica pasando el objeto creado anteriormente.
+              this.servicioCooperadora.editarCooperadora(this.caja_chica_objeto, 1).subscribe(
+                (res) => {
+                  this.alertas.alertDescuentoCajaChicaOk()
+                },
+                (error) => {
+                  console.log(error);
+                }
+              )
+            },
+            (error) => {
+              this.alertas.alerterror();
+            }
+          );
+      } else {
+        this.alertas.alertcampos();
+      }
     }
+    else {
+      this.alertas.alertDescuentoCajaChicaError();
+    }
+
   }
   // Obetener compras de taller por id para mostrar en el formulario y poder editar
   ComprasTallerId(compra: CompraTaller, content : any): void {
@@ -120,7 +181,11 @@ export class CompraTallerComponent implements OnInit {
         this.formularioRegistro.patchValue({
           id: res[0].id,
           insumos: res[0].insumos,
+          cantidad: res[0].cantidad,
+          fecha_compra: res[0].fecha_compra,
+          precio: res[0].precio,
           observaciones_compra: res[0].observaciones_compra,
+          total: res[0].total,
           taller: res[0].taller,
         });
       },

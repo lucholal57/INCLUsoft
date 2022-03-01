@@ -31,6 +31,7 @@ import { SocioComponent } from './component/biblioteca/socio/socio.component';
 import { LibroComponent } from './component/biblioteca/libro/libro.component';
 import { DevolucionComponent } from './component/biblioteca/devolucion/devolucion.component';
 import { PrestamoComponent } from './component/biblioteca/prestamo/prestamo.component';
+import { CooperadoraComponent} from './component/cooperadora/cooperadora.component';
 
 
 
@@ -71,6 +72,7 @@ const routes: Routes = [
   {path:'libro', component: LibroComponent},
   {path:'devolucion', component: DevolucionComponent},
   {path:'prestamo', component: PrestamoComponent},
+  {path:'cooperadora', component: CooperadoraComponent},
 
 
 

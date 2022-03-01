@@ -68,6 +68,33 @@ export class AlertService {
       'question'
     )
   }
+  alertDescuentoCajaChicaOk(){
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Se registra compra y descuenta Saldo de CAJA CHICA',
+      showConfirmButton: false,
+      timer: 3000
+    })
+  }
+  alertDescuentoCajaChicaError(){
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'El monto supera Saldo de Caja Chica',
+      showConfirmButton: false,
+      timer: 3000
+    })
+  }
+  alertDescuentoCajaChicaDevolucion(){
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Se devulve Saldo',
+      showConfirmButton: false,
+      timer: 3000
+    })
+  }
 
   /* Alert eliminar el
 
