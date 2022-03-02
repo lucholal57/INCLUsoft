@@ -69,15 +69,28 @@
 
           <div class="form-group">
             <label style="color:black">Materiales</label>
+            <select class="form-control" formControlName="materiales"  required>
+              <option value="">Seleccione un Material</option>
+              <option
+                *ngFor="let material of listadoComprasTaller"
+                [ngValue]="material.insumos"
+              >
+                {{ material.insumos }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label style="color:black" >Cantidad</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
-                id="materiales_produccion"
-                placeholder="Ingrese Materiales"
-                formControlName="materiales"
+                id="cantidad"
+                formControlName="cantidad"
                 required
               />
           </div>
+          <button type="button"  class="btn btn-outline-info"  (click)="consultarStock()">Consultar Stock</button>
 
           <div class="form-group">
             <label style="color:black">Costo de Venta</label>
@@ -134,6 +147,7 @@
             <th scope="col">Nombre Produccion</th>
             <th scope="col">Fecha Produccion</th>
             <th scope="col">Materiales</th>
+            <th scope="col">Cantidad</th>
             <th scope="col">Costo de Venta</th>
             <th scope="col">Acciones</th>
           </tr>
@@ -147,6 +161,7 @@
             <td scope="row">{{ produccion.nombre_produccion }}</td>
             <td scope="row">{{ produccion.fecha_produccion }}</td>
             <td scope="row">{{ produccion.materiales }}</td>
+            <td scope="row">{{produccion.cantidad }}</td>
             <td scope="row">{{ produccion.costo_venta}}</td>
             <td colspan="2">
               <button class="btn btn-warning" (click)="ProduccionTallerId(produccion, content)"> Editar </button>

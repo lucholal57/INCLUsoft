@@ -131,6 +131,17 @@ class Compras_TallerSerializer(serializers.ModelSerializer):
         model = Compras_Taller
         fields = '__all__'
         depth = 2
+        
+class Compras_TallerProduccionSerializer(serializers.ModelSerializer):
+    """
+        Serializador para devolver solo el objeto para validar el stock 
+    """
+
+    class Meta:
+        model = Compras_Taller
+        fields = '__all__'
+        
+
 
 
 class Compras_TallerPostPutSerializer(serializers.ModelSerializer):

@@ -23,11 +23,22 @@ def CooperadoraView(request):
 @permission_classes((IsAuthenticated, ))
 def CooperadoraEditar(request,pk=None):
     if request.method == 'PUT':
-        cooperadore_edicion = Cooperadora.objects.filter(id=pk).first()
-        serializer = CooperadoraSerializer(cooperadore_edicion, data=request.data)
+        cooperadora_edicion = Cooperadora.objects.filter(id=pk).first()
+        serializer = CooperadoraSerializer(cooperadora_edicion, data=request.data)
         if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
         else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+            
+#Put para actualizar el valor al ingresar dinero         
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated, ))
+def CooperadoraAgregarDinero(request,pk=None):
+    if request.method == 'PUT':
+        cooperadora_agregar = Cooperadora.objects.filter(id=pk).first()
+        serializer = CooperadoraSerializer(cooperadora_agregar,data=request.data)
+        if serializer.is_valid():
+            print(cooperadora_agregar)
+            print(serializer.data['caja_chica'])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)

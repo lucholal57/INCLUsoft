@@ -46,6 +46,7 @@ class Produccion_Taller(models.Model):
     fecha_produccion = models.DateField()
     materiales = models.CharField(max_length=50)
     costo_venta = models.CharField(max_length=50)
+    cantidad = models.CharField(max_length=50)
     #ForeignKey
     taller = models.ForeignKey(Taller, on_delete=models.CASCADE)
     #METODO STR PARA MOSTRAR LOS STRING

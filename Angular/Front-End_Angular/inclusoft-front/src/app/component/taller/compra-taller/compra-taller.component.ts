@@ -199,6 +199,7 @@ export class CompraTallerComponent implements OnInit {
   editarComprasTallerId(): void {
     // Obtenemos id en una constante para pasarlo por parametro
     const id = this.formularioRegistro.value.id;
+    console.log(this.formularioRegistro)
     this.servicioCompraTaller
       .editarCompraTallerId(this.formularioRegistro.value, id)
       .subscribe(

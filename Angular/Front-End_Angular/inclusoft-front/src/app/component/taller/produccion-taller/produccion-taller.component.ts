@@ -5,6 +5,11 @@ import { ProduccionTallerService } from 'src/app/service/taller/produccion-talle
 
 import { Taller } from '../../../entidades/taller/taller/taller';
 import { TallerService } from '../../../service/taller/taller/taller.service';
+
+//Importamos librerias de compra taller para validar si el insumo alcanza para realizar produccion
+import { CompraTaller } from 'src/app/entidades/taller/compra-taller/compra-taller';
+import { CompraTallerService } from '../../../service/taller/compra-taller/compra-taller.service';
+
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
@@ -23,8 +28,16 @@ export class ProduccionTallerComponent implements OnInit {
   listadoProduccionTaller: ProduccionTaller[];
   // Array de talleres para el select
   listadoTalleres: Taller[];
+  // Array de compras de taller
+  listadoComprasTaller: CompraTaller[];
+  //Array para guardar el valor del insumo seleccionado para ver su estock y poder producir
+  insumos_stock : CompraTaller[];
+  //Array para crear un nuevo objeto descontanto el stock y editando el objeto con el que creo la produccion
+  array_nuevo_compra_taller : CompraTaller;
   // variable para buscar por personalo
   buscar_taller= "";
+  //Variable para obtener el valor de cantidad del listado de compras taller cuando sea igual a lo que selecciono
+  nombre_insumo = "";
   // Variable de Botones para deshabilitar
   public btnGuardar = false;
   public btnEditar = false;
@@ -37,6 +50,7 @@ export class ProduccionTallerComponent implements OnInit {
     private servicioProduccionTaller: ProduccionTallerService,
     private formBuilder: FormBuilder,
     private alertas: AlertService,
+    private servicioCompraTaller: CompraTallerService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) {}
@@ -48,12 +62,15 @@ export class ProduccionTallerComponent implements OnInit {
     fecha_produccion: ['', [Validators.required]],
     materiales: ['', [Validators.required]],
     costo_venta: ['', [Validators.required]],
+    cantidad: ['', [Validators.required]],
     taller: ['', [Validators.required]],
   });
 
   ngOnInit(): void {
     this.getTalleres();
     this.getProduccionTaller();
+    //solo para mostrar los materiales en el select
+    this.getComprasTaller();
     this.btnEditar = true;
     this.ocultarbusqueda_Taller = true;
   }
@@ -81,6 +98,18 @@ export class ProduccionTallerComponent implements OnInit {
       }
     );
   }
+  // Obtenemnos compras de taller para mostrar el select los insumos disponibles
+  getComprasTaller(): void {
+    this.servicioCompraTaller.getCompraTaller().subscribe(
+      (res) => {
+        this.listadoComprasTaller = res;
+      },
+      (error) => {
+        this.alertas.alerterror();
+      }
+    );
+  }
+
   // Obtenemos las producciones de taller
   getProduccionTaller(): void {
     this.servicioProduccionTaller.getProduccionTaller().subscribe(
@@ -94,23 +123,72 @@ export class ProduccionTallerComponent implements OnInit {
       }
     );
   }
+  consultarStock(): void {
+
+    }
+
+
   // Registrar produccion de taller
   registrarProduccionTaller(): void {
-    if (this.formularioRegistro.valid){
-      this.servicioProduccionTaller.registrarProduccionTaller(this.formularioRegistro.value).subscribe(
-        (res) => {
-          this.alertas.alertsuccess();
-          this.getProduccionTaller();
-          this.cerrarModal();
-        },
-        (error) => {
-          this.alertas.alerterror();
+    //VAriable para obtener la diferencia entre lo que usa para producir y lo que resta en el stock
+    var restacantidadstock = 0;
+    //Enviamos el nombre del material para obtener el objeto correcto
+    this.servicioCompraTaller.getCompraTalllerProduccion(this.formularioRegistro.value.materiales).subscribe(
+      (res) => {
+        this.insumos_stock = res;
+        // Recorremos un for que es solo de una posicion para validar que los materiales para producir no son mayores al stock
+        for(let a of this.insumos_stock)
+        {
+          //validamos
+          if (this.formularioRegistro.value.cantidad<=a.cantidad)
+          {
+            // Si entra guardamos la diferencia para despues ser editada la posicion de cantidad en compras materiales y descontar del stock
+            restacantidadstock =  a.cantidad - this.formularioRegistro.value.cantidad
+            //Creacion de un objeto el nombre esta mal. de tipo compra taller pára poder enviarlo para editar solamente la cantidad restando lo consimido en la creacion de produccion
+            this.array_nuevo_compra_taller
+              =
+                {id: a.id,
+                insumos: a.insumos,
+                observaciones_compra: a.observaciones_compra,
+                fecha_compra: a.fecha_compra,
+                cantidad: restacantidadstock,
+                precio: a.precio,
+                total: a.total,
+                taller: a.taller}
+            //Pasamos el nuevo objeto con el valor ya obtenido y tambien el ID con el objeto.id (a.id) para realizar la actualizacion del campo cantidad.
+            this.servicioCompraTaller.editarCompraTallerId(this.array_nuevo_compra_taller,a.id).subscribe(
+              (res) => {
+                console.log(res)
+              }
+            )
+            //Validamos que el formulario este correctamente cargado
+              if (this.formularioRegistro.valid){
+                //DE ser asi ejecutamos la funcion de registrar produccion
+                this.servicioProduccionTaller.registrarProduccionTaller(this.formularioRegistro.value).subscribe(
+                  (res) => {
+                    this.alertas.alertsuccess();
+                    this.getProduccionTaller();
+                    this.cerrarModal();
+                  },
+                  (error) => {
+                    this.alertas.alerterror();
+                  }
+                );
+              } else {
+                this.alertas.alertcampos();
+              }
+          }
+          else{
+            this.alertas.alertStock()
+          }
         }
-      );
-    } else {
-      this.alertas.alertcampos();
-    }
-  }
+      },
+      (error) => {
+        console.log("Error: " + error)
+      }
+    );
+          }
+
   // Obtener produccion de taller por id para mostrar en el formulario y poder editar
   ProduccionTallerId(produccion : ProduccionTaller, content : any): void {
     this.modalService.open(content,{size:'lg'});
@@ -125,6 +203,7 @@ export class ProduccionTallerComponent implements OnInit {
           fecha_produccion: res[0].fecha_produccion,
           materiales: res[0].materiales,
           costo_venta: res[0].costo_venta,
+          cantidad: res[0].cantidad,
           taller: res[0].taller,
         });
       },

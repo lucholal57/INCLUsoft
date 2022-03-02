@@ -24,6 +24,10 @@ export class CompraTallerService {
   getCompraTaller(): Observable<CompraTaller[]> {
     return this.http.get<CompraTaller[]>(this.url + 'compras_taller',httpOption);
   }
+  // Obtener el resultado del insumo seleccionado para la produccion y poder descontar el stock de// obtener Compra de taller
+  getCompraTalllerProduccion(insumos:any): Observable<CompraTaller[]> {
+    return this.http.get<CompraTaller[]>(this.url + 'compras_taller/buscar/stock/' + insumos ,httpOption);
+  }
   // Registrar Compra del taller
   registrarCompraTaller(formularioRegistro: any): Observable<CompraTaller[]> {
     return this.http.post<CompraTaller[]>(this.url + 'compras_taller' , formularioRegistro, httpOption)

@@ -5,5 +5,6 @@ export class ProduccionTaller {
   fecha_produccion = new Date();
   materiales = "";
   costo_venta = "";
+  cantidad = 0;
   taller : Taller;
 }

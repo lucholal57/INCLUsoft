@@ -95,6 +95,9 @@ export class AlertService {
       timer: 3000
     })
   }
+  alertStock(){
+    Swal.fire('El stock es insuficiente')
+  }
 
   /* Alert eliminar el
 
