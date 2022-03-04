@@ -7,7 +7,7 @@ from taller.models import (Taller, Informe_Cuatrimestral, Materiales_Taller,
  Ventas_Taller, Produccion_Taller, Compras_Taller, Inventario_Taller)
 
 from taller.serializers import (Compras_TallerSerializer, Compras_TallerPostPutSerializer, Informe_CuatrimestralSerializer, Informe_CuatrimestralPostPutSerializer,                    Inventario_TallerSerializer, Inventario_TallerPostPutSerializer, Materiales_TallerSerializer,
-Materiales_TallerPostPutSerializer, Produccion_TallerSerializer, Produccion_TallerPostPutSerializer, TallerPostPutSerializer, TallerSerializer, Ventas_TallerSerializer, Ventas_TallerPostPutSerializer, TallerObtenerEdicionSerializer , Compras_TallerProduccionSerializer)
+Materiales_TallerPostPutSerializer, Produccion_TallerSerializer, Produccion_TallerPostPutSerializer, TallerPostPutSerializer, TallerSerializer, Ventas_TallerSerializer, Ventas_TallerPostPutSerializer, TallerObtenerEdicionSerializer , Materiales_TallerProduccionSerializer)
 
 
 # Create your views here.
@@ -203,6 +203,13 @@ def BusquedaMaterialesTaller(request,nombre_taller):
     serializer = Materiales_TallerSerializer(materiales, many=True)
     return Response(serializer.data, status = status.HTTP_200_OK)
 
+#Busqueda de materiales de taller para que una ves seleccionado desl resultado obtenido reste la cantidad por lo produccion
+@api_view(['GET'])
+def BusquedaMaterialesTallerProduccion(request,insumos_disponibles):
+    compras = Materiales_Taller.objects.filter(insumos_disponibles__icontains = insumos_disponibles)
+    serializer = Materiales_TallerProduccionSerializer(compras, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
 # VIEW DE VENTAS DE TALLER
 #Listado y Creacion
 @api_view(['GET', 'POST'])
@@ -329,6 +336,7 @@ def BusquedaProduccionTaller(request,nombre_taller):
     produccion = Produccion_Taller.objects.filter(taller__in = taller)
     serializer = Produccion_TallerSerializer(produccion, many=True)
     return Response(serializer.data, status = status.HTTP_200_OK)
+
     
 # VIEW DE COMPRAS TALLER
 #Listado y Creacion
@@ -389,13 +397,6 @@ def BusquedaComprasTaller(request,nombre_taller):
     taller = Taller.objects.filter(nombre_taller__icontains=nombre_taller)
     compras = Compras_Taller.objects.filter(taller__in = taller)
     serializer = Compras_TallerSerializer(compras, many=True)
-    return Response(serializer.data, status = status.HTTP_200_OK)
-
-#Busqueda de compra por taller para descontar cantidad de material por la produccion realizada
-@api_view(['GET'])
-def BusquedaComprasTallerProduccion(request,insumos):
-    compras = Compras_Taller.objects.filter(insumos__icontains = insumos)
-    serializer = Compras_TallerProduccionSerializer(compras, many=True)
     return Response(serializer.data, status = status.HTTP_200_OK)
 
 # VIEW DE INVENTARIO TALLER

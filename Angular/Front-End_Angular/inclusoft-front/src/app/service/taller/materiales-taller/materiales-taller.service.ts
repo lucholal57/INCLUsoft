@@ -25,6 +25,10 @@ export class MaterialesTallerService {
   getMaterialesTaller(): Observable<MaterialesTaller[]> {
     return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller',httpOption);
   }
+  // Obtener los materiales disponibles para mostrar en la seleccion para la produccion
+  getMaterialesTallerProduccion(insumos_disponibles:any): Observable<MaterialesTaller[]> {
+    return this.http.get<MaterialesTaller[]>(this.url + 'materiales_taller/buscar/stock/' +insumos_disponibles,httpOption);
+  }
   // Registrar materiales del taller
   registrarMaterialesTaller(formularioRegistro: any): Observable<MaterialesTaller[]> {
     return this.http.post<MaterialesTaller[]>(this.url + 'materiales_taller' , formularioRegistro, httpOption)

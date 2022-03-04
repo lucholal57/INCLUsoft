@@ -26,6 +26,7 @@ class Informe_Cuatrimestral(models.Model):
     
 class Materiales_Taller(models.Model):
     insumos_disponibles = models.CharField(max_length=100)
+    cantidad = models.CharField(max_length=100)
     #ForeingKey
     taller = models.ForeignKey(Taller, on_delete=models.CASCADE)
     #METODO STR PARA MOSTRAR LOS STRING

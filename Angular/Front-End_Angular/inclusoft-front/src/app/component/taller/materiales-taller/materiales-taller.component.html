@@ -47,6 +47,18 @@
             required
           />
       </div>
+
+      <div class="form-group">
+        <label style="color:black">Cantidad</label>
+          <input
+            type="number"
+            class="form-control"
+            id="cantidad"
+            formControlName="cantidad"
+            placeholder="Ingrese cantidad"
+            required
+          />
+      </div>
 </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-outline-dark" (click)="registrarMaterialesTaller()" [disabled]="btnGuardar">Guardar</button>
@@ -87,7 +99,8 @@
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Taller</th>
-        <th scope="col">Insumos Disponibles</th>
+        <th scope="col">Insumos</th>
+        <th scope="col">Cantidad</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -98,10 +111,12 @@
           {{ materiales.taller.nombre_taller }}
         </td>
         <td scope="row">{{ materiales.insumos_disponibles }}</td>
+          <!-- ngStyle ponemos color en td si el atributo cantidad del objeto es menor que 5 y lo dejamos sin color si es mayor a 5-->
+        <td scope="row" [ngStyle]="{'background-color':materiales.cantidad < 5 ? 'red' : 'green'}">{{ materiales.cantidad }}</td>
         <td colspan="2">
           <button class="btn btn-warning" (click)="MaterialesTallerId(materiales, content)"> Editar </button>
           <button class="btn btn-danger" (click)="eliminarMaterialesTaller(materiales)"> Eliminar</button>
-        </td>
+
       </tr>
     </tbody>
   </table>

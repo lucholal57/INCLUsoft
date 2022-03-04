@@ -5,7 +5,7 @@ from taller.views import (TallerListado,TallerBuscarPorId,BusquedaTallerPorNombr
                         VentasTallerListado,VentasTallerBuscarPorId,BusquedaVentasTaller,
                         ProduccionTallerListado,ProduccionTallerBuscarPorId,BusquedaProduccionTaller,
                         ComprasTallerListado,ComprasTallerBuscarPorId,BusquedaComprasTaller,
-                        InventarioTallerListado,InventarioTallerBuscarPorId,BusquedaInventarioTaller, BusquedaComprasTallerProduccion)
+                        InventarioTallerListado,InventarioTallerBuscarPorId,BusquedaInventarioTaller, BusquedaMaterialesTallerProduccion)
 
 
 
@@ -24,6 +24,7 @@ urlpatterns = [
     path('materiales_taller', MaterialesTallerListado),
     path('materiales_taller/<int:pk>', MaterialesTallerBuscarPorId),
     path('materiales_taller/buscar/<str:nombre_taller>', BusquedaMaterialesTaller),
+    path('materiales_taller/buscar/stock/<str:insumos_disponibles>', BusquedaMaterialesTallerProduccion),
     
     #Rutas para ventas de taller
     path('ventas_taller', VentasTallerListado),
@@ -39,7 +40,6 @@ urlpatterns = [
     path('compras_taller', ComprasTallerListado),
     path('compras_taller/<int:pk>', ComprasTallerBuscarPorId),
     path('compras_taller/buscar/<str:nombre_taller>', BusquedaComprasTaller),
-    path('compras_taller/buscar/stock/<str:insumos>', BusquedaComprasTallerProduccion),
     #Rutas para Inventario Taller
     path('inventario_taller', InventarioTallerListado),
     path('inventario_taller/<int:pk>', InventarioTallerBuscarPorId),

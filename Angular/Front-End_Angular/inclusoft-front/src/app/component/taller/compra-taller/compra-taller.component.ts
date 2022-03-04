@@ -5,6 +5,10 @@ import { CompraTallerService } from '../../../service/taller/compra-taller/compr
 import { Cooperadora } from '../../../entidades/cooperadora/cooperadora';
 import { CooperadoraService } from 'src/app/service/cooperadora/cooperadora.service';
 
+//Importamos materiales talle para obtener del select la compr en base de datos y podes descontar el stock
+import { MaterialesTaller } from 'src/app/entidades/taller/materiales-taller/materiales-taller';
+import { MaterialesTallerService } from '../../../service/taller/materiales-taller/materiales-taller.service';
+
 import { Taller } from '../../../entidades/taller/taller/taller';
 import { TallerService } from '../../../service/taller/taller/taller.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -25,12 +29,14 @@ export class CompraTallerComponent implements OnInit {
   listadoComprasTaller: CompraTaller[];
   // Array de talleres
   listadoTalleres: Taller[];
+  //objeto materiales taller para enviar a la tabla de materiales despues de comprar
+  objeto_materiales: MaterialesTaller;
   //  variable para buscar por personalo
-  buscar_taller= "";
+  buscar_taller = '';
   // VAriable para comparar si la plata de caja chica alcanza para comprar el material
-  Cooperadora : Cooperadora[];
+  Cooperadora: Cooperadora[];
   // Variable con el valor de caja chica
-  valor_caja_chica : number ;
+  valor_caja_chica: number;
   caja_chica_objeto = new Object();
   resultado_caja_chica_total: number;
 
@@ -40,14 +46,14 @@ export class CompraTallerComponent implements OnInit {
   public btnCancelar = false;
   public ocultarbusqueda_Taller = false;
 
-
   // Injenccion de o los servicios a utilizar
   constructor(
     private servicioTaller: TallerService,
     private servicioCompraTaller: CompraTallerService,
     private formBuilder: FormBuilder,
     private alertas: AlertService,
-    private servicioCooperadora : CooperadoraService,
+    private servicioCooperadora: CooperadoraService,
+    private servicioMaterialesTaller: MaterialesTallerService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) {}
@@ -59,7 +65,7 @@ export class CompraTallerComponent implements OnInit {
     cantidad: ['', [Validators.required]],
     fecha_compra: ['', [Validators.required]],
     precio: ['', [Validators.required]],
-    observaciones_compra: ["",[Validators.required]],
+    observaciones_compra: ['', [Validators.required]],
     total: ['', [Validators.required]],
     taller: ['', [Validators.required]],
   });
@@ -71,39 +77,42 @@ export class CompraTallerComponent implements OnInit {
     this.ocultarbusqueda_Taller = true;
     // Iniciamos en 0 el valor de la caja chica
     this.valor_caja_chica = 0;
-    this.resultado_caja_chica_total=0;
+    this.resultado_caja_chica_total = 0;
 
     // Traer al recargar la pagina el valor de caja chica para poder hacer la comparacion a la hora de comprar materiales
     this.servicioCooperadora.getCooperadora().subscribe(
       (res) => {
-        this.Cooperadora= res;
-        this.Cooperadora.forEach(a => {
+        this.Cooperadora = res;
+        this.Cooperadora.forEach((a) => {
           this.valor_caja_chica = a.caja_chica;
-        })
+        });
       },
       (error) => {
         this.alertas.alerterror();
       }
-   );
+    );
   }
   // Open funcion para abrir ventana modal
-  open(content:any) {
-    this.modalService.open(content,{size:'lg'});
+  open(content: any) {
+    this.modalService.open(content, { size: 'lg' });
     this.btnEditar = true;
     this.btnGuardar = false;
     this.btnCancelar = false;
   }
   // Funcion para cerrar ventana modal
-  cerrarModal(): void{
+  cerrarModal(): void {
     this.modalService.dismissAll();
     this.formularioRegistro.reset();
   }
   calcularTotal(): void {
-    this.formularioRegistro.controls["total"].setValue(this.formularioRegistro.value.total = this.formularioRegistro.value.cantidad * this.formularioRegistro.value.precio)
-
+    this.formularioRegistro.controls['total'].setValue(
+      (this.formularioRegistro.value.total =
+        this.formularioRegistro.value.cantidad *
+        this.formularioRegistro.value.precio)
+    );
   }
   limpiarTotal(): void {
-    this.formularioRegistro.controls["total"].setValue("");
+    this.formularioRegistro.controls['total'].setValue('');
   }
 
   // Obtenemos los talleres para mostar en la lista de seleccion al registrar una compra para taller
@@ -130,15 +139,19 @@ export class CompraTallerComponent implements OnInit {
   }
   // Registrar compras para el taller validando que la compra no supere el monto de la caja chica
   registrarComprasTaller(): void {
+    //Inicializamos el objeto asi esta vacio a la hora de registrar
+    this.caja_chica_objeto = new Object();
+    //limpiamos el objeto para que cuando entre al if entre vacio para registrar el material
+    this.objeto_materiales = new MaterialesTaller();
     //Variable para el resultado de la resta y se pone en 0 para que cada ves que entre aranque en 0
-    this.resultado_caja_chica_total=0
+    this.resultado_caja_chica_total = 0;
     //Validacion de si el total de la compra es menos a lo que contiene la caja chica
-    if (this.formularioRegistro.value.total <= this.valor_caja_chica)
-    {
+    if (this.formularioRegistro.value.total <= this.valor_caja_chica) {
       //Resta de total menos caja chica guardando el valor en variable para editar el valor de caja chica
-      this.resultado_caja_chica_total = this.valor_caja_chica - this.formularioRegistro.value.total
+      this.resultado_caja_chica_total =
+        this.valor_caja_chica - this.formularioRegistro.value.total;
       //Al objeto ya creado le pasamos los datos que va a enviar el servicio para editar la caja chica, tambien pasamos el numero 1 ya que sabemos que solo existe una caja chica con el id=1
-      this.caja_chica_objeto = {caja_chica: this.resultado_caja_chica_total}
+      this.caja_chica_objeto = { caja_chica: this.resultado_caja_chica_total };
       //Validamos que el formulario sea valido y registramos la compra
       if (this.formularioRegistro.valid) {
         this.servicioCompraTaller
@@ -148,34 +161,47 @@ export class CompraTallerComponent implements OnInit {
               this.getComprasTaller();
               this.cerrarModal();
               //LLamamos al servicio de cooperadora para editar la caja chica pasando el objeto creado anteriormente.
-              this.servicioCooperadora.editarCooperadora(this.caja_chica_objeto, 1).subscribe(
-                (res) => {
-                  this.alertas.alertDescuentoCajaChicaOk()
-                },
-                (error) => {
-                  console.log(error);
-                }
-              )
+              this.servicioCooperadora
+                .editarCooperadora(this.caja_chica_objeto, 1)
+                .subscribe(
+                  (res) => {
+                    this.alertas.alertDescuentoCajaChicaOk();
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
             },
             (error) => {
               this.alertas.alerterror();
             }
           );
+        //Creacion de un objeto el nombre esta mal. de tipo compra taller pára poder enviarlo para editar solamente la cantidad restando lo consimido en la creacion de produccion
+        this.objeto_materiales = {
+          id: this.formularioRegistro.value.id,
+          insumos_disponibles: this.formularioRegistro.value.insumos,
+          cantidad: this.formularioRegistro.value.cantidad,
+          taller: this.formularioRegistro.value.taller,
+        };
+        //Pasamos el nuevo objeto con el valor ya obtenido y tambien el ID con el objeto.id (a.id) para realizar la actualizacion del campo cantidad.
+        this.servicioMaterialesTaller
+          .registrarMaterialesTaller(this.objeto_materiales)
+          .subscribe((res) => {
+            console.log(res);
+          });
       } else {
         this.alertas.alertcampos();
       }
-    }
-    else {
+    } else {
       this.alertas.alertDescuentoCajaChicaError();
     }
-
   }
   // Obetener compras de taller por id para mostrar en el formulario y poder editar
-  ComprasTallerId(compra: CompraTaller, content : any): void {
-  this.modalService.open(content,{size:'lg'});
-  this.btnCancelar = true;
-  this.btnEditar = false;
-  this.btnGuardar = true;
+  ComprasTallerId(compra: CompraTaller, content: any): void {
+    this.modalService.open(content, { size: 'lg' });
+    this.btnCancelar = true;
+    this.btnEditar = false;
+    this.btnGuardar = true;
     this.servicioCompraTaller.getCompraTallerId(compra).subscribe(
       (res) => {
         this.formularioRegistro.patchValue({
@@ -197,23 +223,43 @@ export class CompraTallerComponent implements OnInit {
   }
   // Editar Compras Taller
   editarComprasTallerId(): void {
-    // Obtenemos id en una constante para pasarlo por parametro
-    const id = this.formularioRegistro.value.id;
-    console.log(this.formularioRegistro)
-    this.servicioCompraTaller
-      .editarCompraTallerId(this.formularioRegistro.value, id)
-      .subscribe(
-        (res) => {
-          console.log(res);
-          this.alertas.alertedit();
-          this.getComprasTaller();
-          this.cerrarModal();
-        },
-        (error) => {
-          console.log(error);
-          this.alertas.alerterror();
-        }
-      );
+    //Volvemos a validar que el valor del total a la hora de editar se menor que la caja chica para restar saldo
+    if (this.formularioRegistro.value.total <= this.valor_caja_chica) {
+      // Obtenemos id en una constante para pasarlo por parametro
+      const id = this.formularioRegistro.value.id;
+      console.log(this.formularioRegistro);
+      this.servicioCompraTaller
+        .editarCompraTallerId(this.formularioRegistro.value, id)
+        .subscribe(
+          (res) => {
+            console.log(res);
+            this.getComprasTaller();
+            this.cerrarModal();
+          },
+          (error) => {
+            console.log(error);
+            this.alertas.alerterror();
+          }
+        );
+      //Resta de total menos caja chica guardando el valor en variable para editar el valor de caja chica
+      this.resultado_caja_chica_total =
+        this.valor_caja_chica - this.formularioRegistro.value.total;
+      //Al objeto ya creado le pasamos los datos que va a enviar el servicio para editar la caja chica, tambien pasamos el numero 1 ya que sabemos que solo existe una caja chica con el id=1
+      this.caja_chica_objeto = { caja_chica: this.resultado_caja_chica_total };
+      //LLamamos al servicio de cooperadora para editar la caja chica pasando el objeto creado anteriormente.
+      this.servicioCooperadora
+        .editarCooperadora(this.caja_chica_objeto, 1)
+        .subscribe(
+          (res) => {
+            this.alertas.alertDescuentoCajaChicaOk();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } else {
+      this.alertas.alertDescuentoCajaChicaError();
+    }
   }
   // Eliminar compra taller
   eliminarComprasTaller(compra: CompraTaller): void {
@@ -241,35 +287,35 @@ export class CompraTallerComponent implements OnInit {
       }
     });
   }
-   // Busqueda de de taller por nombre
-busquedaTaller(): void{
-  if (this.buscar_taller == ""){
-    this.alertas.alertcampos();
-  }else{
-    this.servicioCompraTaller.busquedaTaller(this.buscar_taller).subscribe(
-      (res) => {
-        console.log(res)
-        if (res.length != 0){
-          this.alertas.alertLoading();
-          this.ocultarbusqueda_Taller = false;
-        }else{
-          this.alertas.alertLoadingError();
-          this.ocultarbusqueda_Taller = false;
+  // Busqueda de de taller por nombre
+  busquedaTaller(): void {
+    if (this.buscar_taller == '') {
+      this.alertas.alertcampos();
+    } else {
+      this.servicioCompraTaller.busquedaTaller(this.buscar_taller).subscribe(
+        (res) => {
+          console.log(res);
+          if (res.length != 0) {
+            this.alertas.alertLoading();
+            this.ocultarbusqueda_Taller = false;
+          } else {
+            this.alertas.alertLoadingError();
+            this.ocultarbusqueda_Taller = false;
+          }
+          this.listadoComprasTaller = res;
+        },
+        (error) => {
+          this.alertas.alerterror();
         }
-        this.listadoComprasTaller = res;
-      },
-      (error) => {
-        this.alertas.alerterror();
-      }
-    )
+      );
+    }
   }
-}
-// Cancelar Busqueda
-cancelarbusqueda(): void {
-  this.ocultarbusqueda_Taller = true;
-  this.getComprasTaller();
-  this.buscar_taller = "";
-}
+  // Cancelar Busqueda
+  cancelarbusqueda(): void {
+    this.ocultarbusqueda_Taller = true;
+    this.getComprasTaller();
+    this.buscar_taller = '';
+  }
   // Limpiar los campos
   cancelar(): void {
     this.formularioRegistro.reset();

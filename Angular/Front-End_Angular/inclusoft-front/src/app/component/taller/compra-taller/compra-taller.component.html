@@ -167,7 +167,7 @@
         <td scope="row">{{ compra.fecha_compra }}</td>
         <td scope="row">{{ compra.insumos }}</td>
         <!-- ngStyle ponemos color en td si el atributo cantidad del objeto es menor que 5 y lo dejamos sin color si es mayor a 5-->
-        <td scope="row" [ngStyle]="{'background-color':compra.cantidad < 5 ? 'red' : '' }">{{ compra.cantidad }}</td>
+        <td scope="row">{{ compra.cantidad }}</td>
         <td scope="row">{{ compra.precio }}</td>
         <td scope="row">{{ compra.total }}</td>
         <td scope="row">{{ compra.observaciones_compra }}</td>

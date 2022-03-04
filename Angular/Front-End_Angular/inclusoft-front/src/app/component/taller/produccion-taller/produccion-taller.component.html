@@ -72,10 +72,10 @@
             <select class="form-control" formControlName="materiales"  required>
               <option value="">Seleccione un Material</option>
               <option
-                *ngFor="let material of listadoComprasTaller"
-                [ngValue]="material.insumos"
+                *ngFor="let materiales of listadoMaterialesTaller"
+                [ngValue]="materiales.insumos_disponibles"
               >
-                {{ material.insumos }}
+                {{ materiales.insumos_disponibles }}
               </option>
             </select>
           </div>
@@ -90,7 +90,6 @@
                 required
               />
           </div>
-          <button type="button"  class="btn btn-outline-info"  (click)="consultarStock()">Consultar Stock</button>
 
           <div class="form-group">
             <label style="color:black">Costo de Venta</label>

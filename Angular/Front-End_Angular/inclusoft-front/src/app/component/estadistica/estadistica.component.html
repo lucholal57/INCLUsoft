@@ -16,14 +16,14 @@
   <img src="../../../../assets/img/caad.jpg" align="right" alt=""  alt="" width="10%">
 </div>
 
-<div class="container" id="contenedorBusqueda">
+<div  id="contenedorBusqueda">
 
   <div class="form-row">
-    <div class="form-group col-sm-6">
+    <div class="form-group col-sm-3 offset-md-2">
     <legend>Filtros Estadisticas Alumnos</legend>
 
     <div class="form-group">
-      <select class="form-control" [(ngModel)]="alumno_filtro">
+      <select class="form-control" [(ngModel)]="alumno_filtro" (change)="cambioalumno()">
         <option [ngValue]="2">Patologias</option>
         <option [ngValue]="3">Presentismo</option>
       </select>
@@ -49,11 +49,11 @@
     <button class="btn btn-danger" (click)="LimpiarFiltroAlumno()">Limpiar</button>
   </div>
 
-  <div class="form-group col-sm-6">
+  <div class="form-group col-sm-3">
     <legend>Filtros Estadisticas Personal</legend>
 
     <div class="form-group">
-      <select class="form-control" [(ngModel)]="personal_filtro">
+      <select class="form-control" [(ngModel)]="personal_filtro" (change)="cambiopersonal()">
         <option [ngValue]="2">Profesion</option>
         <option [ngValue]="3">Presentismo</option>
       </select>
@@ -75,20 +75,36 @@
 
     <hr>
     <button class="btn btn-primary" (click)="filtroPersonal()">Buscar</button>
-    <button class="btn btn-danger">Limpiar</button>
+    <button class="btn btn-danger" (click)="LimpiarFiltroPersonal">Limpiar</button>
+  </div>
+
+  <div class="form-group col-sm-3">
+    <legend>Filtros Estadisticas Otros</legend>
+
+    <div class="form-group">
+      <select class="form-control" [(ngModel)]="materiales_filtro" (change)="cambiootros()">
+        <option [ngValue]="2">Materiales</option>
+        <option [ngValue]="3">Total Personas en Inst</option>
+      </select>
+    </div>
+    <hr>
+    <button class="btn btn-primary" (click)="filtroMaterial()">Buscar</button>
+    <button class="btn btn-danger" (click)="LimpiarFiltroMaterial">Limpiar</button>
   </div>
 
 
 </div>
+
 </div>
 
 </form>
 
-<div class="container">
+<div>
+
   <div class="row">
 <hr>
 <div class="col">
-    <legend> RESULTADOS ALUMNOS</legend>
+  <legend> RESULTADOS ALUMNOS</legend>
     <div class="form-group"  *ngIf="asistenciashow">
       <ngx-charts-advanced-pie-chart
       [view]="view"
@@ -121,7 +137,7 @@
     </ngx-charts-advanced-pie-chart>
     </div>
 
-    <div class="col-sm" *ngIf="asistenciapersonalshow">
+    <div class="col" *ngIf="asistenciapersonalshow">
       <ngx-charts-advanced-pie-chart
       [view]="view"
       [scheme]="colorScheme"
@@ -132,6 +148,30 @@
     </div>
 
   </div>
+  <div class="col">
+    <legend> RESULTADOS OTROS</legend>
+    <div class="form-group" *ngIf="materialesshow">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="totalMateriales"
+      [gradient]="gradient"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+
+    <div class="form-group" *ngIf="totalshow">
+      <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="total"
+      [gradient]="gradient"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+
+  </div>
+
 </div>
 </div>
 

@@ -3,6 +3,10 @@ import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { MaterialesTaller } from '../../../entidades/taller/materiales-taller/materiales-taller';
 import { MaterialesTallerService } from '../../../service/taller/materiales-taller/materiales-taller.service';
 
+//Importamos librerias de compra taller para mostrar las cantidades compradas en table
+import { CompraTaller } from 'src/app/entidades/taller/compra-taller/compra-taller';
+import { CompraTallerService } from '../../../service/taller/compra-taller/compra-taller.service';
+
 import { Taller } from '../../../entidades/taller/taller/taller';
 import { TallerService } from '../../../service/taller/taller/taller.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -23,7 +27,9 @@ export class MaterialesTallerComponent implements OnInit {
   listadoMaterialesTaller : MaterialesTaller[];
   // Array de talleres para el select
   listadoTalleres : Taller[];
-   //  variable para buscar por personalo
+  //Listado de compras material para setear en cantidad materiales la cantidad comprada para poder descontar stoc
+  listadoComprasTaller : CompraTaller[];
+  //  variable para buscar por personalo
   buscar_taller= "";
   // Variable de Botones para deshabilitar
   public btnGuardar = false;
@@ -37,6 +43,7 @@ export class MaterialesTallerComponent implements OnInit {
     private servicioMaterialesTaller : MaterialesTallerService,
     private formBuilder: FormBuilder,
     private alertas : AlertService,
+    private servicioCompraTaller: CompraTallerService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) { }
@@ -45,6 +52,7 @@ export class MaterialesTallerComponent implements OnInit {
   formularioRegistro = this.formBuilder.group({
     id: [''],
     insumos_disponibles: ['', [Validators.required]],
+    cantidad: [Validators.required],
     taller: ['', [Validators.required]],
   })
 
@@ -76,6 +84,17 @@ export class MaterialesTallerComponent implements OnInit {
       (error) => {
         this.alertas.alerterror();
   }
+  );
+}
+// Obtenemnos compras de taller
+getComprasTaller(): void {
+  this.servicioCompraTaller.getCompraTaller().subscribe(
+    (res) => {
+      this.listadoComprasTaller = res;
+    },
+    (error) => {
+      this.alertas.alerterror();
+    }
   );
 }
 // Obtenemos los materiales del taller
@@ -119,6 +138,7 @@ this.servicioMaterialesTaller.getMaterialesTallerId(materiales).subscribe(
     this.formularioRegistro.patchValue({
       id : res[0].id,
       insumos_disponibles: res[0].insumos_disponibles,
+      cantidad: res[0].cantidad,
       taller: res[0].taller,
     });
   },

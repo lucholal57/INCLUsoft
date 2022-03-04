@@ -12,6 +12,8 @@ import * as moment from 'moment';
 import { AlertService } from 'src/app/service/alert/alert.service';
 import { AsistenciaPersonal } from 'src/app/entidades/personal/asistencia-personal/asistencia-personal';
 import { AsistenciaPersonalService } from 'src/app/service/personal/asistencia-personal/asistencia-personal.service';
+import { MaterialesTaller } from 'src/app/entidades/taller/materiales-taller/materiales-taller';
+import { MaterialesTallerService } from 'src/app/service/taller/materiales-taller/materiales-taller.service';
 
 @Component({
   selector: 'app-estadistica',
@@ -24,30 +26,34 @@ export class EstadisticaComponent implements OnInit {
   listadoPersonal: Personal[];
   listadoPatologia: Patologia[];
   listadoAsistenciaAlumno: Asistencia[];
-  listadoAsistenciaPersonal: AsistenciaPersonal[]
+  listadoAsistenciaPersonal: AsistenciaPersonal[];
+  listadoMaterialesTaller: MaterialesTaller[];
   //Filtros seleccion
   alumno_filtro: number;
   personal_filtro: number;
+  materiales_filtro: number;
   //Busquedas para asistencias alumno y personal
   busqueda_alumno = 0;
   busqueda_personal = 0;
- //Array de totales con los nuevos objetos ya preparados para graficar estadisticamente
+  //Array de totales con los nuevos objetos ya preparados para graficar estadisticamente
   totalPatologia = new Array();
   totalAsistenciaAlumno = new Array();
   totalProfesion = new Array();
   totalAsistenciaPersonal = new Array();
+  totalMateriales = new Array();
   total = new Array();
   //Variable booleana para mostrar y ocualtar condicionando con if los graficos en HTML
   patologiashow: boolean;
-  asistenciashow : boolean;
-  profesionshow:boolean;
+  asistenciashow: boolean;
+  profesionshow: boolean;
   asistenciapersonalshow: boolean;
+  materialesshow: boolean;
+  totalshow: boolean;
   //Fechas para buscar asistencias
   fecha_inicio_alumno = new Date();
   fecha_fin_alumno = new Date();
   fecha_inicio_personal = new Date();
   fecha_fin_personal = new Date();
-
 
   view: [number, number] = [500, 400];
 
@@ -69,38 +75,33 @@ export class EstadisticaComponent implements OnInit {
     private servicioPersonal: PersonalService,
     private servicioPatologia: PatologiaService,
     private servicioAsistenciaPersonal: AsistenciaPersonalService,
+    private servicioMaterialesTaller: MaterialesTallerService,
     private servicioAsistencia: AsistenciaService
   ) {}
 
   ngOnInit(): void {
-    /*
-    this.servicioPersonal.getPersonal().subscribe((res) => {
-      this.listadoPersonal = res;
-      this.total.push(
-        new Object({ name: 'Personal', value: this.listadoPersonal.length })
-      );
-      console.log(this.total, 'length personal');
-      //Formula para poder guardar los datos de los graficos
-      this.total = [...this.total];
-    });
-    this.servicioAlumno.getAlumnos().subscribe((res) => {
-      this.listadoAlumnos = res;
-      this.total.push(
-        new Object({ name: 'Alumno', value: this.listadoAlumnos.length })
-      );
-      console.log(this.total, 'length alumno');
-      //Formula para poder guardar los datos de los graficos
-      this.total = [...this.total];
-    })
-    */
-
     this.getAlumnos();
     this.getPersonal();
+    this.getMaterialesTaller();
     this.patologiashow = false;
     this.asistenciashow = false;
     this.profesionshow = false;
     this.asistenciapersonalshow = false;
-
+    this.materialesshow = false;
+    this.totalshow = false;
+  }
+  // Obtenemos los materiales del taller
+  getMaterialesTaller(): void {
+    this.servicioMaterialesTaller.getMaterialesTaller().subscribe(
+      (res) => {
+        this.listadoMaterialesTaller = res;
+        console.log(res);
+      },
+      (error) => {
+        console.log(error);
+        this.alertas.alerterror();
+      }
+    );
   }
 
   // Obtener todos los Alumnos
@@ -129,7 +130,7 @@ export class EstadisticaComponent implements OnInit {
 
   filtroAlumno(): void {
     this.patologiashow = true;
-    this.asistenciashow= false;
+    this.asistenciashow = false;
     if (this.alumno_filtro == 2) {
       this.servicioPatologia.getPatologias().subscribe(
         (res) => {
@@ -170,134 +171,205 @@ export class EstadisticaComponent implements OnInit {
       );
     }
     if (this.alumno_filtro == 3) {
-      this.asistenciashow = true
+      this.asistenciashow = true;
       this.patologiashow = false;
       this.totalAsistenciaAlumno = [];
-      this.servicioAsistencia.busquedaAlumnoEstadistica(this.busqueda_alumno).subscribe((res) => {
-        /* DIFERENCIAS DE FECHAS EN NUMBER
+      this.servicioAsistencia
+        .busquedaAlumnoEstadistica(this.busqueda_alumno)
+        .subscribe((res) => {
+          /* DIFERENCIAS DE FECHAS EN NUMBER
         var fecha_inicio_alumno = new Date('2022-02-10');
         var fecha_fin_alumno = new Date('2022-02-08');
         var diferencia = +fecha_inicio - +fecha_fin_alumno;
         var dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
         */
-        var presente = 'Presente';
-        var ausente = 'Ausente';
-        var contadorpresente = 0;
-        var contadorausente = 0;
-        this.listadoAsistenciaAlumno = res;
-        for (let f of this.listadoAsistenciaAlumno) {
-          if (
-            moment(f.fecha_asistencia).isBetween(
-              this.fecha_inicio_alumno,
-              this.fecha_fin_alumno
-            )
-          ) {
-            if (f.estado_asistencia == presente) {
-              contadorpresente++;
-            }
-            if (f.estado_asistencia == ausente) {
-              contadorausente++;
+          var presente = 'Presente';
+          var ausente = 'Ausente';
+          var contadorpresente = 0;
+          var contadorausente = 0;
+          this.listadoAsistenciaAlumno = res;
+          for (let f of this.listadoAsistenciaAlumno) {
+            if (
+              moment(f.fecha_asistencia).isBetween(
+                this.fecha_inicio_alumno,
+                this.fecha_fin_alumno
+              )
+            ) {
+              if (f.estado_asistencia == presente) {
+                contadorpresente++;
+              }
+              if (f.estado_asistencia == ausente) {
+                contadorausente++;
+              }
             }
           }
-        }
-        this.totalAsistenciaAlumno.push(
-          new Object({ name: 'PRESENTE', value: contadorpresente })
-        );
-        this.totalAsistenciaAlumno.push(
-          new Object({ name: 'AUSENTE', value: contadorausente })
-        );
-        this.totalAsistenciaAlumno = [...this.totalAsistenciaAlumno];
+          this.totalAsistenciaAlumno.push(
+            new Object({ name: 'PRESENTE', value: contadorpresente })
+          );
+          this.totalAsistenciaAlumno.push(
+            new Object({ name: 'AUSENTE', value: contadorausente })
+          );
+          this.totalAsistenciaAlumno = [...this.totalAsistenciaAlumno];
 
-        console.log(
-          this.totalAsistenciaAlumno,
-          'resultado obtenido de las asistencias.'
-        );
-      });
+          console.log(
+            this.totalAsistenciaAlumno,
+            'resultado obtenido de las asistencias.'
+          );
+        });
     }
   }
-  filtroPersonal(): void{
-    if (this.personal_filtro ==2){
+  filtroPersonal(): void {
+    if (this.personal_filtro == 2) {
       this.profesionshow = true;
       this.asistenciapersonalshow = false;
-      this.totalProfesion=[];
-      this.servicioPersonal.getPersonal().subscribe(
-        (res) => {
-          var pomy = "Pomy"
-          var docente = "Docente"
-          var administrativo = "Administrativo"
-          var contadorpomy = 0;
-          var contadordocente = 0;
-          var contadoradministrativo = 0;
-          this.listadoPersonal = res;
-          for (let p of this.listadoPersonal){
-            if (p.profesion === pomy){
-              contadorpomy++;
-            }
-            if (p.profesion === docente){
-              contadordocente++;
-            }
-            if (p.profesion === administrativo){
-              contadoradministrativo++;
-            }
+      this.totalProfesion = [];
+      this.servicioPersonal.getPersonal().subscribe((res) => {
+        var pomy = 'Pomy';
+        var docente = 'Docente';
+        var administrativo = 'Administrativo';
+        var contadorpomy = 0;
+        var contadordocente = 0;
+        var contadoradministrativo = 0;
+        this.listadoPersonal = res;
+        for (let p of this.listadoPersonal) {
+          if (p.profesion === pomy) {
+            contadorpomy++;
           }
-          this.totalProfesion.push(
-            new Object({name: 'Administrativo', value: contadoradministrativo})
-          );
-          this.totalProfesion.push(
-            new Object({name: 'Docente', value: contadordocente})
-          );
-          this.totalProfesion.push(
-            new Object({name: 'Pomy', value: contadorpomy})
-          );
-          this.totalProfesion = [...this.totalProfesion]
-          console.log(this.totalProfesion,"PROFESIONES TOTALES")
+          if (p.profesion === docente) {
+            contadordocente++;
+          }
+          if (p.profesion === administrativo) {
+            contadoradministrativo++;
+          }
         }
-      )
+        this.totalProfesion.push(
+          new Object({ name: 'Administrativo', value: contadoradministrativo })
+        );
+        this.totalProfesion.push(
+          new Object({ name: 'Docente', value: contadordocente })
+        );
+        this.totalProfesion.push(
+          new Object({ name: 'Pomy', value: contadorpomy })
+        );
+        this.totalProfesion = [...this.totalProfesion];
+        console.log(this.totalProfesion, 'PROFESIONES TOTALES');
+      });
     }
-    if (this.personal_filtro == 3){
+    if (this.personal_filtro == 3) {
       this.asistenciapersonalshow = true;
       this.profesionshow = false;
       this.totalAsistenciaPersonal = [];
-      this.servicioAsistenciaPersonal.busquedaPersonalEstadistica(this.busqueda_personal).subscribe(
-        (res) => {
+      this.servicioAsistenciaPersonal
+        .busquedaPersonalEstadistica(this.busqueda_personal)
+        .subscribe((res) => {
           var presente_personal = 'Presente';
           var ausente_personal = 'Ausente';
           var contadorpresente_personal = 0;
           var contadorausente_personal = 0;
           this.listadoAsistenciaPersonal = res;
-          for (let f of this.listadoAsistenciaPersonal){
-            if (moment(f.fecha_asistencia_personal).isBetween(
-              this.fecha_inicio_personal,
-              this.fecha_fin_personal
-            )){
-              if (f.estado == presente_personal){
+          for (let f of this.listadoAsistenciaPersonal) {
+            if (
+              moment(f.fecha_asistencia_personal).isBetween(
+                this.fecha_inicio_personal,
+                this.fecha_fin_personal
+              )
+            ) {
+              if (f.estado == presente_personal) {
                 contadorpresente_personal++;
               }
-              if (f.estado == ausente_personal){
+              if (f.estado == ausente_personal) {
                 contadorausente_personal++;
               }
             }
           }
           this.totalAsistenciaPersonal.push(
-            new Object ({ name: 'PRESENTE', value: contadorpresente_personal})
+            new Object({ name: 'PRESENTE', value: contadorpresente_personal })
           );
           this.totalAsistenciaPersonal.push(
-            new Object({ name: 'AUSENTE' , value: contadorausente_personal})
+            new Object({ name: 'AUSENTE', value: contadorausente_personal })
           );
-          this.totalAsistenciaPersonal = [...this.totalAsistenciaPersonal]
-          console.log(this.totalAsistenciaPersonal,"total asistencias personal")
-        }
-      )
+          this.totalAsistenciaPersonal = [...this.totalAsistenciaPersonal];
+          console.log(
+            this.totalAsistenciaPersonal,
+            'total asistencias personal'
+          );
+        });
     }
+  }
+
+  filtroMaterial(): void {
+    this.totalshow= false;
+    this.materialesshow = true;
+    this.totalMateriales = [];
+    if (this.materiales_filtro == 2){
+   this.materialesshow = true;
+   this.servicioMaterialesTaller.getMaterialesTaller().subscribe(
+     (res) => {
+       this.listadoMaterialesTaller = res;
+       this.listadoMaterialesTaller.forEach(a =>{
+          this.totalMateriales.push(
+            new Object({ name: a.insumos_disponibles, value: a.cantidad})
+          )
+          this.totalMateriales = [...this.totalMateriales]
+       })
+     }
+   )
+   console.log(this.totalMateriales+"Materiales")
+    }
+    if (this.materiales_filtro  == 3)
+    {
+      this.totalshow= true;
+      this.materialesshow = false;
+
+    this.servicioPersonal.getPersonal().subscribe((res) => {
+      this.listadoPersonal = res;
+      this.total.push(
+        new Object({ name: 'Personal', value: this.listadoPersonal.length })
+      );
+      console.log(this.total, 'length personal');
+      //Formula para poder guardar los datos de los graficos
+      this.total = [...this.total];
+    });
+    this.servicioAlumno.getAlumnos().subscribe((res) => {
+      this.listadoAlumnos = res;
+      this.total.push(
+        new Object({ name: 'Alumno', value: this.listadoAlumnos.length })
+      );
+      console.log(this.total, 'length alumno');
+      //Formula para poder guardar los datos de los graficos
+      this.total = [...this.total];
+    })
+
+    }
+  }
+  cambiootros(){
+    this.materialesshow=false;
+    this.totalshow=false;
+  }
+  cambiopersonal(){
+    this.asistenciapersonalshow=false;
+    this.profesionshow=false;
+  }
+  cambioalumno(){
+    this.patologiashow =false;
+    this.asistenciashow=false;
   }
 
 
   LimpiarFiltroAlumno(): void {
+    this.alumno_filtro = 0
     this.fecha_inicio_alumno = new Date();
     this.fecha_fin_alumno = new Date();
   }
   LimpiarFiltroPersonal(): void {
+    this.personal_filtro = 0
     this.fecha_inicio_personal = new Date();
     this.fecha_fin_personal = new Date();
   }
+  LimpiarFiltroMaterial(): void {
+    this.materiales_filtro = 0;
+    this.materialesshow=false;
+    this.totalshow = false;
+  }
+
 }
