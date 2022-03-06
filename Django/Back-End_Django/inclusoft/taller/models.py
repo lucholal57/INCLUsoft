@@ -35,7 +35,9 @@ class Materiales_Taller(models.Model):
     
 class Ventas_Taller(models.Model):
     ganancia = models.CharField(max_length=50)
-    observacion_ventas = models.CharField(max_length=100);
+    observacion_ventas = models.CharField(max_length=100)
+    producto = models.CharField(max_length=50, null=True)
+    cantidad_producto = models.CharField(max_length=50)
     #ForeignKey
     taller = models.ForeignKey(Taller, on_delete=models.CASCADE)
     # METODO STR PARA MOSTRAR LOS STRING

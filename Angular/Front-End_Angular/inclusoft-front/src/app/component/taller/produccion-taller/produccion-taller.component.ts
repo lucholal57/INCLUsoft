@@ -74,7 +74,8 @@ export class ProduccionTallerComponent implements OnInit {
   ngOnInit(): void {
     this.getTalleres();
     this.getProduccionTaller();
-    //solo para mostrar los materiales en el select
+    this.listadoMaterialesTaller = [];
+        //solo para mostrar los materiales en el select
     this.getMaterialesTaller();
     this.btnEditar = true;
     this.ocultarbusqueda_Taller = true;
@@ -166,6 +167,7 @@ export class ProduccionTallerComponent implements OnInit {
                       this.alertas.alerterror();
                     }
                   );
+                  console.log("resultado regis produccion",this.objeto_materiales)
                 this.objeto_materiales = {
                   id: a.id,
                   insumos_disponibles: a.insumos_disponibles,

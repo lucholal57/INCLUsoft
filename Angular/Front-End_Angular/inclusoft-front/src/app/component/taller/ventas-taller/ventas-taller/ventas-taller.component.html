@@ -25,17 +25,40 @@
 
         <div class="form-group">
           <label style="color:black" for="taller">Taller</label>
-            <select class="form-control" formControlName="taller" required>
-              <option value="">Seleccione un Taller</option>
+            <select class="form-control" formControlName="taller" (change)="productoSeleccionado()"required>
+              <option value="">Seleccione Produccion</option>
               <option
-                *ngFor="let taller of listadoTalleres"
-                [ngValue]="taller.id"
+                *ngFor="let produccion of listadoProduccionTaller"
+                [ngValue]="produccion.taller.id"
               >
-                {{ taller.nombre_taller }}
+                {{ produccion.taller.nombre_taller }}
               </option>
             </select>
         </div>
 
+        <div class="form-group">
+          <label style="color:black" for="taller">Produccion</label>
+            <select class="form-control" formControlName="producto" required>
+              <option value="">Seleccione un Producto</option>
+              <option
+                *ngFor="let producto of arrayProductoSeleccion"
+                [ngValue]="producto.nombre_produccion"
+              >
+                {{ producto.nombre_produccion}}
+              </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label style="color:black">Cantidad</label>
+            <input
+              type="number"
+              class="form-control"
+              id="cantidad"
+              formControlName="cantidad_producto"
+              required
+            />
+        </div>
         <div class="form-group">
           <label style="color:black">Ganancia</label>
             <input
@@ -44,6 +67,7 @@
               id="ganancia"
               placeholder="Ingrese Ganancia"
               formControlName="ganancia"
+              readonly
               required
             />
         </div>

@@ -160,7 +160,7 @@
             <td scope="row">{{ produccion.nombre_produccion }}</td>
             <td scope="row">{{ produccion.fecha_produccion }}</td>
             <td scope="row">{{ produccion.materiales }}</td>
-            <td scope="row">{{produccion.cantidad }}</td>
+            <td scope="row"  [ngStyle]="{'background-color':produccion.cantidad < 5 ? 'red' : 'green'}" >{{produccion.cantidad }}</td>
             <td scope="row">{{ produccion.costo_venta}}</td>
             <td colspan="2">
               <button class="btn btn-warning" (click)="ProduccionTallerId(produccion, content)"> Editar </button>

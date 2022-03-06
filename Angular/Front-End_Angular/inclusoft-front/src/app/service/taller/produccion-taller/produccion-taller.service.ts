@@ -45,5 +45,9 @@ export class ProduccionTallerService {
   busquedaTaller(nombre: string): Observable<ProduccionTaller[]>{
     return this.http.get<ProduccionTaller[]>(this.url + 'produccion_taller/buscar/' + nombre,httpOption)
   }
+  // Buscar taller por nombre
+  busquedaTallerId(id: number): Observable<ProduccionTaller[]>{
+    return this.http.get<ProduccionTaller[]>(this.url + 'produccion_taller/buscar/id/' + id,httpOption)
+  }
 
 }

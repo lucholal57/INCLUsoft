@@ -337,6 +337,14 @@ def BusquedaProduccionTaller(request,nombre_taller):
     serializer = Produccion_TallerSerializer(produccion, many=True)
     return Response(serializer.data, status = status.HTTP_200_OK)
 
+#Busqueda de produccion por taller
+@api_view(['GET'])
+def BusquedaProduccionTallerId(request,pk=None):
+    taller = Taller.objects.filter(id=pk)
+    produccion = Produccion_Taller.objects.filter(taller__in = taller)
+    serializer = Produccion_TallerPostPutSerializer(produccion, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
     
 # VIEW DE COMPRAS TALLER
 #Listado y Creacion
