@@ -1,7 +1,6 @@
-# File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,angular,django,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode,angular,django,python
+# Created by https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,angular,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,django,visualstudiocode,angular,windows
 
 ### Angular ###
 ## Angular ##
@@ -26,6 +25,7 @@ libpeerconnection.log/
 npm-debug.log
 testem.log
 typings/
+.angular/
 
 # e2e
 e2e/*.js
@@ -138,6 +138,13 @@ ipython_config.py
 #   install all needed dependencies.
 #Pipfile.lock
 
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
 
@@ -150,9 +157,8 @@ celerybeat.pid
 
 # Environments
 .env
-/.env
 .venv
-env\
+env/
 venv/
 ENV/
 env.bak/
@@ -181,6 +187,13 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -224,6 +237,12 @@ cython_debug/
 #   having no cross-platform support, pipenv may install dependencies that don't work, or not
 #   install all needed dependencies.
 
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 
 # Celery stuff
@@ -246,16 +265,25 @@ cython_debug/
 
 # Cython debug symbols
 
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-*.code-workspace
+!.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
 .history/
+
+# Built Visual Studio Code Extensions
+*.vsix
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
@@ -263,7 +291,6 @@ cython_debug/
 .ionide
 
 # Support for Project snippet scope
-!.vscode/*.code-snippets
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -291,9 +318,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,angular,django,python
-
-# Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
-
 Angular/Front-End_Angular/inclusoft-front/.angular/cache/babel-webpack/
 Angular/Front-End_Angular/inclusoft-front/.angular/cache/angular-webpack/
+
+# End of https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,angular,windows
