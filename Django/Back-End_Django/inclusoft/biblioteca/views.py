@@ -131,6 +131,13 @@ def BusquedaLibro(request, nombre_libro):
     libro = Libro.objects.filter(titulo__icontains=nombre_libro)
     serializer = LibroSerializer(libro, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+# Busqueda de Libro por ID
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def BusquedaLibroId(request,pk=None):
+    libro = Libro.objects.filter(id=pk)
+    serializer = LibroSerializer(libro, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # VIEW DE PRESTAMOS

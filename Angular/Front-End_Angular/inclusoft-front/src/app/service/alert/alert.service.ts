@@ -98,6 +98,9 @@ export class AlertService {
   alertStock(){
     Swal.fire('El stock es insuficiente')
   }
+  alertLibroPrestado(){
+    Swal.fire('El Libro no se encuentra disponible')
+  }
 
   /* Alert eliminar el
 

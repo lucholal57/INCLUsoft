@@ -25,4 +25,7 @@ export class CooperadoraService {
   editarCooperadora(caja_chica : any, id:number): Observable<Cooperadora[]>{
     return this.http.put<Cooperadora[]>(this.url + 'cooperadora/' + id ,caja_chica ,httpOption)
   }
+  agregarCooperadora(caja_chica : any, id:number): Observable<Cooperadora[]>{
+    return this.http.put<Cooperadora[]>(this.url + 'cooperadora/agregar/' + id ,caja_chica ,httpOption)
+  }
 }

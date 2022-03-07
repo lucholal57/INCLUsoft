@@ -21,33 +21,46 @@
         <legend>Agregar Dinero</legend>
       </div>
       <div class="form-group col-sm-4">
-        <input type="number" name="" id="" class="form-control">
+        <input type="number" name="" id="" class="form-control" [(ngModel)]="agregar">
       </div>
       <div class="form-group col-sm-4">
-        <button class="btn btn-success">Guardar</button>
+        <button class="btn btn-success" (click)="agregarDineroCooperadora()">Guardar</button>
       </div>
     </div>
   </div>
 
-
+<hr>
 
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col-md-auto">
         <legend>Saldo Caja Chica</legend>
-        <h1 style="color:white">{{caja_chica | currency:'ARS':'$':'1.2-2'}}</h1>
+        <h1 style="color:white" [ngStyle]="{'background-color':caja_chica <= 1000 ? 'red' : 'green'}">{{caja_chica | currency:'ARS':'$':'1.2-2'}}</h1>
       </div>
     </div>
   </div>
 
-  <div class="container-fluid" id="contenedorTabla">
+  <hr>
+
+  <div class="container" id="contenedorTabla">
     <legend align="center">Lista de Movimientos</legend>
-    <table class="table table-bordered table-dark table-responsive-lg">
+    <table class="table table-bordered table-dark">
       <thead>
-        <tr>
-          <th></th>
+        <tr  align="center">
+          <th scope="col">TOTAL ENTRADAS DINERO</th>
+          <th scope="col">TOTAL SALIDA DINERO</th>
         </tr>
       </thead>
+      <tbody>
+        <tr align="center">
+          <td scope="row" >
+            <h1 type="number" style="color:green">+{{entradas | currency:'ARS':'$':'1.2-2'}}</h1>
+          </td>
+          <td scope="row">
+            <h1 type="number" style="color:red">-{{salidas | currency:'ARS':'$':'1.2-2'}}</h1>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (SocioListado, SocioBuscarPorId,BusquedaSocio,LibroListado,LibroBuscarPorId,BusquedaLibro,PrestamoListado,PrestamoBuscarPorId,BusquedaSocioPrestamo,DevolucionListado,DevolucionBuscarPorId)
+from .views import (SocioListado, SocioBuscarPorId,BusquedaSocio,LibroListado,LibroBuscarPorId,BusquedaLibro,PrestamoListado,PrestamoBuscarPorId,BusquedaSocioPrestamo,DevolucionListado,DevolucionBuscarPorId,BusquedaLibroId)
 
 urlpatterns = [
     #Rutas para socios
@@ -9,7 +9,8 @@ urlpatterns = [
     #Rutas Libro
     path('libro',LibroListado),
     path('libro/<int:pk>',LibroBuscarPorId),
-    path('libro/buscar/<str:nombre_libro>',BusquedaLibro),
+    path('libro/<int:pk>',LibroBuscarPorId),
+    path('libro_prestado/<int:pk>',BusquedaLibroId),
     #Rutas PRestamos
     path('prestamo',PrestamoListado),
     path('prestamo/<int:pk>',PrestamoBuscarPorId),

@@ -39,12 +39,12 @@
           <label style="color:black" for="alumno">Libros</label>
             <select class="form-control" formControlName="libro" required>
               <option *ngFor="let libro of listadoLibro" [ngValue]="libro.id" >
-              <h1 *ngIf="libro.estado==='Libre'">{{ libro.titulo }} </h1>
+              {{ libro.titulo }}
               </option>
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="registrofecha">
           <label style="color:black">Fecha Prestamo</label>
             <input
               type="date"
@@ -55,7 +55,7 @@
             />
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="devolucionfecha">
           <label style="color:black">Fecha Devolucion</label>
             <input
               type="date"
@@ -65,6 +65,23 @@
               required
             />
         </div>
+
+        <div class="form-group">
+          <label style="color:black" >Estado</label>
+          <div class="col">
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="estadoRadio" value="Activo" formControlName="estado" required>
+            <label class="form-check-label" for="estadoRadio" style="color:black" >Activo</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="estadoRadio2" value="Cerrado" formControlName="estado" required>
+            <label class="form-check-label" for="estadoRadio2" style="color:black" >Cerrado</label>
+          </div>
+
+        </div>
+        </div>
+  
 
       </div>
       <div class="modal-footer">
@@ -125,10 +142,8 @@
           <td scope="row">{{ prestamo.fecha_de_devolucion }}</td>
           <td scope="row"> {{ prestamo.libro.titulo }}  </td>
           <td colspan="2">
-            <button class="btn btn-warning" (click)="PrestamoId(prestamo,content )"> Editar </button>
+            <button class="btn btn-warning" (click)="PrestamoId(prestamo,content )"> Devolucion </button>
             <button class="btn btn-danger"  (click)="eliminarPrestamo(prestamo)"> Eliminar</button>
-            <button class="btn btn-danger"  (click)="Devolucion(prestamo)"> Devolucion</button>
-
           </td>
         </tr>
       </tbody>

@@ -114,7 +114,7 @@
         <th scope="row">{{ libro.id }}</th>
         <td scope="row"> {{ libro.titulo }}</td>
         <td scope="row">{{ libro.edades }}</td>
-        <td scope="row">{{ libro.estado }}</td>
+        <td scope="row" [ngStyle]="{'background-color':libro.estado == 'Prestado' ? 'red' : 'green'}">{{ libro.estado }}</td>
         <td colspan="2">
           <button class="btn btn-warning" (click)="LibroId(libro,content )"> Editar </button>
           <button class="btn btn-danger"  (click)="eliminarLibro(libro)"> Eliminar</button>

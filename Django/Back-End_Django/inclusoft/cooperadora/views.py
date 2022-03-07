@@ -9,15 +9,23 @@ from .serializers import CooperadoraSerializer
 # Create your views here.
 
 #View de Cooperadora
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @permission_classes((IsAuthenticated, ))
-def CooperadoraView(request):
+def CooperadoraView(request,pk=None):
     
     #List
     if request.method == 'GET':
         cooperadora = Cooperadora.objects.all()
         serializer = CooperadoraSerializer(cooperadora, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    # Create
+    elif request.method == 'PUT':
+        cooperadora_agregar = Cooperadora.objects.filter(id=pk).first()
+        serializer = CooperadoraSerializer(cooperadora_agregar,data=request.data)
+        if serializer.is_valid():
+            print(cooperadora_agregar)
+            print(serializer.data['caja_chica'])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, ))
@@ -40,5 +48,5 @@ def CooperadoraAgregarDinero(request,pk=None):
         serializer = CooperadoraSerializer(cooperadora_agregar,data=request.data)
         if serializer.is_valid():
             print(cooperadora_agregar)
-            print(serializer.data['caja_chica'])
+            print(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

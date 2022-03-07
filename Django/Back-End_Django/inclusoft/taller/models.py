@@ -34,7 +34,7 @@ class Materiales_Taller(models.Model):
         return f'Materiales Taller : {self.insumos_disponibles}'
     
 class Ventas_Taller(models.Model):
-    ganancia = models.CharField(max_length=50)
+    ganancia = models.IntegerField()
     observacion_ventas = models.CharField(max_length=100)
     producto = models.CharField(max_length=50, null=True)
     cantidad_producto = models.CharField(max_length=50)
@@ -60,7 +60,7 @@ class Compras_Taller(models.Model):
     insumos = models.CharField(max_length=50)
     observaciones_compra = models.CharField(max_length=100)
     fecha_compra = models.DateField(null = True)
-    cantidad = models.CharField(max_length=10)
+    cantidad = models.IntegerField()
     precio = models.CharField(max_length=10)
     total = models.CharField(max_length=10)
     #ForeignKey

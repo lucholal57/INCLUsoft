@@ -11,6 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../service/alert/alert.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import *as moment from 'moment';
 
 
 @Component({
@@ -34,6 +35,11 @@ export class PrestamoComponent implements OnInit {
     objeto_libro : Libro
     // Variable para buscar socio  por alumno
     buscar_socio = "";
+    //VAriable para obtener la fecha de hoy
+    hoy = moment().format('YYYY-MM-DD');
+    //VAriables para deshabilitar las fechas cuando haga un resgisto y una devolucion
+    registrofecha : boolean
+    devolucionfecha: boolean
     // Variables de botones para deshabilitar
     public btnGuardar = false;
     public btnEditar = false;
@@ -58,7 +64,7 @@ export class PrestamoComponent implements OnInit {
     socio: ['', [Validators.required]],
     fecha_de_prestamo: ['', [Validators.required]],
     estado: ['', [Validators.required]],
-    fecha_de_devolucion: ['']
+    fecha_de_devolucion: []
   })
 
   ngOnInit(): void {
@@ -67,6 +73,8 @@ export class PrestamoComponent implements OnInit {
     this.getPrestamo();
     this.btnEditar = true;
     this.ocultarbusqueda_Socio = true;
+    this.registrofecha = false;
+    this.devolucionfecha = false;
   }
     // Open funcion para abrir ventana modal
     open(content:any) {
@@ -74,6 +82,8 @@ export class PrestamoComponent implements OnInit {
       this.btnEditar = true;
       this.btnGuardar = false;
       this.btnCancelar = false;
+      this.registrofecha = true;
+      this.devolucionfecha = false;
     }
     // Funcion para cerrar ventana modal
     cerrarModal(): void{
@@ -118,36 +128,58 @@ getPrestamo(): void{
 
 // Registrar Prestamo
 registrarPrestamo(): void{
+  var libroobjeto : Libro[];
   var idlibro = this.formularioRegistro.value.libro
-  this.formularioRegistro.controls['estado'].setValue("Activo")
-    this.servicioPrestamo.registrarPrestamo(this.formularioRegistro.value).subscribe(
-      (res) => {
-        this.alertas.alertsuccess();
-        this.getPrestamo();
-        this.cerrarModal();
-        this.listadoLibro.forEach(a => {
-          if(a.id == idlibro)
+  this.servicioLibro.getLibroPrestado(this.formularioRegistro.value.libro).subscribe(
+    (res) => {
+        libroobjeto = res;
+        libroobjeto.forEach(a => {
+          if(a.estado == 'Libre')
           {
-            a.estado = "Prestado"
-            this.servicioLibro.editarLibroId(a, a.id).subscribe(
+            this.formularioRegistro.controls['estado'].setValue("Activo")
+            this.servicioPrestamo.registrarPrestamo(this.formularioRegistro.value).subscribe(
               (res) => {
-                console.log(res)
+                this.alertas.alertsuccess();
+                this.getPrestamo();
+                this.cerrarModal();
+                this.listadoLibro.forEach(a => {
+                  if(a.id == idlibro)
+                  {
+                    a.estado = "Prestado"
+                    this.servicioLibro.editarLibroId(a, a.id).subscribe(
+                      (res) => {
+                        console.log(res)
+                      },
+                      (error) => {
+                        console.log(error)
+                      }
+                    )
+                  }
+                })
               },
               (error) => {
-                console.log(error)
+                this.alertas.alerterror();
               }
-            )
+            );
+          }
+          else{
+            this.alertas.alertLibroPrestado();
           }
         })
-      },
-      (error) => {
-        this.alertas.alerterror();
-      }
-    );
+
+    },
+    (error) => {
+        console.log(error);
+    }
+  )
+
+
 }
 //Obtener prestamo por id para mostrar en ventana modal para su edicion
 PrestamoId(prestamo: Prestamo, content : any): void {
   this.modalService.open(content,{size:'lg'});
+  this.registrofecha = false;
+  this.devolucionfecha = true;
   this.btnCancelar = true;
   this.btnEditar = false;
   this.btnGuardar = true;
@@ -159,7 +191,7 @@ PrestamoId(prestamo: Prestamo, content : any): void {
         socio: res[0].socio,
         fecha_de_prestamo: res[0].fecha_de_prestamo,
         estado: res[0].estado,
-        fecha_de_devolucion: res[0].fecha_de_devolucion,
+        fecha_de_devolucion: this.hoy
       })
     },
     (error)=> {
@@ -169,8 +201,24 @@ PrestamoId(prestamo: Prestamo, content : any): void {
 }
 //Editar Prestamo
 editarPrestamoId(): void {
+  var libroobjeto :Libro[]
   this.servicioPrestamo.editarPrestamoId(this.formularioRegistro.value, this.formularioRegistro.value.id).subscribe(
     (res) => {
+      console.log("Esto es lo que contiene el formulario",this.formularioRegistro.value.libro)
+      this.servicioLibro.getLibroPrestado(this.formularioRegistro.value.libro).subscribe(
+        (res) => {
+          libroobjeto = res
+          console.log("resultado del libro que encontro por id",libroobjeto)
+          libroobjeto.forEach(a => {
+            a.estado="Libre"
+            this.servicioLibro.editarLibroId(a, a.id).subscribe(
+              (res) =>{
+                console.log(res)
+              }
+            )
+          })
+        }
+      )
       this.alertas.alertedit();
       this.getPrestamo();
       this.cerrarModal();
@@ -180,24 +228,6 @@ editarPrestamoId(): void {
     }
   )
 }
-  Devolucion(prestamo: Prestamo): void{
-    console.log(this.prestamo)
-
-    this.servicioPrestamo.getPrestamoId(prestamo).subscribe(
-        (res)=> {
-        this.listadoPrestamo = res;
-        console.log("que trae",this.listadoPrestamo)
-          this.listadoPrestamo.forEach(a => {
-            a.estado="Cerrado"
-            this.servicioPrestamo.editarPrestamoId(a, a.id).subscribe(
-              (res) => {
-                console.log(res)
-              }
-            )
-          })
-        }
-    )
-  }
 //Eliminar Prestamo
 eliminarPrestamo(prestamo : Prestamo): void {
   Swal.fire({
