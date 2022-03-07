@@ -25,16 +25,10 @@ class Libro(models.Model):
     
 class PrestamoLibro(models.Model):
     fecha_de_prestamo = models.DateField(null=True)
-    estado_activo = 'activo'
-    estado_inactivo = 'inactivo'
-    estado_op = [
-        (estado_activo,'activo'),
-        (estado_inactivo,'inactivo'),
-    ]
-    estado = models.CharField(max_length=10, choices=estado_op, null=True)
+    estado = models.CharField(max_length=10, null=True)
     fecha_de_devolucion = models.DateField(null=True)
     # ForeignKey
-    libro = models.ManyToManyField(Libro)
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     socio = models.ForeignKey(Socio, on_delete=models.CASCADE)
     
     # METODO STR PARA MOSTRAR LOS STRING EN DJANGO ADMIN

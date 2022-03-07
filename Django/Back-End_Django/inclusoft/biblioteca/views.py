@@ -132,6 +132,7 @@ def BusquedaLibro(request, nombre_libro):
     serializer = LibroSerializer(libro, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 # VIEW DE PRESTAMOS
 
 

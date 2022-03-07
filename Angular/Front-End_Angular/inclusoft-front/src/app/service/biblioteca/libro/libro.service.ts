@@ -25,6 +25,10 @@ export class LibroService {
   getLibro(): Observable<Libro[]> {
     return this.http.get<Libro[]>(this.url + 'libro', httpOption);
   }
+  //Obtenemos todos los libro
+  getLibroActivo(): Observable<Libro[]> {
+    return this.http.get<Libro[]>(this.url + 'libro_activo', httpOption);
+  }
   //Registrar Libro
   registrarLibro(formularioRegistro: any): Observable<Libro[]>{
     return this.http.post<Libro[]>(this.url + 'libro', formularioRegistro, httpOption)
@@ -45,4 +49,5 @@ export class LibroService {
   busquedaLibro(nombre_libro : string): Observable<Libro[]>{
     return this.http.get<Libro[]>(this.url + 'libro/buscar/' + nombre_libro, httpOption)
   }
+ 
 }

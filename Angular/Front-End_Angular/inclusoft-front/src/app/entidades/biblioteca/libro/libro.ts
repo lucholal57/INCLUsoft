@@ -1,6 +1,6 @@
 export class Libro {
   id= 0;
-  titulo ="";
+  titulo = "";
   edades = 0;
   estado ="";
 }

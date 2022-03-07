@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'inclusoft.wsgi.application'
 DATABASES ={
     'default':{
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'escuela_db',
+        'NAME' : 'caad_db',
         'USER' : 'postgres',
         'PASSWORD' : 'admin',
         'HOST' : 'localhost',

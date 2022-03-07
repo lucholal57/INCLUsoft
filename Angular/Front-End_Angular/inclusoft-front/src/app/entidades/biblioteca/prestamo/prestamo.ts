@@ -3,8 +3,8 @@ import { Libro } from '../../../entidades/biblioteca/libro/libro';
 export class Prestamo {
   id= 0;
   fecha_de_prestamo = new Date();
-  libro : Libro[];
-  socio : Socio = new Socio();
+  libro : Libro;
+  socio : Socio;
   estado = "";
   fecha_de_devolucion = new Date();
 

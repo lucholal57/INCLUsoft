@@ -27,7 +27,7 @@ class LibroSerializer(serializers.ModelSerializer):
 class PrestamoLibroSerializer(serializers.ModelSerializer):
     """ Serializador de Prestamos"""
     alumno = AlumnoSerializer(read_only=True)
-    libro = LibroSerializer(many=True)
+    libro = LibroSerializer(read_only=True)
     class Meta:
         model = PrestamoLibro
         fields = '__all__'

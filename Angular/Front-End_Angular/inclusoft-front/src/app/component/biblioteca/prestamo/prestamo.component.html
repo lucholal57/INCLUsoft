@@ -37,27 +37,11 @@
 
         <div class="form-group">
           <label style="color:black" for="alumno">Libros</label>
-            <select multiple class="form-control" formControlName="libro" required>
-              <option *ngFor="let libro of listadoLibro" [ngValue]="libro.id">
-                {{ libro.titulo }}
+            <select class="form-control" formControlName="libro" required>
+              <option *ngFor="let libro of listadoLibro" [ngValue]="libro.id" >
+              <h1 *ngIf="libro.estado==='Libre'">{{ libro.titulo }} </h1>
               </option>
             </select>
-        </div>
-
-        <div class="form-group">
-          <label style="color:black" >Estado</label>
-          <div class="col">
-
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="estado" id="estadoRadio" value="activo" formControlName="estado" required>
-            <label class="form-check-label" for="estadoRadio" style="color:black" >Activo</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="estado" id="estadoRadio2" value="inactivo" formControlName="estado" required>
-            <label class="form-check-label" for="estadoRadio2" style="color:black" >Inacttivo</label>
-          </div>
-
-        </div>
         </div>
 
         <div class="form-group">
@@ -139,15 +123,12 @@
           <td scope="row"> {{prestamo.estado}}</td>
           <td scope="row">{{ prestamo.fecha_de_prestamo }}</td>
           <td scope="row">{{ prestamo.fecha_de_devolucion }}</td>
-          <td scope="row">
-            <ul *ngFor="let l of prestamo.libro">
-              <li> {{ l.titulo }}</li>
-            </ul>
-          </td>
+          <td scope="row"> {{ prestamo.libro.titulo }}  </td>
           <td colspan="2">
             <button class="btn btn-warning" (click)="PrestamoId(prestamo,content )"> Editar </button>
             <button class="btn btn-danger"  (click)="eliminarPrestamo(prestamo)"> Eliminar</button>
-            <button class="btn btn-success"  (click)="Devolucion(prestamo,content)"> Devolucion</button>
+            <button class="btn btn-danger"  (click)="Devolucion(prestamo)"> Devolucion</button>
+
           </td>
         </tr>
       </tbody>

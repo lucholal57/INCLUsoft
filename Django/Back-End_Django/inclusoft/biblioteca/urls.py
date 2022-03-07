@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (SocioListado, SocioBuscarPorId,BusquedaSocio,LibroListado,LibroBuscarPorId,BusquedaLibro,PrestamoListado,PrestamoBuscarPorId,BusquedaSocioPrestamo,DevolucionListado,DevolucionBuscarPorId,BusquedaDevolucion,)
+from .views import (SocioListado, SocioBuscarPorId,BusquedaSocio,LibroListado,LibroBuscarPorId,BusquedaLibro,PrestamoListado,PrestamoBuscarPorId,BusquedaSocioPrestamo,DevolucionListado,DevolucionBuscarPorId)
 
 urlpatterns = [
     #Rutas para socios

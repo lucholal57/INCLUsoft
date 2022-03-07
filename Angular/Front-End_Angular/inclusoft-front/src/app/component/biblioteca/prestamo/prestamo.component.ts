@@ -28,6 +28,10 @@ export class PrestamoComponent implements OnInit {
     listadoLibro : Libro[];
     // Array de socios para el select
     listadoSocio : Socio[];
+    //Objeto prestamo
+    prestamo : Prestamo[];
+    //objeto libro
+    objeto_libro : Libro
     // Variable para buscar socio  por alumno
     buscar_socio = "";
     // Variables de botones para deshabilitar
@@ -111,13 +115,30 @@ getPrestamo(): void{
     }
   )
 }
+
 // Registrar Prestamo
 registrarPrestamo(): void{
+  var idlibro = this.formularioRegistro.value.libro
+  this.formularioRegistro.controls['estado'].setValue("Activo")
     this.servicioPrestamo.registrarPrestamo(this.formularioRegistro.value).subscribe(
       (res) => {
         this.alertas.alertsuccess();
         this.getPrestamo();
         this.cerrarModal();
+        this.listadoLibro.forEach(a => {
+          if(a.id == idlibro)
+          {
+            a.estado = "Prestado"
+            this.servicioLibro.editarLibroId(a, a.id).subscribe(
+              (res) => {
+                console.log(res)
+              },
+              (error) => {
+                console.log(error)
+              }
+            )
+          }
+        })
       },
       (error) => {
         this.alertas.alerterror();
@@ -159,6 +180,24 @@ editarPrestamoId(): void {
     }
   )
 }
+  Devolucion(prestamo: Prestamo): void{
+    console.log(this.prestamo)
+
+    this.servicioPrestamo.getPrestamoId(prestamo).subscribe(
+        (res)=> {
+        this.listadoPrestamo = res;
+        console.log("que trae",this.listadoPrestamo)
+          this.listadoPrestamo.forEach(a => {
+            a.estado="Cerrado"
+            this.servicioPrestamo.editarPrestamoId(a, a.id).subscribe(
+              (res) => {
+                console.log(res)
+              }
+            )
+          })
+        }
+    )
+  }
 //Eliminar Prestamo
 eliminarPrestamo(prestamo : Prestamo): void {
   Swal.fire({
@@ -223,28 +262,7 @@ cancelar(): void{
   this.btnGuardar = false;
   this.btnEditar = true;
 }
-// Edicion de prestamo para poder hacer la devolucion
-Devolucion(prestamo: Prestamo, content : any): void {
-  this.modalService.open(content,{size:'lg'});
-  this.btnCancelar = true;
-  this.btnEditar = false;
-  this.btnGuardar = true;
-  this.servicioPrestamo.getPrestamoId(prestamo).subscribe(
-    (res) => {
-      this.formularioRegistro.patchValue({
-        id: res[0].id,
-        libro: res[0].libro,
-        socio: res[0].socio,
-        fecha_de_prestamo: res[0].fecha_de_prestamo,
-        estado: res[0].estado,
-        fecha_de_devolucion: res[0].fecha_de_devolucion,
-      })
-    },
-    (error)=> {
-      this.alertas.alerterror();
-    }
-  )
-}
+
 
 
 }
